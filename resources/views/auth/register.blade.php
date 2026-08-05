@@ -26,15 +26,15 @@
             overflow-x: hidden;
         }
 
-        /* Left Side Hero Photo Box matching exact image from daftar_akun_serenepath_2 */
+        /* Left Side Hero Photo Box matching exact login layout */
         .auth-left-banner {
             background: linear-gradient(180deg, rgba(88, 28, 160, 0.65) 0%, rgba(94, 44, 181, 0.75) 100%), 
                         url('https://lh3.googleusercontent.com/aida-public/AB6AXuBAmPbcwMWt1lHZfBe1NOyRfXkD8gX5JtRZ2dpIYjaYIXB5EeEyNNEhD1R99jYvLxml-uW9S_h0kn2qwXCrhQyWnwsr_VnGaCGUO0Mit69hHA6lI1ysfohmQyJ_MPUb5GU_nCYxtq4W3dgr7_kUy02fprWyzDB8B8xYvqdk_z8_-z-3VOZcGu3tvjNeBAwIfrKKRHvQ5cZO3B1xF9hI1j8AWDBpcya3QutqTNAYBHJzvldXt9v5uVHCgw') center/cover no-repeat;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 3rem 4rem;
+            padding: 2.5rem 3.5rem;
         }
 
         .auth-brand-logo {
@@ -49,7 +49,7 @@
 
         .auth-left-text {
             max-width: 480px;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .auth-left-title {
@@ -58,28 +58,32 @@
             color: #FFFFFF;
             line-height: 1.2;
             letter-spacing: -0.5px;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
 
         .auth-left-desc {
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: rgba(255, 255, 255, 0.9);
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
-        /* Right Side Form Box */
+        /* Right Side Form Box matching login layout */
         .auth-right-container {
             min-height: 100vh;
+            max-height: 100vh;
+            overflow-y: auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 3rem 2rem;
+            padding: 2rem 2rem;
             background-color: #FAFAFC;
         }
 
         .auth-form-wrapper {
             width: 100%;
             max-width: 420px;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
         }
 
         .auth-form-title {
