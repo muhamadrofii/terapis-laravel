@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Bookings - SerenePath</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#d9dadc",
+                        "on-surface-variant": "#4a4453",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#004742",
+                        "on-primary-container": "#d8c2ff",
+                        "primary-fixed": "#ebddff",
+                        "background": "#f9f9fb",
+                        "on-surface": "#1a1c1d",
+                        "on-secondary-fixed": "#291231",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e2e2e4",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#2f3132",
+                        "surface-tint": "#6f43c0",
+                        "primary-fixed-dim": "#d3bbff",
+                        "error": "#ba1a1a",
+                        "primary-container": "#673ab7",
+                        "on-background": "#1a1c1d",
+                        "on-secondary-fixed-variant": "#583d5f",
+                        "surface-container": "#eeeef0",
+                        "on-primary-fixed": "#250059",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f3f5",
+                        "tertiary-container": "#00615a",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#8ef4e9",
+                        "secondary-fixed-dim": "#debbe4",
+                        "surface-variant": "#e2e2e4",
+                        "secondary": "#715478",
+                        "on-secondary-container": "#75597c",
+                        "on-primary-fixed-variant": "#5727a6",
+                        "on-tertiary-fixed-variant": "#00504a",
+                        "on-tertiary-fixed": "#00201d",
+                        "inverse-primary": "#d3bbff",
+                        "on-tertiary-container": "#76ddd2",
+                        "secondary-container": "#f8d4fe",
+                        "tertiary-fixed-dim": "#71d7cd",
+                        "outline": "#7b7484",
+                        "surface-container-high": "#e8e8ea",
+                        "primary": "#4f1c9e",
+                        "secondary-fixed": "#fad7ff",
+                        "outline-variant": "#ccc3d5",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f0f0f2",
+                        "surface-bright": "#f9f9fb",
+                        "surface": "#f9f9fb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "xl": "40px",
+                        "unit": "4px",
+                        "margin-desktop": "64px",
+                        "lg": "24px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "xs": "4px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "caption": ["Inter"],
+                        "title-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "title-md": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col font-body-md">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 shadow-[0px_4px_20px_rgba(103,58,183,0.08)] bg-surface shadow-sm">
+<div class="flex justify-between items-center px-margin-desktop h-20 max-w-[1280px] mx-auto">
+<div class="font-headline-lg text-headline-lg font-bold text-primary">SerenePath</div>
+<div class="hidden md:flex space-x-lg font-body-md text-body-md">
+<a class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80 flex flex-col justify-center" href="#">Find Help</a>
+<a class="text-primary border-b-2 border-primary font-bold hover:text-primary transition-colors cursor-pointer active:opacity-80 flex flex-col justify-center" href="#">My Sessions</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80 flex flex-col justify-center" href="#">Resources</a>
+</div>
+<div class="flex items-center space-x-md text-primary">
+<span class="material-symbols-outlined cursor-pointer active:opacity-80 hover:text-primary transition-colors" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined cursor-pointer active:opacity-80 hover:text-primary transition-colors" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-grow pt-[120px] px-margin-mobile md:px-margin-desktop max-w-[1280px] mx-auto w-full pb-xl">
+<div class="mb-xl">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-sm">My Bookings</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Manage your upcoming therapy sessions and appointments.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Upcoming & Pending -->
+<div class="lg:col-span-8 flex flex-col gap-lg">
+<!-- View Toggle (List/Calendar - visual only) -->
+<div class="flex justify-between items-center mb-sm">
+<h2 class="font-title-md text-title-md text-on-surface">Upcoming Sessions</h2>
+<div class="bg-surface-container-low rounded-lg p-unit flex">
+<button class="bg-surface shadow-sm px-md py-sm rounded-md font-label-md text-label-md text-primary flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">list</span> List
+                        </button>
+<button class="px-md py-sm rounded-md font-label-md text-label-md text-on-surface-variant hover:bg-surface-container transition-colors flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span> Calendar
+                        </button>
+</div>
+</div>
+<!-- Upcoming Booking Card 1 -->
+<div class="bg-surface rounded-xl p-lg shadow-[0px_4px_20px_rgba(103,58,183,0.08)] flex flex-col sm:flex-row gap-lg items-start sm:items-center">
+<div class="flex-shrink-0 relative">
+<img class="w-16 h-16 rounded-full object-cover border-2 border-primary-fixed" data-alt="Professional headshot of a mature female therapist with warm smile, wearing a subtle lavender cardigan in a bright, modern office with soft natural lighting and a minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1CZNhNgNkomqFqO1XDWrwoHfyA3sGrD5PD7ltXHYhHc_vsbx8Bq-7SoAn48CJRqaSlnZhyOt2fGFh94qwRo-gLCdDWesRsbm85DAHroRMr-HVinCI9QJeK_ZrVhlZXaOmOBl-NCavnk6V9JBliMNb9xFL77NvOwASeF6sm-xdWdG4ospJMTVEyJaV4OTuZChy-pigtOrQ7feF37ZMWeVQ779qJg7SaPiVwhlahiiAKQ1SsIc88Xw16Q"/>
+<div class="absolute -bottom-2 -right-2 bg-tertiary-container text-on-tertiary-container rounded-full p-unit border-2 border-surface">
+<span class="material-symbols-outlined text-[12px] block" style="font-variation-settings: 'FILL' 1;">videocam</span>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-sm mb-xs">
+<h3 class="font-title-md text-title-md text-on-surface">Dr. Sarah Jenkins</h3>
+<span class="bg-primary-fixed text-on-primary-fixed font-caption text-caption px-sm py-unit rounded-full">Confirmed</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-xs">Cognitive Behavioral Therapy</p>
+<div class="flex items-center gap-md font-label-md text-label-md text-on-surface-variant">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                                Oct 24, 2024
+                            </div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                                10:00 AM - 11:00 AM
+                            </div>
+</div>
+</div>
+<div class="flex flex-row sm:flex-col gap-sm w-full sm:w-auto mt-md sm:mt-0">
+<button class="flex-1 sm:flex-none bg-secondary-fixed text-on-secondary-fixed font-label-md text-label-md py-sm px-md rounded-lg hover:bg-secondary-fixed-dim transition-colors text-center">Reschedule</button>
+<button class="flex-1 sm:flex-none bg-surface-container text-on-surface-variant font-label-md text-label-md py-sm px-md rounded-lg hover:bg-surface-container-high transition-colors text-center">Cancel</button>
+</div>
+</div>
+<!-- Upcoming Booking Card 2 -->
+<div class="bg-surface rounded-xl p-lg shadow-[0px_4px_20px_rgba(103,58,183,0.08)] flex flex-col sm:flex-row gap-lg items-start sm:items-center">
+<div class="flex-shrink-0 relative">
+<img class="w-16 h-16 rounded-full object-cover border-2 border-primary-fixed" data-alt="Professional portrait of a male therapist with a calm demeanor, wearing a light grey blazer, sitting in a serene room with soft pastel purple undertones and a potted plant in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBerX73DWWa--uBEwmp3zT-wBf9h3VlY0FZx9ugyxTFl-HtxAu6rfaFgnO_IU8inq-DgIceYbpnVzp9MCBx8h9-jC6-aJPvBuLRxUJ_COb0k_O0FGaqJIaCubBBWI8Vp2BXvdPILa9VMvFrTTdA-a_Oll9H226eVCoi0Wr63AjAzrebq9u2-CMroI-gPr71JPkPRG-uzlMstB4Od0R42nf1J42eBVBfkJwFmRlnE3-RKhsSHCCiOdTRIw"/>
+<div class="absolute -bottom-2 -right-2 bg-surface-container-high text-on-surface-variant rounded-full p-unit border-2 border-surface">
+<span class="material-symbols-outlined text-[12px] block" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-sm mb-xs">
+<h3 class="font-title-md text-title-md text-on-surface">Dr. Marcus Vance</h3>
+<span class="bg-surface-container-highest text-on-surface-variant font-caption text-caption px-sm py-unit rounded-full">Pending Approval</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-xs">Couples Counseling (In-person)</p>
+<div class="flex items-center gap-md font-label-md text-label-md text-on-surface-variant">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                                Oct 28, 2024
+                            </div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                                2:00 PM - 3:00 PM
+                            </div>
+</div>
+</div>
+<div class="flex flex-row sm:flex-col gap-sm w-full sm:w-auto mt-md sm:mt-0">
+<button class="flex-1 sm:flex-none bg-surface-container text-on-surface-variant font-label-md text-label-md py-sm px-md rounded-lg hover:bg-surface-container-high transition-colors text-center w-full">Withdraw Request</button>
+</div>
+</div>
+</div>
+<!-- Right Column: Awaiting Payment & Promos -->
+<div class="lg:col-span-4 flex flex-col gap-lg">
+<!-- Awaiting Payment Section -->
+<div class="bg-error-container/20 rounded-xl p-lg border border-error-container">
+<div class="flex items-center gap-sm mb-md text-on-surface">
+<span class="material-symbols-outlined text-error">payments</span>
+<h2 class="font-title-md text-title-md">Awaiting Payment</h2>
+</div>
+<div class="space-y-md">
+<div class="bg-surface rounded-lg p-md shadow-sm border border-surface-container-high">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">Initial Consultation</h4>
+<p class="font-caption text-caption text-on-surface-variant">Dr. Sarah Jenkins • Oct 15</p>
+</div>
+<span class="font-title-md text-title-md text-on-surface">$120</span>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-sm rounded-lg hover:bg-on-primary-fixed-variant transition-colors mt-sm">Pay Now</button>
+</div>
+</div>
+</div>
+<!-- Info Card -->
+<div class="bg-surface-container-low rounded-xl p-lg">
+<h3 class="font-title-md text-title-md text-on-surface mb-sm">Cancellation Policy</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">
+                        Please note that cancellations made less than 24 hours before your scheduled session may incur a fee. We appreciate your understanding.
+                    </p>
+<a class="font-label-md text-label-md text-primary hover:underline flex items-center gap-xs" href="#">Read full policy <span class="material-symbols-outlined text-[16px]">arrow_forward</span></a>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-xl bg-surface-container-highest flex flex-col md:flex-row justify-between items-center px-margin-desktop py-lg border-t border-outline-variant">
+<div class="font-title-md text-title-md text-primary mb-md md:mb-0">SerenePath</div>
+<div class="font-caption text-caption text-on-surface-variant text-center md:text-left mb-md md:mb-0">© 2024 SerenePath Mental Health. All rights reserved.</div>
+<div class="flex flex-wrap justify-center md:justify-end gap-md font-caption text-caption">
+<a class="text-on-surface-variant hover:text-primary transition-opacity hover:opacity-80" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-opacity hover:opacity-80" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary transition-opacity hover:opacity-80" href="#">Emergency Support</a>
+<a class="text-on-surface-variant hover:text-primary transition-opacity hover:opacity-80" href="#">Careers</a>
+<a class="text-on-surface-variant hover:text-primary transition-opacity hover:opacity-80" href="#">Contact</a>
+</div>
+</footer>
+</body></html>

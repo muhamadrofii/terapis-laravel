@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Schedule - SerenePath Therapist Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e8e8ea",
+                        "surface-tint": "#6f43c0",
+                        "tertiary": "#004742",
+                        "on-primary-fixed-variant": "#5727a6",
+                        "surface-container-low": "#f3f3f5",
+                        "surface-container-highest": "#e2e2e4",
+                        "background": "#f9f9fb",
+                        "secondary-fixed": "#fad7ff",
+                        "tertiary-fixed": "#8ef4e9",
+                        "on-surface-variant": "#4a4453",
+                        "primary": "#4f1c9e",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#71d7cd",
+                        "inverse-on-surface": "#f0f0f2",
+                        "secondary-fixed-dim": "#debbe4",
+                        "on-surface": "#1a1c1d",
+                        "surface-container": "#eeeef0",
+                        "on-primary-container": "#d8c2ff",
+                        "secondary-container": "#f8d4fe",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#583d5f",
+                        "surface-variant": "#e2e2e4",
+                        "on-tertiary-container": "#76ddd2",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadc",
+                        "surface-bright": "#f9f9fb",
+                        "on-secondary-container": "#75597c",
+                        "surface": "#f9f9fb",
+                        "on-primary-fixed": "#250059",
+                        "tertiary-container": "#00615a",
+                        "on-secondary-fixed": "#291231",
+                        "secondary": "#715478",
+                        "outline-variant": "#ccc3d5",
+                        "primary-fixed": "#ebddff",
+                        "primary-fixed-dim": "#d3bbff",
+                        "inverse-primary": "#d3bbff",
+                        "on-error": "#ffffff",
+                        "outline": "#7b7484",
+                        "on-tertiary-fixed": "#00201d",
+                        "on-tertiary-fixed-variant": "#00504a",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2f3132",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#673ab7",
+                        "on-background": "#1a1c1d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "lg": "24px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "xl": "40px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "md": "16px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "caption": ["Inter"],
+                        "body-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-md": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low dark:bg-surface-container-lowest flex flex-col py-lg px-md space-y-sm z-40 hidden md:flex border-r border-outline-variant/30">
+<div class="mb-xl px-4">
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">SerenePath</h1>
+</div>
+<div class="flex items-center space-x-3 px-4 mb-8">
+<img class="w-12 h-12 rounded-full object-cover shadow-sm border border-outline-variant/50" data-alt="A professional headshot of a clinical psychologist, Dr. Julian Vance. The lighting is soft and approachable, with a clean, light mode aesthetic, consistent with a modern corporate and minimalist style. The background is a serene, soft white." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXDzpCiHG0HBlLD9JvN6kmR2kD2lm_TDO3cgRcp6J0Snk-pB0pQo-zZLkOqi9GsTVH-g65pecTFgNW_WldZDPsAOq7asnvLKZTMqOSfTwIGjI5VoYavCgeBri7weOzBvpsmDM-S8DjROz7n3EWWZteEkEf1pkWOfcVy5TRGjuBx4BAD48QEjJ7I8Cb5OgO4NypCW-7choh6DPopm-77tczyStAj4z9Msp7Vs0xh-9-cKIpelRZvmuxyg"/>
+<div>
+<p class="font-title-md text-title-md text-on-surface">Dr. Julian Vance</p>
+<p class="font-caption text-caption text-on-surface-variant">Clinical Psychologist</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95 duration-150 font-label-md text-label-md group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95 duration-150 font-label-md text-label-md group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">group</span>
+<span>Patients</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-bold font-label-md text-label-md active:scale-95 duration-150 shadow-[0px_4px_20px_rgba(103,58,183,0.08)]" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span>Schedule</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95 duration-150 font-label-md text-label-md group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">payments</span>
+<span>Invoices</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95 duration-150 font-label-md text-label-md group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="pt-6 mt-auto">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 rounded-lg shadow-[0px_4px_20px_rgba(103,58,183,0.15)] hover:bg-primary/90 transition-colors active:scale-95 flex items-center justify-center space-x-2">
+<span class="material-symbols-outlined text-[18px]">videocam</span>
+<span>Start Session</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-0 md:ml-64 p-margin-mobile md:p-margin-desktop flex flex-col min-h-screen">
+<!-- Header -->
+<header class="flex flex-col md:flex-row md:items-center justify-between mb-xl gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Schedule</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage your appointments and availability.</p>
+</div>
+<div class="flex items-center space-x-4">
+<button class="flex items-center space-x-2 px-4 py-2 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+<span>Today</span>
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+<button class="bg-secondary-container text-primary font-label-md text-label-md px-5 py-2.5 rounded-lg hover:bg-secondary-container/80 transition-colors shadow-sm flex items-center space-x-2">
+<span class="material-symbols-outlined text-[18px]">edit_calendar</span>
+<span>Manage Availability</span>
+</button>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter flex-1">
+<!-- Calendar View (Main Area) -->
+<div class="xl:col-span-8 bg-surface rounded-xl shadow-[0px_4px_20px_rgba(103,58,183,0.04)] border border-outline-variant/20 p-6 flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-title-md text-title-md text-on-surface">October 2024</h3>
+<div class="flex space-x-2 bg-surface-container-low p-1 rounded-lg">
+<button class="px-3 py-1 rounded bg-surface text-on-surface shadow-sm font-label-md text-label-md">Week</button>
+<button class="px-3 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-md text-label-md">Month</button>
+</div>
+</div>
+<!-- Weekly Grid Mockup -->
+<div class="flex-1 border border-outline-variant/30 rounded-lg overflow-hidden flex flex-col">
+<!-- Days Header -->
+<div class="grid grid-cols-8 border-b border-outline-variant/30 bg-surface-container-lowest">
+<div class="p-3 text-center border-r border-outline-variant/30 text-outline font-caption text-caption">GMT-5</div>
+<div class="p-3 text-center border-r border-outline-variant/30"><div class="font-caption text-caption text-on-surface-variant uppercase">Mon</div><div class="font-title-md text-title-md text-on-surface">14</div></div>
+<div class="p-3 text-center border-r border-outline-variant/30"><div class="font-caption text-caption text-on-surface-variant uppercase">Tue</div><div class="font-title-md text-title-md text-on-surface">15</div></div>
+<div class="p-3 text-center border-r border-outline-variant/30 bg-primary/5"><div class="font-caption text-caption text-primary font-bold uppercase">Wed</div><div class="font-title-md text-title-md text-primary font-bold">16</div></div>
+<div class="p-3 text-center border-r border-outline-variant/30"><div class="font-caption text-caption text-on-surface-variant uppercase">Thu</div><div class="font-title-md text-title-md text-on-surface">17</div></div>
+<div class="p-3 text-center border-r border-outline-variant/30"><div class="font-caption text-caption text-on-surface-variant uppercase">Fri</div><div class="font-title-md text-title-md text-on-surface">18</div></div>
+<div class="p-3 text-center border-r border-outline-variant/30 opacity-50"><div class="font-caption text-caption text-on-surface-variant uppercase">Sat</div><div class="font-title-md text-title-md text-on-surface">19</div></div>
+<div class="p-3 text-center opacity-50"><div class="font-caption text-caption text-on-surface-variant uppercase">Sun</div><div class="font-title-md text-title-md text-on-surface">20</div></div>
+</div>
+<!-- Time Slots -->
+<div class="flex-1 overflow-y-auto relative min-h-[500px]">
+<!-- Background Grid Lines -->
+<div class="absolute inset-0 grid grid-cols-8 grid-rows-8 divide-x divide-y divide-outline-variant/20 pointer-events-none">
+<div class="col-span-8 row-span-1 border-b border-outline-variant/20 h-16 relative">
+<span class="absolute -top-3 left-2 text-[10px] text-outline bg-surface px-1">9 AM</span>
+</div>
+<div class="col-span-8 row-span-1 border-b border-outline-variant/20 h-16 relative">
+<span class="absolute -top-3 left-2 text-[10px] text-outline bg-surface px-1">10 AM</span>
+</div>
+<div class="col-span-8 row-span-1 border-b border-outline-variant/20 h-16 relative">
+<span class="absolute -top-3 left-2 text-[10px] text-outline bg-surface px-1">11 AM</span>
+</div>
+<div class="col-span-8 row-span-1 border-b border-outline-variant/20 h-16 relative">
+<span class="absolute -top-3 left-2 text-[10px] text-outline bg-surface px-1">12 PM</span>
+</div>
+<div class="col-span-8 row-span-1 border-b border-outline-variant/20 h-16 relative">
+<span class="absolute -top-3 left-2 text-[10px] text-outline bg-surface px-1">1 PM</span>
+</div>
+<div class="col-span-8 row-span-1 border-b border-outline-variant/20 h-16 relative">
+<span class="absolute -top-3 left-2 text-[10px] text-outline bg-surface px-1">2 PM</span>
+</div>
+<div class="col-span-8 row-span-1 border-b border-outline-variant/20 h-16 relative">
+<span class="absolute -top-3 left-2 text-[10px] text-outline bg-surface px-1">3 PM</span>
+</div>
+<div class="col-span-8 row-span-1 border-b border-outline-variant/20 h-16 relative">
+<span class="absolute -top-3 left-2 text-[10px] text-outline bg-surface px-1">4 PM</span>
+</div>
+</div>
+<!-- Current Time Indicator -->
+<div class="absolute w-full flex items-center pointer-events-none" style="top: 140px; z-index: 10;">
+<div class="w-10 text-right pr-2">
+<span class="text-[10px] font-bold text-error">10:45</span>
+</div>
+<div class="h-px bg-error flex-1 relative">
+<div class="w-2 h-2 rounded-full bg-error absolute -left-1 -top-[3px]"></div>
+</div>
+</div>
+<!-- Event Blocks -->
+<div class="absolute inset-0 grid grid-cols-8 pt-4">
+<div class="col-start-2 relative"></div>
+<div class="col-start-3 relative">
+<div class="absolute top-[64px] h-[48px] left-1 right-1 bg-tertiary-fixed/30 border border-tertiary/20 rounded-md p-1 overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
+<div class="font-caption text-[10px] font-bold text-tertiary leading-tight truncate">Sarah Jenkins</div>
+<div class="text-[9px] text-tertiary-container/80 truncate">10:00 - 10:45 AM</div>
+</div>
+<div class="absolute top-[192px] h-[64px] left-1 right-1 bg-primary-fixed/30 border border-primary/20 rounded-md p-1 overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
+<div class="font-caption text-[10px] font-bold text-primary leading-tight truncate">Team Meeting</div>
+<div class="text-[9px] text-primary/80 truncate">12:00 - 1:00 PM</div>
+</div>
+</div>
+<div class="col-start-4 relative bg-primary/5">
+<div class="absolute top-[128px] h-[48px] left-1 right-1 bg-secondary-fixed/50 border border-secondary/20 rounded-md p-1 overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-shadow z-20">
+<div class="font-caption text-[10px] font-bold text-on-secondary-fixed-variant leading-tight truncate">Michael T. (Intake)</div>
+<div class="text-[9px] text-on-secondary-container/80 truncate">11:00 - 11:45 AM</div>
+</div>
+<div class="absolute top-[256px] h-[48px] left-1 right-1 bg-tertiary-fixed/30 border border-tertiary/20 rounded-md p-1 overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
+<div class="font-caption text-[10px] font-bold text-tertiary leading-tight truncate">Emily R.</div>
+<div class="text-[9px] text-tertiary-container/80 truncate">1:00 - 1:45 PM</div>
+</div>
+</div>
+<div class="col-start-5 relative">
+<div class="absolute top-[64px] h-[64px] left-1 right-1 bg-surface-container-high border border-outline-variant/40 rounded-md p-1 overflow-hidden cursor-pointer">
+<div class="font-caption text-[10px] font-bold text-on-surface-variant leading-tight truncate">Admin Block</div>
+<div class="text-[9px] text-outline truncate">10:00 - 11:00 AM</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Daily Summary Side Panel -->
+<div class="xl:col-span-4 flex flex-col gap-lg">
+<!-- Today's Overview Card -->
+<div class="bg-surface rounded-xl shadow-[0px_4px_20px_rgba(103,58,183,0.06)] border border-outline-variant/20 p-6">
+<h3 class="font-title-md text-title-md text-on-surface mb-4">Today, Oct 16</h3>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-surface-container-low p-4 rounded-lg border border-outline-variant/10">
+<p class="font-caption text-caption text-on-surface-variant mb-1">Sessions</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-primary">4</p>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg border border-outline-variant/10">
+<p class="font-caption text-caption text-on-surface-variant mb-1">Hours</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-tertiary">3.5</p>
+</div>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface-variant mb-3 uppercase tracking-wider">Upcoming Appointments</h4>
+<div class="space-y-3">
+<!-- Appointment Item (Next) -->
+<div class="p-3 rounded-lg border border-secondary/30 bg-secondary-fixed/10 relative overflow-hidden group hover:bg-secondary-fixed/20 transition-colors cursor-pointer">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary rounded-l-lg"></div>
+<div class="flex justify-between items-start ml-2">
+<div>
+<p class="font-label-md text-label-md font-bold text-on-surface">Michael T.</p>
+<p class="font-caption text-caption text-on-surface-variant">Intake Session • Video</p>
+<div class="flex items-center space-x-1 mt-1 text-secondary">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+<span class="font-caption text-caption font-medium">11:00 AM - 11:45 AM</span>
+<span class="ml-2 px-1.5 py-0.5 bg-secondary/10 text-secondary rounded text-[10px] font-bold">IN 15 MIN</span>
+</div>
+</div>
+<img class="w-8 h-8 rounded-full object-cover" data-alt="A small, soft-focus avatar portrait of a male patient, neutral expression, light mode professional aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3J8yzsNl_mXlsAF9VEveIzFgzCoO6eghvJF2O9CcIuW4LJNdC6EorkMhxDv-YNesaEPSfmMqAk_6_cseVOYA4FyTnM6UykyaHcXP7A8WeObwf6tzWrkkeYU6JsNNrMC8uBlrBB3OSOOPe--HxzDDO7Z7RxcAl-i7hqXptPu_2WrRdJOoiudRRWvudsVkV0UPrJTZOx8sWlK7teHXNbwW-lEJzt8zlK8z-lb_0-49yubpXLnQskgG00w"/>
+</div>
+</div>
+<!-- Appointment Item -->
+<div class="p-3 rounded-lg border border-outline-variant/20 bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-md text-label-md font-medium text-on-surface">Emily R.</p>
+<p class="font-caption text-caption text-on-surface-variant">CBT Follow-up • Video</p>
+<div class="flex items-center space-x-1 mt-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+<span class="font-caption text-caption">1:00 PM - 1:45 PM</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Appointment Item -->
+<div class="p-3 rounded-lg border border-outline-variant/20 bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-md text-label-md font-medium text-on-surface">David L.</p>
+<p class="font-caption text-caption text-on-surface-variant">Regular Session • In-Person</p>
+<div class="flex items-center space-x-1 mt-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+<span class="font-caption text-caption">3:00 PM - 3:45 PM</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-2 border border-outline text-on-surface-variant font-label-md text-label-md rounded-lg hover:bg-surface-container-low transition-colors">
+                        View Patient Notes
+                    </button>
+</div>
+<!-- Quick Actions / Sync -->
+<div class="bg-primary/5 rounded-xl border border-primary/10 p-5 flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-md text-primary font-bold">Calendar Sync</p>
+<p class="font-caption text-caption text-on-surface-variant">Google Calendar Connected</p>
+</div>
+<span class="material-symbols-outlined text-primary bg-primary-fixed p-2 rounded-full">sync_saved_locally</span>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Daftar - SerenePath</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-surface": "#2f3132",
+                      "on-primary-fixed": "#250059",
+                      "surface-dim": "#d9dadc",
+                      "tertiary-fixed-dim": "#71d7cd",
+                      "surface-container-high": "#e8e8ea",
+                      "tertiary": "#004742",
+                      "on-surface-variant": "#4a4453",
+                      "on-secondary-container": "#75597c",
+                      "inverse-on-surface": "#f0f0f2",
+                      "on-tertiary-fixed-variant": "#00504a",
+                      "surface-container-highest": "#e2e2e4",
+                      "outline-variant": "#ccc3d5",
+                      "surface-container": "#eeeef0",
+                      "on-error-container": "#93000a",
+                      "on-background": "#1a1c1d",
+                      "on-secondary-fixed": "#291231",
+                      "error": "#ba1a1a",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-low": "#f3f3f5",
+                      "primary": "#4f1c9e",
+                      "on-tertiary-fixed": "#00201d",
+                      "primary-fixed": "#ebddff",
+                      "background": "#f9f9fb",
+                      "secondary-container": "#f8d4fe",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-fixed": "#8ef4e9",
+                      "secondary": "#715478",
+                      "on-surface": "#1a1c1d",
+                      "on-error": "#ffffff",
+                      "on-tertiary-container": "#76ddd2",
+                      "primary-fixed-dim": "#d3bbff",
+                      "on-primary-fixed-variant": "#5727a6",
+                      "on-secondary-fixed-variant": "#583d5f",
+                      "on-primary": "#ffffff",
+                      "surface-bright": "#f9f9fb",
+                      "primary-container": "#673ab7",
+                      "secondary-fixed-dim": "#debbe4",
+                      "on-secondary": "#ffffff",
+                      "surface-tint": "#6f43c0",
+                      "inverse-primary": "#d3bbff",
+                      "tertiary-container": "#00615a",
+                      "error-container": "#ffdad6",
+                      "outline": "#7b7484",
+                      "surface": "#f9f9fb",
+                      "secondary-fixed": "#fad7ff",
+                      "on-primary-container": "#d8c2ff",
+                      "surface-variant": "#e2e2e4"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "64px",
+                      "xl": "40px",
+                      "margin-mobile": "16px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "md": "16px",
+                      "gutter": "24px",
+                      "sm": "8px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "title-md": [
+                              "Inter"
+                      ],
+                      "caption": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "title-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "caption": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.1px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background min-h-screen flex flex-col md:flex-row font-body-md text-on-surface antialiased">
+<!-- Left Side: Branding / Imagery -->
+<div class="hidden md:flex md:w-1/2 relative bg-surface-container-low overflow-hidden items-center justify-center">
+<!-- Background Image -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center" data-alt="A serene and welcoming modern therapy waiting room, bathed in soft, natural sunlight streaming through large windows. Comfortable, minimalist furniture in light neutral tones and soft lavender accents sit on a plush rug. A sense of calm and professional psychological safety pervades the bright, airy space, styled with modern corporate minimalism and gentle botanical elements." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBAmPbcwMWt1lHZfBe1NOyRfXkD8gX5JtRZ2dpIYjaYIXB5EeEyNNEhD1R99jYvLxml-uW9S_h0kn2qwXCrhQyWnwsr_VnGaCGUO0Mit69hHA6lI1ysfohmQyJ_MPUb5GU_nCYxtq4W3dgr7_kUy02fprWyzDB8B8xYvqdk_z8_-z-3VOZcGu3tvjNeBAwIfrKKRHvQ5cZO3B1xF9hI1j8AWDBpcya3QutqTNAYBHJzvldXt9v5uVHCgw')"></div>
+<!-- Gradient Overlay for readability if text was placed, or just atmospheric tint -->
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/30 to-transparent"></div>
+<!-- Branding Overlay -->
+<div class="relative z-10 p-margin-desktop flex flex-col h-full w-full justify-between">
+<a class="flex items-center gap-sm hover:opacity-80 transition-opacity cursor-pointer w-fit" href="{{DATA:SCREEN:SCREEN_93}}">
+<span class="material-symbols-outlined text-title-md text-on-primary">spa</span>
+<span class="font-title-md text-title-md font-bold text-on-primary tracking-tight">SerenePath</span>
+</a>
+<div class="max-w-md">
+<h2 class="font-headline-lg text-headline-lg text-on-primary mb-sm">Ruang Aman untuk Pikiran Anda</h2>
+<p class="font-body-lg text-body-lg text-on-primary-container">Bergabunglah hari ini untuk memulai perjalanan menuju kesejahteraan mental yang lebih baik, didukung oleh para profesional yang peduli.</p>
+</div>
+</div>
+</div>
+<!-- Right Side: Registration Form -->
+<div class="w-full md:w-1/2 min-h-screen flex items-center justify-center p-margin-mobile md:p-margin-desktop bg-surface">
+<div class="w-full max-w-[440px] flex flex-col">
+<!-- Mobile Branding -->
+<a class="flex items-center gap-sm mb-xl md:hidden justify-center hover:opacity-80 transition-opacity cursor-pointer" href="{{DATA:SCREEN:SCREEN_93}}">
+<span class="material-symbols-outlined text-title-md text-primary">spa</span>
+<span class="font-title-md text-title-md font-bold text-primary tracking-tight">SerenePath</span>
+</a>
+<!-- Header -->
+<div class="mb-xl text-center md:text-left">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-xs">Buat Akun Baru</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Lengkapi data diri Anda untuk bergabung.</p>
+</div>
+<!-- Form -->
+<form action="{{DATA:SCREEN:SCREEN_86}}" class="space-y-md" method="GET">
+<!-- Nama Lengkap -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="fullName">Nama Lengkap</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-sm flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant">person</span>
+</div>
+<input class="w-full bg-surface-container-low hover:bg-surface-container-high text-on-surface border border-outline-variant/30 rounded-lg py-3 pl-xl pr-sm font-body-md text-body-md placeholder:text-on-surface-variant/50 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" id="fullName" name="fullName" placeholder="Masukkan nama lengkap Anda" required="" type="text"/>
+</div>
+</div>
+<!-- Email -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="email">Email</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-sm flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant">mail</span>
+</div>
+<input class="w-full bg-surface-container-low hover:bg-surface-container-high text-on-surface border border-outline-variant/30 rounded-lg py-3 pl-xl pr-sm font-body-md text-body-md placeholder:text-on-surface-variant/50 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" id="email" name="email" placeholder="contoh@email.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="password">Password</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-sm flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant">lock</span>
+</div>
+<input class="w-full bg-surface-container-low hover:bg-surface-container-high text-on-surface border border-outline-variant/30 rounded-lg py-3 pl-xl pr-sm font-body-md text-body-md placeholder:text-on-surface-variant/50 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" id="password" name="password" placeholder="Minimal 8 karakter" required="" type="password"/>
+</div>
+</div>
+<!-- Konfirmasi Password -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="confirmPassword">Konfirmasi Password</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-sm flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant">lock_reset</span>
+</div>
+<input class="w-full bg-surface-container-low hover:bg-surface-container-high text-on-surface border border-outline-variant/30 rounded-lg py-3 pl-xl pr-sm font-body-md text-body-md placeholder:text-on-surface-variant/50 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" id="confirmPassword" name="confirmPassword" placeholder="Ulangi password Anda" required="" type="password"/>
+</div>
+</div>
+<!-- Checkbox -->
+<div class="flex items-start gap-sm pt-sm">
+<div class="flex items-center h-5">
+<input class="w-4 h-4 text-primary bg-surface-container-low border-outline-variant rounded focus:ring-primary focus:ring-2 cursor-pointer" id="terms" name="terms" required="" type="checkbox"/>
+</div>
+<div class="text-sm">
+<label class="font-body-md text-body-md text-on-surface-variant cursor-pointer" for="terms">
+                            Saya setuju dengan <a class="text-primary font-medium hover:underline hover:text-primary-container transition-colors" href="#">Syarat &amp; Ketentuan</a> dan <a class="text-primary font-medium hover:underline hover:text-primary-container transition-colors" href="#">Kebijakan Privasi</a>.
+                        </label>
+</div>
+</div>
+<!-- Submit Button -->
+<div class="pt-sm">
+<button class="w-full bg-primary text-on-primary rounded-lg py-3 px-4 font-label-md text-label-md flex justify-center items-center gap-xs hover:bg-primary-container hover:text-on-primary-container hover:-translate-y-0.5 active:translate-y-0 transition-all shadow-[0px_4px_20px_rgba(103,58,183,0.08)] cursor-pointer" type="submit">
+                        Daftar Sekarang
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Login Link -->
+<div class="mt-xl text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Sudah memiliki akun? 
+                    <a class="text-primary font-label-md text-label-md hover:underline hover:text-primary-container transition-colors" href="{{DATA:SCREEN:SCREEN_86}}">Masuk di sini</a>
+</p>
+</div>
+</div>
+</div>
+</body></html>

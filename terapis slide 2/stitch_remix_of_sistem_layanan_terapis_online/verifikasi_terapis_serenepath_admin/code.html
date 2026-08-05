@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SerenePath Admin - Verifikasi Terapis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#fad7ff",
+                        "primary": "#4f1c9e",
+                        "on-surface": "#1a1c1d",
+                        "background": "#f9f9fb",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#715478",
+                        "outline": "#7b7484",
+                        "on-tertiary-fixed-variant": "#00504a",
+                        "inverse-on-surface": "#f0f0f2",
+                        "on-tertiary-fixed": "#00201d",
+                        "tertiary-container": "#00615a",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#8ef4e9",
+                        "primary-fixed-dim": "#d3bbff",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#6f43c0",
+                        "surface-container-low": "#f3f3f5",
+                        "primary-container": "#673ab7",
+                        "tertiary-fixed-dim": "#71d7cd",
+                        "surface-dim": "#d9dadc",
+                        "secondary-container": "#f8d4fe",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#ebddff",
+                        "on-background": "#1a1c1d",
+                        "on-secondary-container": "#75597c",
+                        "surface-variant": "#e2e2e4",
+                        "inverse-surface": "#2f3132",
+                        "tertiary": "#004742",
+                        "surface-bright": "#f9f9fb",
+                        "on-surface-variant": "#4a4453",
+                        "on-primary-container": "#d8c2ff",
+                        "on-error-container": "#93000a",
+                        "surface": "#f9f9fb",
+                        "surface-container": "#eeeef0",
+                        "outline-variant": "#ccc3d5",
+                        "inverse-primary": "#d3bbff",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#250059",
+                        "surface-container-highest": "#e2e2e4",
+                        "secondary-fixed-dim": "#debbe4",
+                        "on-primary-fixed-variant": "#5727a6",
+                        "on-secondary-fixed-variant": "#583d5f",
+                        "on-secondary-fixed": "#291231",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#76ddd2",
+                        "surface-container-high": "#e8e8ea"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "40px",
+                        "sm": "8px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "caption": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500" }],
+                        "title-md": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="bg-surface dark:bg-inverse-surface docked left-0 h-screen w-64 flex-col bg-surface-container-low dark:bg-surface-container-lowest shadow-sm dark:shadow-none fixed top-0 p-md gap-sm hidden md:flex z-50">
+<div class="flex items-center gap-md mb-xl px-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-title-md">
+                SP
+            </div>
+<div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed leading-tight text-[24px]">SerenePath</h1>
+<p class="font-caption text-caption text-on-surface-variant">Admin Portal</p>
+</div>
+</div>
+<div class="flex flex-col gap-xs flex-1">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-secondary-container/50 dark:hover:bg-secondary-container/10 hover:text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-secondary-container/50 dark:hover:bg-secondary-container/10 hover:text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">group</span>
+<span class="font-label-md text-label-md">Manajemen Pengguna</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary dark:border-primary-fixed-dim bg-primary-container/10 opacity-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="font-label-md text-label-md">Verifikasi Terapis</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-secondary-container/50 dark:hover:bg-secondary-container/10 hover:text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">payments</span>
+<span class="font-label-md text-label-md">Kelola Pembayaran &amp; Booking</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-secondary-container/50 dark:hover:bg-secondary-container/10 hover:text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">analytics</span>
+<span class="font-label-md text-label-md">Laporan &amp; Statistik</span>
+</a>
+</div>
+<div class="mt-auto flex items-center gap-md px-sm">
+<img alt="SerenePath Admin Avatar" class="w-10 h-10 rounded-full object-cover shadow-sm" data-alt="A professional headshot of a female admin user in her 30s with short dark hair, wearing a neat lavender blouse. She is smiling softly against a clean, light-mode minimal office background. The lighting is soft and bright, emphasizing a serene, modern corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCM8hfScoyal8lbWHTiLYcIfrZBrKjnDpgj286wqVOV0NDtPLxRl9IW0e_skSKHSmIfKuBAVO48pLXFBJI5fMEW-mSavcqJwzPnWhY4ylMtMnvlVl9EVtUS3y_KMt_yx2IplDW5wHV6UblILIiBXZvWJA2as9yUQZDcMgQhVWC409lyguGpOxlOV9HTQq69twK4w-diLTH8dfYwrIlZR8a2Ytqt-arB2UiQFaxWGhe3CdPt3yebYMPeXw"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Admin User</span>
+<span class="font-caption text-caption text-on-surface-variant">admin@serenepath.com</span>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 md:ml-64 flex flex-col min-h-screen relative">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-inverse-surface docked top-0 right-0 w-full border-b border-outline-variant dark:border-outline flat no shadows flex justify-between items-center h-16 px-lg sticky top-0 z-40 bg-surface/80 backdrop-blur-md transition-all duration-200 ease-in-out">
+<div class="flex items-center gap-md md:hidden">
+<button class="text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-title-md text-title-md font-extrabold text-primary dark:text-primary-fixed">SerenePath Admin</span>
+</div>
+<div class="hidden md:flex items-center flex-1">
+<h2 class="font-title-md text-title-md font-bold text-on-surface">Verifikasi Terapis</h2>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden sm:flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant">search</span>
+<input class="bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 font-body-md text-body-md text-on-surface focus:ring-2 focus:ring-primary focus:outline-none w-64" placeholder="Cari terapis..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-variant/50 p-2 rounded-full transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-variant/50 p-2 rounded-full transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-variant/50 p-2 rounded-full transition-all">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<img alt="Admin User Profile" class="w-8 h-8 rounded-full object-cover md:hidden" data-alt="A small circular avatar of a professional admin user, used in the top navigation bar. Clean, minimalist styling with a soft purple tint in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMtiofKR2yfITOZZFFWXhw7Nh3gKoYCzKWrlawcz-eRRG3O1zJRFZB9xD2G3X9jQK-WxIRok62-mwbc9ZutC6_xqDlxWJet0akfWmbqy1pVW_1VAhOItXvZwa5aK4Fz4eszctt8ABWD5ArW2mDRA4yqGnOQ7zjk70Y2Ow3pnztN7Y2Aw0JhSqwucfEWox-uQHyNoN1uEKxpjiIClSTK02FR0sY7agH-qBdVvj44xdno7TVn92v626ncQ"/>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 p-margin-mobile md:p-margin-desktop max-w-[1280px] mx-auto w-full">
+<div class="mb-xl">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-sm">Antrian Verifikasi</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Kelola pendaftaran terapis baru. Tinjau dokumen kualifikasi untuk memastikan standar profesionalisme dan keamanan platform SerenePath terpenuhi.</p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Pending Queue List (Takes up 8 columns on large screens) -->
+<div class="lg:col-span-8 flex flex-col gap-md">
+<!-- Search & Filter Bar -->
+<div class="flex flex-col sm:flex-row gap-sm justify-between items-center bg-surface-container-low p-sm rounded-xl">
+<div class="flex gap-sm w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0 hide-scrollbar">
+<button class="px-md py-sm rounded-full bg-primary text-on-primary font-label-md text-label-md whitespace-nowrap">Semua (12)</button>
+<button class="px-md py-sm rounded-full bg-surface hover:bg-surface-variant text-on-surface-variant font-label-md text-label-md whitespace-nowrap border border-outline-variant">Pending (5)</button>
+<button class="px-md py-sm rounded-full bg-surface hover:bg-surface-variant text-on-surface-variant font-label-md text-label-md whitespace-nowrap border border-outline-variant">Menunggu Dokumen (7)</button>
+</div>
+<div class="w-full sm:w-auto flex items-center justify-end gap-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Urutkan:</span>
+<select class="bg-surface border-outline-variant rounded-lg font-label-md text-label-md py-1 pr-8 text-on-surface focus:ring-primary focus:border-primary">
+<option>Terbaru</option>
+<option>Terlama</option>
+</select>
+</div>
+</div>
+<!-- Applicant Card 1 -->
+<div class="bg-surface rounded-xl p-md sm:p-lg border border-surface-variant shadow-[0px_4px_20px_rgba(103,58,183,0.08)] hover:shadow-[0px_8px_24px_rgba(103,58,183,0.12)] transition-shadow duration-300">
+<div class="flex flex-col sm:flex-row gap-lg items-start">
+<img class="w-20 h-20 rounded-xl object-cover shrink-0" data-alt="A professional portrait of an Asian male in his 40s, looking empathetic and calm, wearing a smart casual blazer. The background is a blurred minimal clinical setting. Soft, supportive lighting typical of a mental health platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0cLNi7pcjduPaO1HmdpoR1td6PL_YLYXG70dbr0o5l_ZeWycfFtoqe3FSPe0LneBoIRs7ZgYfnRitD-wXioL4WjJtG3kNp0m-fSwYfGyatt5bL0-N_8pJCyfX0AWQ1opiTqa-QkkTZgjvW1O4AShGPy7nkHYJL9OnGhOewFxsEVvMVVsVwxvZus6_KgZbiVeBS2c94RNY9nC4grbX5vG-EMGpCsUN3TluzazLfnQUk8Rjh58rW0FbLw"/>
+<div class="flex-1 w-full">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-title-md text-title-md font-semibold text-on-surface">Dr. Budi Santoso, M.Psi., Psikolog</h3>
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md text-xs font-bold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span> Pending
+                                    </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Psikolog Klinis • Pengalaman 8 Tahun • Spesialisasi: Kecemasan, Depresi</p>
+<div class="grid grid-cols-2 gap-sm mb-md p-sm bg-surface-container-low rounded-lg">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-tertiary-container text-sm">check_circle</span>
+<span class="font-caption text-caption text-on-surface">KTP &amp; Foto Diri</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-tertiary-container text-sm">check_circle</span>
+<span class="font-caption text-caption text-on-surface">STR Aktif (Valid)</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-tertiary-container text-sm">check_circle</span>
+<span class="font-caption text-caption text-on-surface">SIPP / Izin Praktik</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-outline text-sm">pending</span>
+<span class="font-caption text-caption text-on-surface-variant">Sertifikat Pelatihan Tambahan</span>
+</div>
+</div>
+<div class="flex gap-sm justify-end mt-sm">
+<button class="px-lg py-2 rounded-lg bg-surface text-error border border-error font-label-md text-label-md hover:bg-error-container transition-colors">Tolak</button>
+<button class="px-lg py-2 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-surface-tint shadow-sm transition-colors">Verifikasi</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Applicant Card 2 -->
+<div class="bg-surface rounded-xl p-md sm:p-lg border border-surface-variant shadow-[0px_4px_20px_rgba(103,58,183,0.08)] hover:shadow-[0px_8px_24px_rgba(103,58,183,0.12)] transition-shadow duration-300">
+<div class="flex flex-col sm:flex-row gap-lg items-start">
+<div class="w-20 h-20 rounded-xl bg-surface-container-high flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl">person_off</span>
+</div>
+<div class="flex-1 w-full">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-title-md text-title-md font-semibold text-on-surface">Siti Rahmawati, M.Psi</h3>
+<span class="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">hourglass_empty</span> Menunggu Dokumen
+                                    </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Psikolog Anak • Pengalaman 3 Tahun • Spesialisasi: ADHD, Autisme</p>
+<div class="bg-error-container/30 border border-error-container rounded-lg p-sm mb-md flex gap-sm items-start">
+<span class="material-symbols-outlined text-error text-sm mt-0.5">warning</span>
+<div>
+<p class="font-caption text-caption text-on-surface font-medium">Dokumen tidak lengkap</p>
+<p class="font-caption text-caption text-on-surface-variant">STR kedaluwarsa. Menunggu kandidat mengunggah perpanjangan.</p>
+</div>
+</div>
+<div class="flex gap-sm justify-end mt-sm">
+<button class="px-lg py-2 rounded-lg bg-surface text-on-surface border border-outline-variant font-label-md text-label-md hover:bg-surface-variant transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">mail</span> Kirim Pengingat
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Detail Panel (Takes up 4 columns on large screens) -->
+<div class="lg:col-span-4 flex flex-col gap-md">
+<div class="bg-surface rounded-xl p-lg border border-surface-variant shadow-[0px_4px_20px_rgba(103,58,183,0.08)] sticky top-24">
+<h3 class="font-title-md text-title-md font-semibold text-on-surface mb-md pb-sm border-b border-outline-variant">Detail Kandidat</h3>
+<div class="text-center mb-md">
+<img class="w-full h-40 object-cover rounded-lg border border-outline-variant mb-sm" data-alt="Close up of a professional document, an Indonesian STR (Surat Tanda Registrasi) for a psychologist, with a blurred seal and signature. High quality, clear text, bright lighting, representing an official verification document in a medical/mental health context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmmTdSjJEgA-IsSweMuyM4MWeJ5RjtLmSdKDNE0fMjuSNuXGPJhYv93mLV0uCB-C0QDV1gKNLh2tY1KJFzZtYbcmTtQ2_09uwb48NuEMuA01yUhym8u-Z3K37dLsWrRNfWv4OXtJvpK85FLtBV00wFWiiNMYMWxqGBeMZAP53nDHqxrh2Sw6Htol-y7sqQWiwuXt5acjA55c9af8FDbdoP2jd85Et_ASKz0qeC4iqNwVakH8dAAQpIRg"/>
+<p class="font-caption text-caption text-on-surface-variant">Pratinjau: Surat Tanda Registrasi (STR)</p>
+<button class="text-primary font-label-md text-label-md mt-xs flex items-center justify-center gap-xs mx-auto hover:underline">
+<span class="material-symbols-outlined text-sm">open_in_new</span> Lihat Dokumen Penuh
+                             </button>
+</div>
+<div class="space-y-sm">
+<div>
+<h4 class="font-label-md text-label-md text-on-surface-variant">Riwayat Pendidikan</h4>
+<p class="font-body-md text-body-md text-on-surface">S2 Profesi Psikologi Klinis, Universitas Indonesia (2015)</p>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface-variant">Nomor STR</h4>
+<p class="font-body-md text-body-md text-on-surface font-mono">1324-5678-9012-3456</p>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface-variant">Catatan Admin Sebelumnya</h4>
+<p class="font-body-md text-body-md text-on-surface italic bg-surface-container-lowest p-sm rounded border border-outline-variant">"Kandidat memiliki rekam jejak yang baik di klinik sebelumnya. Dokumen SIPP sedang dalam proses legalisasi." - <span class="font-caption">Admin Rina, 2 hari lalu</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

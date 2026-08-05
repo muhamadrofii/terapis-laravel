@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Patients - SerenePath Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "surface-container-high": "#e8e8ea",
+                            "surface-tint": "#6f43c0",
+                            "tertiary": "#004742",
+                            "on-primary-fixed-variant": "#5727a6",
+                            "surface-container-low": "#f3f3f5",
+                            "surface-container-highest": "#e2e2e4",
+                            "background": "#f9f9fb",
+                            "secondary-fixed": "#fad7ff",
+                            "tertiary-fixed": "#8ef4e9",
+                            "on-surface-variant": "#4a4453",
+                            "primary": "#4f1c9e",
+                            "on-secondary": "#ffffff",
+                            "tertiary-fixed-dim": "#71d7cd",
+                            "inverse-on-surface": "#f0f0f2",
+                            "secondary-fixed-dim": "#debbe4",
+                            "on-surface": "#1a1c1d",
+                            "surface-container": "#eeeef0",
+                            "on-primary-container": "#d8c2ff",
+                            "secondary-container": "#f8d4fe",
+                            "error-container": "#ffdad6",
+                            "on-secondary-fixed-variant": "#583d5f",
+                            "surface-variant": "#e2e2e4",
+                            "on-tertiary-container": "#76ddd2",
+                            "error": "#ba1a1a",
+                            "surface-dim": "#d9dadc",
+                            "surface-bright": "#f9f9fb",
+                            "on-secondary-container": "#75597c",
+                            "surface": "#f9f9fb",
+                            "on-primary-fixed": "#250059",
+                            "tertiary-container": "#00615a",
+                            "on-secondary-fixed": "#291231",
+                            "secondary": "#715478",
+                            "outline-variant": "#ccc3d5",
+                            "primary-fixed": "#ebddff",
+                            "primary-fixed-dim": "#d3bbff",
+                            "inverse-primary": "#d3bbff",
+                            "on-error": "#ffffff",
+                            "outline": "#7b7484",
+                            "on-tertiary-fixed": "#00201d",
+                            "on-tertiary-fixed-variant": "#00504a",
+                            "on-primary": "#ffffff",
+                            "inverse-surface": "#2f3132",
+                            "on-tertiary": "#ffffff",
+                            "on-error-container": "#93000a",
+                            "surface-container-lowest": "#ffffff",
+                            "primary-container": "#673ab7",
+                            "on-background": "#1a1c1d"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "xs": "4px",
+                            "lg": "24px",
+                            "unit": "4px",
+                            "sm": "8px",
+                            "xl": "40px",
+                            "margin-mobile": "16px",
+                            "gutter": "24px",
+                            "md": "16px",
+                            "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                            "caption": ["Inter"],
+                            "body-md": ["Inter"],
+                            "title-md": ["Inter"],
+                            "headline-lg": ["Inter"],
+                            "body-lg": ["Inter"],
+                            "label-md": ["Inter"],
+                            "display-lg": ["Inter"],
+                            "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                            "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                            "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                            "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                            "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                            "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- SideNavBar (from JSON) -->
+<nav class="hidden md:flex h-screen w-64 fixed left-0 top-0 bg-surface-container-low dark:bg-surface-container-lowest flex-col py-lg px-md space-y-sm z-50">
+<!-- Header / Profile -->
+<div class="flex items-center space-x-md mb-xl px-sm">
+<img alt="Therapist profile photo" class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="A professional headshot of a clinical psychologist in a modern, brightly lit office setting. The mood is warm, welcoming, and trustworthy, aligning with a professional mental health service. The lighting is soft and natural." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnOZPytbOI3O82O4r4zUoXD2ntiLyIbOxw-hVUeMRDLX4JUr75xQXK1RgKDJ6S96nQq-fEDAFuAVSYR32K2WrkLsu39YbMgFKXdVnaNX4vKGaBkKIBkVuobL0V59q7ny-JbZXDYbkUcOgDvbbK7CcfTFjJM2R6s3dAcEohOM4pF_lh5Ax2cut93SzCy0R6gVY2YrAK50S4TlrvUAK19A2R_zvnzR4kgTElN0AN-6dD8wsnxJ5AfgB3DA"/>
+<div>
+<h2 class="font-title-md text-title-md text-primary">Dr. Julian Vance</h2>
+<p class="font-caption text-caption text-on-surface-variant">Clinical Psychologist</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex flex-col space-y-xs flex-grow">
+<!-- Dashboard -->
+<a class="flex items-center px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest active:scale-95 duration-150 transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-md">dashboard</span>
+                Dashboard
+            </a>
+<!-- Patients (ACTIVE) -->
+<a class="flex items-center px-sm py-sm rounded-lg bg-primary-container text-on-primary-container font-bold active:scale-95 duration-150 transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-md" style="font-variation-settings: 'FILL' 1;">group</span>
+                Patients
+            </a>
+<!-- Schedule -->
+<a class="flex items-center px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest active:scale-95 duration-150 transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-md">calendar_today</span>
+                Schedule
+            </a>
+<!-- Invoices -->
+<a class="flex items-center px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest active:scale-95 duration-150 transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-md">payments</span>
+                Invoices
+            </a>
+<!-- Settings -->
+<a class="flex items-center px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest active:scale-95 duration-150 transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-md">settings</span>
+                Settings
+            </a>
+</div>
+<!-- CTA -->
+<div class="mt-auto pt-lg">
+<button class="w-full bg-primary text-on-primary py-sm rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity flex justify-center items-center">
+<span class="material-symbols-outlined mr-xs text-[20px]">videocam</span>
+                Start Session
+            </button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop min-h-screen">
+<!-- Page Header -->
+<header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-xl gap-md">
+<div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Patient Roster</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Manage and view records for 32 active patients.</p>
+</div>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity flex items-center shadow-sm">
+<span class="material-symbols-outlined mr-xs">person_add</span>
+                Add New Patient
+            </button>
+</header>
+<!-- Search and Filters Bar -->
+<section class="bg-surface rounded-xl p-md shadow-[0px_4px_20px_rgba(103,58,183,0.08)] mb-lg flex flex-col md:flex-row gap-md items-center justify-between">
+<!-- Search -->
+<div class="relative w-full md:w-96">
+<span class="material-symbols-outlined absolute left-sm top-1/2 transform -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-[#F5F5F7] border-none rounded-lg pl-xl pr-md py-sm font-body-md text-body-md text-on-surface focus:ring-2 focus:ring-primary focus:bg-surface transition-all" placeholder="Search patients by name or ID..." type="text"/>
+</div>
+<!-- Filters -->
+<div class="flex items-center space-x-sm w-full md:w-auto">
+<button class="px-md py-xs rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-md text-label-md transition-colors">
+                    Active (32)
+                </button>
+<button class="px-md py-xs rounded-full bg-transparent border border-outline text-on-surface-variant hover:bg-surface-container font-label-md text-label-md transition-colors">
+                    Archived (14)
+                </button>
+<div class="h-6 w-px bg-outline-variant mx-xs hidden md:block"></div>
+<button class="flex items-center px-sm py-xs text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md">
+<span class="material-symbols-outlined mr-xs text-[20px]">filter_list</span>
+                    More Filters
+                </button>
+</div>
+</section>
+<!-- Bento Grid / Patient Cards -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Patient Card 1 -->
+<article class="bg-surface rounded-xl p-lg shadow-[0px_4px_20px_rgba(103,58,183,0.08)] hover:-translate-y-1 transition-transform duration-200 flex flex-col">
+<div class="flex items-start justify-between mb-md">
+<div class="flex items-center space-x-md">
+<img alt="Sarah Jenkins" class="w-14 h-14 rounded-full object-cover" data-alt="A portrait of a young adult female patient looking relaxed and contemplative in a soft, bright environment. The style is modern, approachable, and serene, fitting a mental health application context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGeZkcx0yks-9HITFjqNDvaeYjiYImOR6TVyxGUwG2m3xPDOglNT3-tjEzA2f3RSalTIno8l45LtMjwMmkcOD-0dLRRTEnHXdsUUJgd2pLwaTeq6ewosLUF-n-TqJ4cddDHNQr6RfMv21mbQqF9UOluZ-uSQPmerPrT-L0iTqV_nnG--Vii-IUYSuSDQHI3l2Nq0rM3qfeJkzQQKRMyEJYV6mbwSxWdZ-gPqat8zlt6DRcHrAEEmt-fQ"/>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface">Sarah Jenkins</h3>
+<p class="font-caption text-caption text-on-surface-variant">ID: PT-2049</p>
+</div>
+</div>
+<span class="bg-[#e6f4ea] text-[#137333] px-xs py-unit rounded text-[10px] font-bold uppercase tracking-wider">Active</span>
+</div>
+<div class="space-y-sm mb-lg flex-grow">
+<div class="flex items-center text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px] mr-xs">mail</span>
+                        sarah.j@example.com
+                    </div>
+<div class="flex items-center text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px] mr-xs">event</span>
+                        Last Session: Oct 12, 2023
+                    </div>
+<div class="flex items-center text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px] mr-xs">psychology</span>
+                        Anxiety Management
+                    </div>
+</div>
+<div class="mt-auto flex space-x-sm">
+<button class="flex-1 bg-surface-container-low hover:bg-surface-container-high text-primary font-label-md text-label-md py-xs rounded-lg transition-colors flex justify-center items-center">
+<span class="material-symbols-outlined mr-xs text-[18px]">folder_open</span>
+                        View Records
+                    </button>
+<button class="w-10 flex justify-center items-center text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</article>
+<!-- Patient Card 2 -->
+<article class="bg-surface rounded-xl p-lg shadow-[0px_4px_20px_rgba(103,58,183,0.08)] hover:-translate-y-1 transition-transform duration-200 flex flex-col">
+<div class="flex items-start justify-between mb-md">
+<div class="flex items-center space-x-md">
+<div class="w-14 h-14 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed font-title-md text-title-md">
+                            MR
+                        </div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface">Marcus Reed</h3>
+<p class="font-caption text-caption text-on-surface-variant">ID: PT-1892</p>
+</div>
+</div>
+<span class="bg-[#e6f4ea] text-[#137333] px-xs py-unit rounded text-[10px] font-bold uppercase tracking-wider">Active</span>
+</div>
+<div class="space-y-sm mb-lg flex-grow">
+<div class="flex items-center text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px] mr-xs">mail</span>
+                        m.reed88@example.com
+                    </div>
+<div class="flex items-center text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px] mr-xs">event</span>
+                        Last Session: Oct 10, 2023
+                    </div>
+<div class="flex items-center text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px] mr-xs">psychology</span>
+                        CBT Progression
+                    </div>
+</div>
+<div class="mt-auto flex space-x-sm">
+<button class="flex-1 bg-surface-container-low hover:bg-surface-container-high text-primary font-label-md text-label-md py-xs rounded-lg transition-colors flex justify-center items-center">
+<span class="material-symbols-outlined mr-xs text-[18px]">folder_open</span>
+                        View Records
+                    </button>
+<button class="w-10 flex justify-center items-center text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</article>
+<!-- Patient Card 3 (Urgent/Action Needed) -->
+<article class="bg-surface rounded-xl p-lg shadow-[0px_4px_20px_rgba(103,58,183,0.08)] hover:-translate-y-1 transition-transform duration-200 flex flex-col border border-error-container relative overflow-hidden">
+<div class="absolute top-0 right-0 w-2 h-full bg-error-container"></div>
+<div class="flex items-start justify-between mb-md">
+<div class="flex items-center space-x-md">
+<img alt="David Chen" class="w-14 h-14 rounded-full object-cover" data-alt="A portrait of a middle-aged male patient in a casual setting. The image should convey a sense of calm professionalism, suitable for a mental health clinical dashboard. Soft, warm lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAigh9ZDLWdjRiVu9AXYsBJ3UWvy2IrQggZT21k7LXgqUeOVEbtuXBKSIYkDH3i0FlVWXWdMbgot_HbRDvhygJF66m4o0Z3i1OYCFPXslDMsSKWZxSbNImFSTkCoZFJJpKzr4cQRAvni-SHuVkvATF6e28-6ZJ1J9kzIlDhgyP6mVZZF3mdAWan3E_AOcl3LRPRxj9eTNPHRGJDe2ObXRjqG43QC5Tu27DXlRt_zBJeXFpETa4YJf2jVA"/>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface">David Chen</h3>
+<p class="font-caption text-caption text-on-surface-variant">ID: PT-3105</p>
+</div>
+</div>
+<span class="bg-[#fce8e6] text-[#c5221f] px-xs py-unit rounded text-[10px] font-bold uppercase tracking-wider flex items-center">
+<span class="material-symbols-outlined text-[12px] mr-[2px]">warning</span>
+                        Review
+                    </span>
+</div>
+<div class="space-y-sm mb-lg flex-grow">
+<div class="flex items-center text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px] mr-xs">mail</span>
+                        david.chen.w@example.com
+                    </div>
+<div class="flex items-center text-on-surface-variant font-caption text-caption text-error font-medium">
+<span class="material-symbols-outlined text-[16px] mr-xs">event</span>
+                        Session Missed: Oct 14, 2023
+                    </div>
+<div class="flex items-center text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px] mr-xs">psychology</span>
+                        Depression Intake
+                    </div>
+</div>
+<div class="mt-auto flex space-x-sm">
+<button class="flex-1 bg-primary text-on-primary font-label-md text-label-md py-xs rounded-lg transition-opacity hover:opacity-90 flex justify-center items-center">
+<span class="material-symbols-outlined mr-xs text-[18px]">contact_mail</span>
+                        Contact
+                    </button>
+<button class="w-10 flex justify-center items-center text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</article>
+<!-- Patient Card 4 -->
+<article class="bg-surface rounded-xl p-lg shadow-[0px_4px_20px_rgba(103,58,183,0.08)] hover:-translate-y-1 transition-transform duration-200 flex flex-col">
+<div class="flex items-start justify-between mb-md">
+<div class="flex items-center space-x-md">
+<img alt="Eleanor Vance" class="w-14 h-14 rounded-full object-cover" data-alt="A portrait of an older woman looking friendly and relaxed. The lighting is bright and cheerful, reflecting a positive therapeutic environment. Modern, clean aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhkzaqTTQCmRF8kWD8-JnQPl4jUkQWsOYH5mSWGF66bwucIodBWE8981S2mscZux5ZJJL0LXPK-dlxRjiwy6KkDUn6aLDjwr-kKUIFHBSV_YYYaG4_HROq1vI4ewgXYAiV1Yqm721kZXKiFi50lUoUp-U0tH6ruB1b-Ma-35ThmBVtwj36yLChTf_o0SgVFG5gHWfWB3bVNMCiY1oafbkeDV2vnCY0ABCYPabpTNDy63nCxmlwqCofAg"/>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface">Eleanor Vance</h3>
+<p class="font-caption text-caption text-on-surface-variant">ID: PT-1022</p>
+</div>
+</div>
+<span class="bg-[#e6f4ea] text-[#137333] px-xs py-unit rounded text-[10px] font-bold uppercase tracking-wider">Active</span>
+</div>
+<div class="space-y-sm mb-lg flex-grow">
+<div class="flex items-center text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px] mr-xs">phone</span>
+                        (555) 019-2834
+                    </div>
+<div class="flex items-center text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px] mr-xs">event</span>
+                        Last Session: Oct 05, 2023
+                    </div>
+<div class="flex items-center text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px] mr-xs">psychology</span>
+                        Grief Counseling
+                    </div>
+</div>
+<div class="mt-auto flex space-x-sm">
+<button class="flex-1 bg-surface-container-low hover:bg-surface-container-high text-primary font-label-md text-label-md py-xs rounded-lg transition-colors flex justify-center items-center">
+<span class="material-symbols-outlined mr-xs text-[18px]">folder_open</span>
+                        View Records
+                    </button>
+<button class="w-10 flex justify-center items-center text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</article>
+</section>
+</main>
+</body></html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SerenePath - Temukan Kedamaian Anda</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#2f3132",
+                        "on-primary-fixed": "#250059",
+                        "surface-dim": "#d9dadc",
+                        "tertiary-fixed-dim": "#71d7cd",
+                        "surface-container-high": "#e8e8ea",
+                        "tertiary": "#004742",
+                        "on-surface-variant": "#4a4453",
+                        "on-secondary-container": "#75597c",
+                        "inverse-on-surface": "#f0f0f2",
+                        "on-tertiary-fixed-variant": "#00504a",
+                        "surface-container-highest": "#e2e2e4",
+                        "outline-variant": "#ccc3d5",
+                        "surface-container": "#eeeef0",
+                        "on-error-container": "#93000a",
+                        "on-background": "#1a1c1d",
+                        "on-secondary-fixed": "#291231",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f3f5",
+                        "primary": "#4f1c9e",
+                        "on-tertiary-fixed": "#00201d",
+                        "primary-fixed": "#ebddff",
+                        "background": "#f9f9fb",
+                        "secondary-container": "#f8d4fe",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#8ef4e9",
+                        "secondary": "#715478",
+                        "on-surface": "#1a1c1d",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#76ddd2",
+                        "primary-fixed-dim": "#d3bbff",
+                        "on-primary-fixed-variant": "#5727a6",
+                        "on-secondary-fixed-variant": "#583d5f",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#f9f9fb",
+                        "primary-container": "#673ab7",
+                        "secondary-fixed-dim": "#debbe4",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#6f43c0",
+                        "inverse-primary": "#d3bbff",
+                        "tertiary-container": "#00615a",
+                        "error-container": "#ffdad6",
+                        "outline": "#7b7484",
+                        "surface": "#f9f9fb",
+                        "secondary-fixed": "#fad7ff",
+                        "on-primary-container": "#d8c2ff",
+                        "surface-variant": "#e2e2e4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "xl": "40px",
+                        "margin-mobile": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "sm": "8px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "title-md": ["Inter"],
+                        "caption": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "title-md": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background antialiased font-body-md text-body-md selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-on-background docked full-width top-0 bg-surface/80 backdrop-blur-md shadow-[0px_4px_20px_rgba(103,58,183,0.08)] sticky z-50">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-[1280px] mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">spa</span>
+<span class="text-title-md font-title-md font-bold text-primary dark:text-primary-fixed-dim">SerenePath</span>
+</div>
+<nav class="hidden md:flex gap-lg">
+<a class="font-body-md text-body-md font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-inverse-surface rounded-lg transition-all px-3 py-2" href="{{DATA:SCREEN:SCREEN_16}}">Find Therapist</a>
+<a class="font-body-md text-body-md font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-inverse-surface rounded-lg transition-all px-3 py-2" href="#">Specialties</a>
+<a class="font-body-md text-body-md font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-inverse-surface rounded-lg transition-all px-3 py-2" href="#">About Us</a>
+<a class="font-body-md text-body-md font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-inverse-surface rounded-lg transition-all px-3 py-2" href="{{DATA:SCREEN:SCREEN_15}}">Resources</a>
+</nav>
+<div class="flex gap-md">
+<a class="font-label-md text-label-md text-primary dark:text-primary-fixed hover:bg-surface-container-low dark:hover:bg-inverse-surface rounded-lg transition-all px-4 py-2 Active: scale-95 duration-150 ease-in-out inline-block" href="{{DATA:SCREEN:SCREEN_86}}">Log In</a>
+<a class="font-label-md text-label-md bg-primary text-on-primary rounded-full px-6 py-2 hover:opacity-90 transition-opacity Active: scale-95 duration-150 ease-in-out shadow-[0px_4px_20px_rgba(103,58,183,0.08)] inline-block" href="{{DATA:SCREEN:SCREEN_94}}">Get Started</a>
+</div>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative pt-xl pb-24 md:pt-24 md:pb-32 px-margin-mobile md:px-margin-desktop overflow-hidden">
+<div class="absolute inset-0 z-0 bg-gradient-to-br from-primary-fixed via-surface to-secondary-fixed opacity-50"></div>
+<div class="max-w-[1280px] mx-auto relative z-10 grid md:grid-cols-2 gap-xl items-center">
+<div class="space-y-lg">
+<h1 class="font-display-lg text-display-lg text-on-surface">Temukan Kedamaian Anda</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Terapi online profesional yang dirancang untuk mendukung kesehatan mental Anda dalam suasana yang aman dan menenangkan. Mulailah perjalanan Anda menuju kesejahteraan hari ini.</p>
+<div class="pt-sm">
+<a class="font-label-md text-label-md bg-primary text-on-primary rounded-full px-8 py-3 hover:bg-primary-container transition-colors shadow-[0px_4px_20px_rgba(103,58,183,0.08)] text-lg inline-block hover:scale-105 transform duration-200" href="{{DATA:SCREEN:SCREEN_94}}">Mulai Sekarang</a>
+</div>
+</div>
+<div class="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-[0px_12px_32px_rgba(103,58,183,0.12)]">
+<img class="w-full h-full object-cover" data-alt="A serene, modern therapy session setting. Sunlight streams through a large window, illuminating a comfortable, minimalist armchair in a soft neutral tone. A small side table holds a gentle, green potted plant and a soothing cup of tea. The overall aesthetic is calm, professional, and inviting, utilizing a palette of whites, soft greys, and subtle hints of lavender to promote emotional tranquility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwxluV5zkh0OoMwBQkwOzOwgxtgMFFCD_8fnbJfHHrBm8YsvuXbQ2xWnydQaMCWYuEGJUyvUkPGtYtFHQgd80VzCLbHFU0_VFpXzCQ3yGtq8e3CjpDsSTF6Ds9z4iqP3rnShy6QPjzSUNgH17qxFlZt0ebuinKdk_7ZtTNwbw4jtN11nKGGu6rwosX6fCBr-oJvX_S1EQ9wmZuMx9iKfWAIGeby86hR8O4bfTKy_WceWGlK5T0MjnKSg"/>
+</div>
+</div>
+</section>
+<!-- Layanan Kami -->
+<section class="py-xl px-margin-mobile md:px-margin-desktop bg-surface-container-low">
+<div class="max-w-[1280px] mx-auto">
+<div class="text-center mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Layanan Kami</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-sm">Pendekatan yang disesuaikan untuk kebutuhan unik Anda.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-gutter">
+<!-- Service 1 -->
+<div class="bg-surface rounded-2xl p-lg shadow-[0px_4px_20px_rgba(103,58,183,0.08)] hover:-translate-y-2 transition-transform duration-300 border border-transparent hover:border-secondary-fixed/50 hover:shadow-lg cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-xs">Terapi Individu</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Sesi satu-satu yang berfokus pada pertumbuhan pribadi, mengatasi kecemasan, depresi, atau tantangan hidup lainnya dalam ruang yang rahasia.</p>
+</div>
+<!-- Service 2 -->
+<div class="bg-surface rounded-2xl p-lg shadow-[0px_4px_20px_rgba(103,58,183,0.08)] hover:-translate-y-2 transition-transform duration-300 border border-transparent hover:border-secondary-fixed/50 hover:shadow-lg cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary">diversity_1</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-xs">Terapi Pasangan</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Panduan profesional untuk meningkatkan komunikasi, menyelesaikan konflik, dan memperkuat ikatan emosional dalam hubungan Anda.</p>
+</div>
+<!-- Service 3 -->
+<div class="bg-surface rounded-2xl p-lg shadow-[0px_4px_20px_rgba(103,58,183,0.08)] hover:-translate-y-2 transition-transform duration-300 border border-transparent hover:border-secondary-fixed/50 hover:shadow-lg cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary">family_restroom</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-xs">Terapi Keluarga</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Sesi kolaboratif yang dirancang untuk mengatasi masalah keluarga, meningkatkan pemahaman, dan menciptakan dinamika rumah yang lebih harmonis.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-inverse-surface full-width border-t border-secondary-fixed/20 flat no shadows">
+<div class="w-full py-xl px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-2 items-center gap-gutter max-w-[1280px] mx-auto">
+<div class="flex flex-col gap-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" style="font-variation-settings: 'FILL' 1;">spa</span>
+<span class="text-title-md font-title-md font-bold text-primary dark:text-primary-fixed">SerenePath</span>
+</div>
+<p class="font-caption text-caption font-body-md text-body-md text-on-surface-variant dark:text-outline-variant">© 2024 SerenePath. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap gap-md md:justify-end">
+<a class="font-caption text-caption font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-secondary hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-caption text-caption font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-secondary hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-caption text-caption font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-secondary hover:text-primary transition-colors" href="#">Help Center</a>
+<a class="font-caption text-caption font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-secondary hover:text-primary transition-colors" href="#">Careers</a>
+<a class="font-caption text-caption font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-secondary hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+</div>
+</footer>
+</body></html>

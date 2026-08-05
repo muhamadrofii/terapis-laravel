@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Find Help - SerenePath</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "surface-dim": "#d9dadc",
+                            "on-surface-variant": "#4a4453",
+                            "error-container": "#ffdad6",
+                            "tertiary": "#004742",
+                            "on-primary-container": "#d8c2ff",
+                            "primary-fixed": "#ebddff",
+                            "background": "#f9f9fb",
+                            "on-surface": "#1a1c1d",
+                            "on-secondary-fixed": "#291231",
+                            "on-error-container": "#93000a",
+                            "surface-container-highest": "#e2e2e4",
+                            "on-error": "#ffffff",
+                            "on-tertiary": "#ffffff",
+                            "inverse-surface": "#2f3132",
+                            "surface-tint": "#6f43c0",
+                            "primary-fixed-dim": "#d3bbff",
+                            "error": "#ba1a1a",
+                            "primary-container": "#673ab7",
+                            "on-background": "#1a1c1d",
+                            "on-secondary-fixed-variant": "#583d5f",
+                            "surface-container": "#eeeef0",
+                            "on-primary-fixed": "#250059",
+                            "surface-container-lowest": "#ffffff",
+                            "surface-container-low": "#f3f3f5",
+                            "tertiary-container": "#00615a",
+                            "on-secondary": "#ffffff",
+                            "tertiary-fixed": "#8ef4e9",
+                            "secondary-fixed-dim": "#debbe4",
+                            "surface-variant": "#e2e2e4",
+                            "secondary": "#715478",
+                            "on-secondary-container": "#75597c",
+                            "on-primary-fixed-variant": "#5727a6",
+                            "on-tertiary-fixed-variant": "#00504a",
+                            "on-tertiary-fixed": "#00201d",
+                            "inverse-primary": "#d3bbff",
+                            "on-tertiary-container": "#76ddd2",
+                            "secondary-container": "#f8d4fe",
+                            "tertiary-fixed-dim": "#71d7cd",
+                            "outline": "#7b7484",
+                            "surface-container-high": "#e8e8ea",
+                            "primary": "#4f1c9e",
+                            "secondary-fixed": "#fad7ff",
+                            "outline-variant": "#ccc3d5",
+                            "on-primary": "#ffffff",
+                            "inverse-on-surface": "#f0f0f2",
+                            "surface-bright": "#f9f9fb",
+                            "surface": "#f9f9fb"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "sm": "8px",
+                            "xl": "40px",
+                            "unit": "4px",
+                            "margin-desktop": "64px",
+                            "lg": "24px",
+                            "gutter": "24px",
+                            "margin-mobile": "16px",
+                            "xs": "4px",
+                            "md": "16px"
+                    },
+                    "fontFamily": {
+                            "headline-lg": ["Inter"],
+                            "headline-lg-mobile": ["Inter"],
+                            "caption": ["Inter"],
+                            "title-md": ["Inter"],
+                            "label-md": ["Inter"],
+                            "body-lg": ["Inter"],
+                            "display-lg": ["Inter"],
+                            "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                            "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                            "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                            "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                            "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                            "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopNavBar (Shared Component) -->
+<header class="fixed top-0 w-full z-50 shadow-[0px_4px_20px_rgba(103,58,183,0.08)] bg-surface dark:bg-inverse-surface shadow-sm">
+<div class="flex justify-between items-center px-margin-desktop h-20 max-w-[1280px] mx-auto">
+<div class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed cursor-pointer">
+                SerenePath
+            </div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-primary dark:text-primary-fixed border-b-2 border-primary font-bold font-body-md text-body-md px-sm py-sm cursor-pointer active:opacity-80" href="#">Find Help</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md px-sm py-sm cursor-pointer active:opacity-80" href="#">My Sessions</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md px-sm py-sm cursor-pointer active:opacity-80" href="#">Resources</a>
+</nav>
+<div class="flex items-center gap-md text-primary dark:text-inverse-primary">
+<button aria-label="Notifications" class="p-sm hover:text-primary dark:hover:text-primary-fixed transition-colors rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button aria-label="Account" class="p-sm hover:text-primary dark:hover:text-primary-fixed transition-colors rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[120px] pb-xl px-margin-mobile md:px-margin-desktop max-w-[1280px] mx-auto w-full flex flex-col md:flex-row gap-lg">
+<!-- Sidebar Filters -->
+<aside class="w-full md:w-64 flex-shrink-0 space-y-lg">
+<div class="bg-surface-container-lowest rounded-lg p-md shadow-[0px_4px_20px_rgba(103,58,183,0.08)]">
+<h2 class="font-title-md text-title-md text-on-surface mb-md">Filters</h2>
+<!-- Search within Sidebar for mobile, or distinct section -->
+<div class="mb-md">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 transform -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full bg-[#F5F5F7] border-none rounded-lg py-sm pl-xl pr-sm text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="Search by name..." type="text"/>
+</div>
+</div>
+<div class="space-y-md">
+<div>
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-sm">Price Range</h3>
+<div class="flex flex-col gap-sm">
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="rounded text-primary focus:ring-primary border-outline-variant bg-[#F5F5F7] h-4 w-4" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">$50 - $100</span>
+</label>
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="rounded text-primary focus:ring-primary border-outline-variant bg-[#F5F5F7] h-4 w-4" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">$100 - $150</span>
+</label>
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="rounded text-primary focus:ring-primary border-outline-variant bg-[#F5F5F7] h-4 w-4" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">$150+</span>
+</label>
+</div>
+</div>
+<hr class="border-outline-variant"/>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-sm">Specialties</h3>
+<div class="flex flex-col gap-sm">
+<label class="flex items-center gap-sm cursor-pointer group">
+<input checked="" class="rounded text-primary focus:ring-primary border-outline-variant bg-[#F5F5F7] h-4 w-4" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Anxiety</span>
+</label>
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="rounded text-primary focus:ring-primary border-outline-variant bg-[#F5F5F7] h-4 w-4" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Depression</span>
+</label>
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="rounded text-primary focus:ring-primary border-outline-variant bg-[#F5F5F7] h-4 w-4" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Family</span>
+</label>
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="rounded text-primary focus:ring-primary border-outline-variant bg-[#F5F5F7] h-4 w-4" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Stress</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Therapist Grid -->
+<section class="flex-grow flex flex-col gap-lg">
+<!-- Category Chips -->
+<div class="flex flex-wrap gap-sm">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-sm rounded-full transition-opacity hover:opacity-90 shadow-sm">Anxiety</button>
+<button class="bg-[#F5F5F7] text-on-surface font-label-md text-label-md px-md py-sm rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all">Depression</button>
+<button class="bg-[#F5F5F7] text-on-surface font-label-md text-label-md px-md py-sm rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all">Family</button>
+<button class="bg-[#F5F5F7] text-on-surface font-label-md text-label-md px-md py-sm rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all">Relationships</button>
+<button class="bg-[#F5F5F7] text-on-surface font-label-md text-label-md px-md py-sm rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all">Trauma</button>
+</div>
+<!-- Header -->
+<div class="flex justify-between items-end border-b border-outline-variant pb-sm">
+<h1 class="font-headline-lg text-headline-lg md:font-headline-lg text-primary">Found 24 Therapists</h1>
+<span class="font-body-md text-body-md text-on-surface-variant">Sorted by: Recommended</span>
+</div>
+<!-- Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Therapist Card 1 -->
+<div class="bg-surface-container-lowest rounded-lg p-md shadow-[0px_4px_20px_rgba(103,58,183,0.08)] flex flex-col hover:-translate-y-1 transition-transform duration-300 group">
+<div class="flex gap-md mb-md">
+<img class="w-[80px] h-[80px] rounded-full object-cover shadow-sm" data-alt="A professional headshot of a friendly female therapist with warm lighting against a soft, muted modern background. The image should convey trust and calmness, fitting a mental health platform. Deep purple brand accents are subtly present." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD65tKARImBjj7Dp65w4l9wOZvll2tJ6y8ziU-zSKWBzHcnyvB88M7DJrs2pl__T-Y81QZ0ef7BHplYyO1uZyCnnCeytSqABMJUK5p6ZMu0sMnoH5md0ULH1ZpPxbjc-DLhLf42PvCZwCHxPEhcl9JHiNC1bkWyaLA7aoHikSf07uIHKbuSLrdHOpXbOs4CsIvLOQJQR0WHUIS8OCCuuhM3keYL3SQXsoSq0a0beB8L0recSrmx7860og"/>
+<div class="flex flex-col justify-center">
+<h3 class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors">Dr. Sarah Jenkins</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Clinical Psychologist</p>
+<div class="flex items-center gap-xs mt-xs text-primary">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md">4.9 (120 reviews)</span>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-md">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-sm py-xs rounded text-[12px] font-medium">Anxiety</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed px-sm py-xs rounded text-[12px] font-medium">Depression</span>
+</div>
+<div class="flex justify-between items-center mt-auto pt-md border-t border-outline-variant">
+<span class="font-label-md text-label-md text-on-surface">$120 / session</span>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-sm rounded-lg hover:opacity-90 transition-opacity">View Profile</button>
+</div>
+</div>
+<!-- Therapist Card 2 -->
+<div class="bg-surface-container-lowest rounded-lg p-md shadow-[0px_4px_20px_rgba(103,58,183,0.08)] flex flex-col hover:-translate-y-1 transition-transform duration-300 group">
+<div class="flex gap-md mb-md">
+<img class="w-[80px] h-[80px] rounded-full object-cover shadow-sm" data-alt="A professional headshot of a calm male therapist in a modern office setting. Soft, natural lighting creates a reassuring atmosphere. The aesthetic is clean and professional, with subtle hints of SerenePath's purple color palette in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXoGBKxZWmJl3TL_1X0-qs8RESiuRvRahss5nsejYHK9f1-TNiO5Qpc0mmOO-yGbwcU--MyX95e7wysum5nUiFT9xfh2VCTAptDoeX1sy1wKvV2MJj_xVK4XGF0nZoPyiqYibr05QY4BbLiUDoLQG23aOVHaU_8xyyCDtP1b7I4Kz7Py6PxhRS7eSb3TeUjxbDNT7Jg5DUuHSMhx94CRgo4VuvJm_VgIIP57o5lOahiOpMoN4OEJnU-w"/>
+<div class="flex flex-col justify-center">
+<h3 class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors">Mark Davis, LCSW</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Licensed Social Worker</p>
+<div class="flex items-center gap-xs mt-xs text-primary">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md">4.8 (85 reviews)</span>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-md">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-sm py-xs rounded text-[12px] font-medium">Family</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed px-sm py-xs rounded text-[12px] font-medium">Trauma</span>
+</div>
+<div class="flex justify-between items-center mt-auto pt-md border-t border-outline-variant">
+<span class="font-label-md text-label-md text-on-surface">$90 / session</span>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-sm rounded-lg hover:opacity-90 transition-opacity">View Profile</button>
+</div>
+</div>
+<!-- Therapist Card 3 -->
+<div class="bg-surface-container-lowest rounded-lg p-md shadow-[0px_4px_20px_rgba(103,58,183,0.08)] flex flex-col hover:-translate-y-1 transition-transform duration-300 group">
+<div class="flex gap-md mb-md">
+<img class="w-[80px] h-[80px] rounded-full object-cover shadow-sm" data-alt="A professional, approachable headshot of a female therapist. The lighting is bright yet soft, typical of a light-mode modern UI. The background is slightly blurred but suggests a comfortable, serene therapy room. The color grading leans towards cool, calming tones with a touch of lavender." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkTG-Lt7TkVkU7TddBU2nRljPdpeI0h21HKFUZD6G2B2IQzIkUuFl9S5PnqyfBpwI9ToVVQl0HSMO0q7jeuy8sEcU4QDjWfnYlRn-QAFaFkRMkh2zttucJd6quJ_4u38ROtiyE9NELA1pk0hj5tn885rHm3CQtHH7In2fC6L9isLZhzPb3-U3EsEW6nkF3IPCKf_XqxSa2Xi7tBQ48bHSpsmISJyZUijHrI0GmUBJ3PRtATWcVyQ2WnQ"/>
+<div class="flex flex-col justify-center">
+<h3 class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors">Dr. Elena Rostova</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Psychiatrist</p>
+<div class="flex items-center gap-xs mt-xs text-primary">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md">5.0 (200 reviews)</span>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-md">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-sm py-xs rounded text-[12px] font-medium">Anxiety</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed px-sm py-xs rounded text-[12px] font-medium">Stress</span>
+</div>
+<div class="flex justify-between items-center mt-auto pt-md border-t border-outline-variant">
+<span class="font-label-md text-label-md text-on-surface">$180 / session</span>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-sm rounded-lg hover:opacity-90 transition-opacity">View Profile</button>
+</div>
+</div>
+</div>
+<div class="flex justify-center mt-lg">
+<button class="text-primary font-label-md text-label-md px-lg py-sm rounded-full border border-primary hover:bg-primary hover:text-white transition-colors">Load More</button>
+</div>
+</section>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="w-full mt-xl bg-surface-container-highest dark:bg-inverse-surface flat no shadows">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-lg border-t border-outline-variant max-w-[1280px] mx-auto">
+<div class="font-title-md text-title-md text-primary mb-md md:mb-0">
+                SerenePath
+            </div>
+<nav class="flex flex-wrap justify-center gap-md md:gap-lg mb-md md:mb-0">
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-opacity hover:opacity-80" href="#">Privacy Policy</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-opacity hover:opacity-80" href="#">Terms of Service</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-opacity hover:opacity-80" href="#">Emergency Support</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-opacity hover:opacity-80" href="#">Careers</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-opacity hover:opacity-80" href="#">Contact</a>
+</nav>
+<div class="font-caption text-caption text-on-surface-variant">
+                © 2024 SerenePath Mental Health. All rights reserved.
+            </div>
+</div>
+</footer>
+</body></html>
