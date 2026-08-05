@@ -219,9 +219,35 @@
                     </div>
                 @endif
 
-                <form action="{{ route('register') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="role" value="user">
+                    <!-- Pilihan Peran Akun (Role Selector) -->
+                    <div class="mb-3">
+                        <label class="form-label-custom">Daftar Sebagai</label>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" name="role" id="role_user" value="user" {{ old('role', 'user') === 'user' ? 'checked' : '' }} onchange="toggleTherapistFields()">
+                                <label class="btn btn-outline-secondary w-100 py-2.5 rounded-3 d-flex flex-column align-items-center gap-1 text-dark border shadow-xs" for="role_user" style="cursor: pointer;">
+                                    <i class="bi bi-person-heart fs-5 text-purple" style="color: #5E2CB5;"></i>
+                                    <span class="fw-bold small">Pasien / Klien</span>
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" name="role" id="role_therapist" value="therapist" {{ old('role') === 'therapist' ? 'checked' : '' }} onchange="toggleTherapistFields()">
+                                <label class="btn btn-outline-secondary w-100 py-2.5 rounded-3 d-flex flex-column align-items-center gap-1 text-dark border shadow-xs" for="role_therapist" style="cursor: pointer;">
+                                    <i class="bi bi-heart-pulse-fill fs-5 text-purple" style="color: #5E2CB5;"></i>
+                                    <span class="fw-bold small">Terapis / Dokter</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Spesialisasi (Khusus Terapis) -->
+                    <div class="mb-3" id="specialtyContainer" style="display: {{ old('role') === 'therapist' ? 'block' : 'none' }};">
+                        <label for="specialty" class="form-label-custom">Spesialisasi Terapis</label>
+                        <div class="input-group input-group-custom">
+                            <span class="input-group-text"><i class="bi bi-journal-medical"></i></span>
+                            <input type="text" name="specialty" id="specialty" class="form-control" placeholder="Contoh: Kecemasan, Depresi, Konseling Karir" value="{{ old('specialty') }}">
+                        </div>
+                    </div>
 
                     <!-- Nama Lengkap -->
                     <div class="mb-3">
@@ -292,6 +318,14 @@
 <!-- Bootstrap 5 JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+function toggleTherapistFields() {
+    const isTherapist = document.getElementById('role_therapist').checked;
+    const specialtyBox = document.getElementById('specialtyContainer');
+    if (specialtyBox) {
+        specialtyBox.style.display = isTherapist ? 'block' : 'none';
+    }
+}
+
 function togglePasswordVisibility(inputId, btn) {
     const input = document.getElementById(inputId);
     const icon = btn.querySelector('i');
