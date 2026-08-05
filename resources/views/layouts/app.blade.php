@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Terapis Online - Terapi Online & Kesehatan Mental')</title>
 
     <!-- Google Fonts: Inter & Plus Jakarta Sans -->
@@ -237,16 +238,137 @@
         </div>
     </div>
 
+    <!-- Modal Chat Live Konsultasi -->
+    <div class="modal fade" id="liveChatModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
+                <div class="modal-header text-white p-3" style="background-color: #5E2CB5;">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="position-relative">
+                            <img id="chatTargetAvatar" src="" alt="Avatar" class="rounded-circle object-fit-cover shadow-sm" style="width: 44px; height: 44px;">
+                            <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-light rounded-circle" style="font-size: 0.5rem;"></span>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-white" id="chatTargetName">Chat Konsultasi</h6>
+                            <span class="small opacity-75" style="font-size: 0.78rem;"><i class="bi bi-shield-check me-1"></i> Terenkripsi & Rahasia</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-light p-3" id="chatMessagesContainer" style="height: 380px; overflow-y: auto;">
+                    <div class="text-center text-muted small py-5">Memuat pesan...</div>
+                </div>
+                <div class="modal-footer bg-white p-3 border-top">
+                    <form id="liveChatForm" class="w-100 d-flex gap-2 m-0">
+                        <input type="text" id="liveChatInput" class="form-control rounded-pill bg-light border-0 px-3 py-2 small" placeholder="Tulis pesan Anda..." required autocomplete="off">
+                        <button type="submit" class="btn text-white rounded-circle d-flex align-items-center justify-content-center p-0 shadow-sm" style="width: 42px; height: 42px; min-width: 42px; background-color: #5E2CB5;">
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        let _chatBookingId = null;
+        let _chatInterval = null;
+        let _chatLastCount = 0;
+
         function triggerLogoutModal() {
-            var modalEl = document.getElementById('logoutModal');
-            if (modalEl) {
-                var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
-                modal.show();
+            var m = document.getElementById('logoutModal');
+            if (m) bootstrap.Modal.getOrCreateInstance(m).show();
+        }
+
+        function openLiveChat(name, avatar, bookingId) {
+            _chatBookingId = bookingId;
+            _chatLastCount = 0;
+            document.getElementById('chatTargetName').textContent = 'Chat: ' + name;
+            if (avatar) document.getElementById('chatTargetAvatar').src = avatar;
+            document.getElementById('chatMessagesContainer').innerHTML = '<div class="text-center text-muted small py-5">Memuat pesan...</div>';
+
+            // Clear old interval, start new polling
+            if (_chatInterval) clearInterval(_chatInterval);
+            fetchLiveMessages();
+            _chatInterval = setInterval(fetchLiveMessages, 1500);
+
+            var m = document.getElementById('liveChatModal');
+            bootstrap.Modal.getOrCreateInstance(m).show();
+
+            // Stop polling when modal is closed
+            m.addEventListener('hidden.bs.modal', function handler() {
+                if (_chatInterval) { clearInterval(_chatInterval); _chatInterval = null; }
+                m.removeEventListener('hidden.bs.modal', handler);
+            });
+        }
+
+        function fetchLiveMessages() {
+            if (!_chatBookingId) return;
+            fetch('/chat/messages?booking_id=' + _chatBookingId)
+                .then(r => r.json())
+                .then(res => {
+                    if (res.status !== 'success') return;
+                    const myId = String(res.current_user_id || '');
+                    const container = document.getElementById('chatMessagesContainer');
+                    const msgs = res.data;
+
+                    // Only re-render if message count changed
+                    if (msgs.length === _chatLastCount) return;
+                    _chatLastCount = msgs.length;
+
+                    let html = '<div class="text-center mb-3"><span class="bg-white px-3 py-1 rounded-pill border small text-muted" style="font-size:0.75rem;">🔒 Percakapan Terenkripsi</span></div>';
+
+                    if (msgs.length === 0) {
+                        html += '<div class="text-center text-muted small py-4">Belum ada pesan. Mulai percakapan!</div>';
+                    } else {
+                        msgs.forEach(function(m) {
+                            var isMe = (String(m.sender_id) === myId);
+                            var t = '';
+                            try { t = new Date(m.created_at).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}); } catch(e) { t = ''; }
+
+                            if (isMe) {
+                                html += '<div class="d-flex justify-content-end mb-2"><div class="text-white p-2 px-3 rounded-4 shadow-xs" style="background:#5E2CB5;max-width:75%;border-bottom-right-radius:4px!important"><p class="mb-0 small" style="line-height:1.45">' + escapeHtml(m.message) + '</p><div class="text-end opacity-75" style="font-size:0.65rem">' + t + '</div></div></div>';
+                            } else {
+                                html += '<div class="d-flex justify-content-start mb-2"><div class="bg-white p-2 px-3 rounded-4 border shadow-xs" style="max-width:75%;border-top-left-radius:4px!important"><div class="fw-bold mb-1" style="color:#5E2CB5;font-size:0.75rem">' + escapeHtml(m.sender_name) + '</div><p class="mb-0 small text-dark" style="line-height:1.45">' + escapeHtml(m.message) + '</p><div class="text-end text-muted" style="font-size:0.65rem">' + t + '</div></div></div>';
+                            }
+                        });
+                    }
+                    container.innerHTML = html;
+                    container.scrollTop = container.scrollHeight;
+                })
+                .catch(function(){});
+        }
+
+        // Form submit handler
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.getElementById('liveChatForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    var input = document.getElementById('liveChatInput');
+                    var msg = input.value.trim();
+                    if (!msg || !_chatBookingId) return;
+                    input.value = '';
+
+                    var token = document.querySelector('meta[name="csrf-token"]');
+                    fetch('/chat/send', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token ? token.content : '' },
+                        body: JSON.stringify({ booking_id: _chatBookingId, message: msg })
+                    }).then(function() {
+                        _chatLastCount = 0; // force re-render
+                        fetchLiveMessages();
+                    });
+                });
             }
+        });
+
+        function escapeHtml(t) {
+            var d = document.createElement('div'); d.textContent = t; return d.innerHTML;
         }
     </script>
 </body>
 </html>
+

@@ -68,6 +68,9 @@
                                             <i class="bi bi-qr-code-scan me-1"></i> Bayar QRIS
                                         </a>
                                     @elseif($isTimeReady)
+                                        <button type="button" onclick="openLiveChat('{{ $session->therapist_name }}', '{{ $session->therapist_avatar }}', '{{ $session->id }}')" class="btn text-white fw-bold rounded-3 px-3 py-2 small shadow-sm d-flex align-items-center gap-1" style="background-color: #5E2CB5;">
+                                            <i class="bi bi-chat-dots-fill"></i> Chat
+                                        </button>
                                         <a href="https://wa.me/{{ preg_replace('/[^\d]/', '', $session->whatsapp_number ?? '6281234567890') }}?text=Halo%20{{ urlencode($session->therapist_name) }},%20saya%20{{ urlencode($session->patient_name) }}%20siap%20memulai%20sesi%20konsultasi%20online." 
                                            target="_blank" 
                                            class="btn btn-success fw-bold rounded-3 px-3 py-2 small shadow-sm d-flex align-items-center gap-1">
