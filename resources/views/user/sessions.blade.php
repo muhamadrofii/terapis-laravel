@@ -53,7 +53,7 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex align-items-center gap-2">
+                                <div class="d-flex flex-wrap align-items-center gap-2 mt-3 mt-md-0">
                                     @php
                                         try {
                                             $bookingCarbon = \Carbon\Carbon::parse($session->booking_date);
@@ -64,30 +64,30 @@
                                     @endphp
 
                                     @if($session->payment_status === 'unpaid')
-                                        <a href="{{ route('booking.pay', $session->id) }}" class="btn text-white fw-bold rounded-3 px-3 py-2 small shadow-sm" style="background-color: #5E2CB5;">
+                                        <a href="{{ route('booking.pay', $session->id) }}" class="btn text-white fw-bold rounded-3 px-3 py-2 small shadow-sm d-inline-flex align-items-center justify-content-center text-nowrap" style="background-color: #5E2CB5; height: 38px;">
                                             <i class="bi bi-qr-code-scan me-1"></i> Bayar QRIS
                                         </a>
                                     @elseif($isTimeReady)
-                                        <button type="button" onclick="openLiveChat('{{ $session->therapist_name }}', '{{ $session->therapist_avatar }}', '{{ $session->id }}')" class="btn text-white fw-bold rounded-3 px-3 py-2 small shadow-sm d-flex align-items-center gap-1" style="background-color: #5E2CB5;">
+                                        <button type="button" onclick="openLiveChat('{{ $session->therapist_name }}', '{{ $session->therapist_avatar }}', '{{ $session->id }}')" class="btn text-white fw-bold rounded-3 px-3 py-2 small shadow-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" style="background-color: #5E2CB5; height: 38px;">
                                             <i class="bi bi-chat-dots-fill"></i> Chat
                                         </button>
                                         <a href="https://wa.me/{{ preg_replace('/[^\d]/', '', $session->whatsapp_number ?? '6281234567890') }}?text=Halo%20{{ urlencode($session->therapist_name) }},%20saya%20{{ urlencode($session->patient_name) }}%20siap%20memulai%20sesi%20konsultasi%20online." 
                                            target="_blank" 
-                                           class="btn btn-success fw-bold rounded-3 px-3 py-2 small shadow-sm d-flex align-items-center gap-1">
+                                           class="btn btn-success fw-bold rounded-3 px-3 py-2 small shadow-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" style="height: 38px;">
                                             <i class="bi bi-whatsapp"></i> Mulai Konsultasi
                                         </a>
-                                        <a href="{{ route('user.search') }}" class="btn btn-purple-light text-purple fw-semibold rounded-3 px-3 py-2 small" style="background-color: #F3E8FF; color: #5E2CB5;">Jadwal Ulang</a>
+                                        <a href="{{ route('user.search') }}" class="btn fw-bold rounded-3 px-3 py-2 small d-inline-flex align-items-center justify-content-center text-nowrap" style="background-color: #F3E8FF; color: #5E2CB5; height: 38px;">Jadwal Ulang</a>
                                     @else
                                         <button type="button" 
-                                                class="btn btn-light text-muted border fw-semibold rounded-3 px-3 py-2 small" 
-                                                style="background-color: #F8FAFC; cursor: not-allowed;" 
+                                                class="btn btn-light text-muted border fw-bold rounded-3 px-3 py-2 small d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" 
+                                                style="background-color: #F8FAFC; cursor: not-allowed; height: 38px;" 
                                                 onclick="alert('Sesi konsultasi baru dapat dimulai saat jam jadwal Terapis tiba ({{ $session->booking_date }} @ {{ $session->booking_time }}).')" 
                                                 title="Sesi konsultasi belum dimulai. Silakan tunggu hingga jadwal sesi tiba.">
-                                            <i class="bi bi-clock-history me-1"></i> Mulai Konsultasi
+                                            <i class="bi bi-clock-history"></i> Mulai Konsultasi
                                         </button>
-                                        <a href="{{ route('user.search') }}" class="btn btn-purple-light text-purple fw-semibold rounded-3 px-3 py-2 small" style="background-color: #F3E8FF; color: #5E2CB5;">Jadwal Ulang</a>
+                                        <a href="{{ route('user.search') }}" class="btn fw-bold rounded-3 px-3 py-2 small d-inline-flex align-items-center justify-content-center text-nowrap" style="background-color: #F3E8FF; color: #5E2CB5; height: 38px;">Jadwal Ulang</a>
                                     @endif
-                                    <button type="button" onclick="alert('Permintaan pembatalan sesi telah dikirim ke terapis.')" class="btn btn-light text-secondary border fw-semibold rounded-3 px-3 py-2 small">Batalkan</button>
+                                    <button type="button" onclick="alert('Permintaan pembatalan sesi telah dikirim ke terapis.')" class="btn btn-light text-secondary border fw-bold rounded-3 px-3 py-2 small d-inline-flex align-items-center justify-content-center text-nowrap" style="height: 38px;">Batalkan</button>
                                 </div>
                             </div>
                         </div>
