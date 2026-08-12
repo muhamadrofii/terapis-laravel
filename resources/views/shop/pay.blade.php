@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pembayaran QRIS Dinamis Otomatis - Terapis Online')
+@section('title', 'Pembayaran QRIS Produk - Terapis Online')
 
 @section('content')
 @php
@@ -14,7 +14,7 @@
             <!-- Payment Card -->
             <div class="bg-white p-4 p-md-5 rounded-5 border shadow-sm text-center">
                 
-                <!-- QRIS Header Logos & GoPay Badge -->
+                <!-- QRIS Header Logos -->
                 <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/QRIS_logo.svg" alt="QRIS Logo" style="height: 28px;">
                     <span class="badge text-white px-2.5 py-1 rounded-pill fw-bold" style="background-color: #5E2CB5; font-size: 0.75rem;">
@@ -22,12 +22,12 @@
                     </span>
                 </div>
 
-                <h3 class="fw-bold text-dark mb-1">Pembayaran Konsultasi</h3>
-                <p class="text-secondary small mb-4">Kode QR di bawah otomatis memuat nominal tagihan Anda. Pindai menggunakan GoPay, m-Banking (BCA, Mandiri, BRI, BNI), OVO, DANA, atau ShopeePay.</p>
+                <h3 class="fw-bold text-dark mb-1">Pembayaran Produk Herbal</h3>
+                <p class="text-secondary small mb-4">Kode QR di bawah otomatis memuat nominal tagihan Anda. Pindai menggunakan E-Wallet (GoPay, OVO, DANA, LinkAja, ShopeePay) atau m-Banking pilihan Anda.</p>
 
                 <!-- Amount Box -->
-                <div class="p-3.5 rounded-4 mb-4" style="background-color: #F3E8FF; border: 2px dashed #5E2CB5;">
-                    <div class="text-muted small fw-semibold text-uppercase">TOTAL TAGIHAN PAS OTOMATIS</div>
+                <div class="p-3.5 rounded-4 mb-4" style="background-color: #F3E8FF; border: 2px dashed #5E2CB5; padding: 1.5rem !important;">
+                    <div class="text-muted small fw-semibold text-uppercase">TOTAL TAGIHAN OTOMATIS</div>
                     <div class="d-flex align-items-center justify-content-center gap-2 my-1">
                         <div class="display-5 fw-extrabold" style="color: #5E2CB5; font-weight: 800;">
                             Rp {{ number_format($amountIdr, 0, ',', '.') }}
@@ -36,14 +36,18 @@
                             <i class="bi bi-copy me-1"></i> Salin
                         </button>
                     </div>
-                    <div class="small text-secondary">Sesi: <strong>{{ $booking->session_type }}</strong> bersama <strong>{{ $booking->therapist_name }}</strong></div>
+                    <div class="small text-secondary mt-2">
+                        Produk: <strong>{{ $order->product->name }}</strong> ({{ $order->quantity }} pcs)<br>
+                        Pengiriman: <strong>Kurir Terapis Online (FREE)</strong>
+                    </div>
                 </div>
 
-                <!-- Dynamic QRIS Code Generated from Uploaded QRIS Image Payload -->
-                <div class="p-4 bg-white rounded-4 border d-inline-block shadow-sm mb-4 position-relative" style="max-width: 340px;">
+                <!-- Dynamic QRIS Code Generated -->
+                <div class="text-center p-3 bg-light rounded-4 border mb-4">
+                    <div class="text-secondary small">Merchant QRIS Resmi:</div>
                     <div class="fw-bold text-dark mb-1 small">{{ $qrisSetting->merchant_name ?? 'Terapis Online Indonesia' }}</div>
                     
-                    <!-- Dynamic Scannable QR Code Image -->
+                    <!-- QR Code Image -->
                     <div class="p-3 bg-white rounded-3 border d-inline-block mb-2 shadow-sm">
                         <img src="{{ $qrImageUrl }}" alt="Dynamic QRIS Scannable Code" class="img-fluid rounded-3" style="width: 260px; height: 260px;">
                     </div>
@@ -52,7 +56,7 @@
                         <i class="bi bi-check-circle-fill"></i> Nominal Rp {{ number_format($amountIdr, 0, ',', '.') }} Terisi Otomatis
                     </div>
 
-                    <div class="text-muted font-monospace" style="font-size: 0.72rem;">NMID: ID1020021035252 • {{ $qrisSetting->merchant_city ?? 'Jakarta Selatan' }}</div>
+                    <div class="text-muted font-monospace" style="font-size: 0.72rem;">NMID: ID1020021035252 • {{ $qrisSetting->merchant_city ?? 'Jakarta' }}</div>
 
                     <div class="mt-3 pt-3 border-top d-flex align-items-center justify-content-center gap-2">
                         <span class="spinner-grow spinner-grow-sm text-purple" style="color: #5E2CB5;" role="status"></span>
@@ -60,45 +64,14 @@
                     </div>
                 </div>
 
-                <!-- Admin Bank Account Transfer Box -->
-                @if(!empty($qrisSetting->bank_account_number))
-                <div class="text-start p-4 rounded-4 border mb-4 shadow-xs" style="background-color: #F8FAFC; border-color: #CBD5E1 !important;">
-                    <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
-                        <div class="d-flex align-items-center gap-2 text-dark">
-                            <i class="bi bi-bank fs-4" style="color: #5E2CB5;"></i>
-                            <div>
-                                <h6 class="fw-bold mb-0">Opsi Transfer Rekening Bank Admin</h6>
-                                <span class="text-muted small">Transfer langsung ke Rekening Resmi</span>
-                            </div>
-                        </div>
-                        <span class="badge text-white px-2.5 py-1 rounded-pill small fw-bold" style="background-color: #5E2CB5;">Bank Direct</span>
-                    </div>
-
-                    <div class="row g-2 align-items-center">
-                        <div class="col-sm-4 text-secondary small">Nama Bank:</div>
-                        <div class="col-sm-8 fw-bold text-dark small">{{ $qrisSetting->bank_name ?? 'Bank Central Asia (BCA)' }}</div>
-
-                        <div class="col-sm-4 text-secondary small">Nomor Rekening:</div>
-                        <div class="col-sm-8 d-flex align-items-center gap-2">
-                            <span class="fw-extrabold font-monospace text-dark fs-5">{{ $qrisSetting->bank_account_number }}</span>
-                            <button type="button" onclick="copyRekening('{{ $qrisSetting->bank_account_number }}')" class="btn btn-sm btn-white border rounded-pill px-2.5 py-0.5 small fw-bold text-purple" style="color: #5E2CB5;" title="Salin No Rekening">
-                                <i class="bi bi-copy me-1"></i> Salin
-                            </button>
-                        </div>
-
-                        <div class="col-sm-4 text-secondary small">Atas Nama:</div>
-                        <div class="col-sm-8 fw-bold text-dark small">{{ $qrisSetting->bank_account_holder ?? 'PT Terapis Online Indonesia' }}</div>
-                    </div>
-                </div>
-                @endif
-
                 <!-- Instructions -->
                 <div class="text-start bg-light p-3.5 rounded-4 border mb-4 small text-secondary">
                     <div class="fw-bold text-dark mb-2"><i class="bi bi-shield-check text-success me-1"></i> Petunjuk Pembayaran:</div>
                     <ol class="mb-0 ps-3">
-                        <li class="mb-1">Pindai Kode <strong>QRIS</strong> di atas via GoPay, BCA, Mandiri, BRI, BNI, OVO, DANA, ShopeePay ATAU melakukan <strong>Transfer Bank</strong> ke Nomor Rekening Admin di atas.</li>
-                        <li class="mb-1">Pastikan nominal transfer tepat senilai <strong>Rp {{ number_format($amountIdr, 0, ',', '.') }}</strong>.</li>
-                        <li>Selesaikan pembayaran dan upload bukti transfer di bawah ini.</li>
+                        <li class="mb-1">Buka aplikasi m-Banking atau E-Wallet pilihan Anda.</li>
+                        <li class="mb-1">Pilih menu <strong>Scan / QRIS</strong> lalu arahkan kamera ke Kode QR di atas.</li>
+                        <li class="mb-1">Nominal tagihan <strong>Rp {{ number_format($amountIdr, 0, ',', '.') }}</strong> akan langsung terisi secara <strong>OTOMATIS</strong> di layar Anda tanpa perlu mengetik manual.</li>
+                        <li>Selesaikan transaksi dan upload bukti screenshot Anda di bawah ini.</li>
                     </ol>
                 </div>
 
@@ -109,8 +82,8 @@
                         <span>Upload Bukti Pembayaran</span>
                     </button>
 
-                    <a href="{{ route('user.sessions') }}" class="btn btn-light text-secondary border py-2.5 rounded-4 small fw-semibold">
-                        Bayar Nanti (Simpan di Jadwal Saya)
+                    <a href="{{ route('user.dashboard') }}" class="btn btn-light text-secondary border py-2.5 rounded-4 small fw-semibold">
+                        Bayar Nanti (Kembali ke Dashboard)
                     </a>
                 </div>
             </div>
@@ -127,10 +100,10 @@
                 <h5 class="modal-title fw-bold text-dark"><i class="bi bi-receipt me-2" style="color: #5E2CB5;"></i> Upload Bukti Pembayaran</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('booking.proof', $booking->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('shop.proof', $order->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body py-4">
-                    <p class="text-secondary small mb-3">Unggah screenshot resi pembayaran QRIS / Transfer Bank senilai <strong>Rp {{ number_format($amountIdr, 0, ',', '.') }}</strong>.</p>
+                    <p class="text-secondary small mb-3">Unggah screenshot resi pembayaran QRIS senilai <strong>Rp {{ number_format($amountIdr, 0, ',', '.') }}</strong>.</p>
                     
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">File Bukti Transfer (JPG, PNG, PDF)</label>
@@ -147,19 +120,11 @@
 </div>
 
 <script>
-    // Copy Nominal Function
     function copyNominal(amount) {
         navigator.clipboard.writeText(amount.toString());
         alert('Nominal Rp ' + amount.toLocaleString('id-ID') + ' berhasil disalin!');
     }
 
-    // Copy Rekening Function
-    function copyRekening(rekening) {
-        navigator.clipboard.writeText(rekening);
-        alert('Nomor Rekening ' + rekening + ' berhasil disalin!');
-    }
-
-    // 15 Minutes Countdown Timer
     let duration = 15 * 60;
     const timerDisplay = document.getElementById('countdownTimer');
 

@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-@section('title', 'Platform Overview - SerenePath Admin Console')
+@section('title', 'Platform Overview - Terapis Online Admin Console')
 
 @section('content')
 <!-- Page Header -->
 <div class="page-header">
     <div>
         <h1 class="page-title">Platform Overview</h1>
-        <p class="page-subtitle">Welcome back to the SerenePath admin console.</p>
+        <p class="page-subtitle">Selamat datang kembali di admin console Terapis Online.</p>
     </div>
     <div class="d-flex align-items-center gap-3">
         <span class="sp-badge-green py-2 px-3">
@@ -96,8 +96,8 @@
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center gap-3">
-                                    <div class="rounded-circle text-white d-flex align-items-center justify-content-center fw-bold" 
-                                         style="width: 40px; height: 40px; font-size: 0.85rem; 
+                                    <div class="rounded-circle text-white d-flex align-items-center justify-content-center fw-bold flex-shrink-0" 
+                                         style="width: 40px; height: 40px; min-width: 40px; min-height: 40px; aspect-ratio: 1 / 1; font-size: 0.85rem; 
                                                 background-color: {{ $item->initials == 'ES' ? '#7C3AED' : ($item->initials == 'MR' ? '#EC4899' : '#0D9488') }};">
                                         {{ $item->initials }}
                                     </div>
@@ -160,8 +160,8 @@
 <!-- Footer Card -->
 <div class="sp-card p-3 border-0 mt-4" style="background-color: #E2E8F0;">
     <div class="d-flex justify-content-between align-items-center">
-        <div class="fw-bold text-purple" style="color: #5B21B6; font-size: 1.1rem;">SerenePath</div>
-        <div class="text-secondary small fw-medium">© 2024 SerenePath Mental Health. All rights reserved.</div>
+        <div class="fw-bold text-purple" style="color: #5B21B6; font-size: 1.1rem;">Terapis Online</div>
+        <div class="text-secondary small fw-medium">© 2026 Terapis Online Indonesia. All rights reserved.</div>
     </div>
 </div>
 @endsection

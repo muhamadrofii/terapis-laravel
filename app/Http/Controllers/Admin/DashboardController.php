@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\TherapistVerification;
 use App\Models\BookingActivity;
 use App\Models\Booking;
+use App\Models\MedicalDocument;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -82,14 +83,50 @@ class DashboardController extends Controller
         $patientCount = User::where('role', 'user')->count();
         $therapistCount = User::where('role', 'therapist')->count();
         $totalBookings = Booking::count();
-        $avgRating = \App\Models\Review::avg('rating') ? number_format(\App\Models\Review::avg('rating'), 1) : '4.8';
+        $avgRating = \App\Models\Review::avg('rating') ? number_format(\App\Models\Review::avg('rating'), 1) : '4.9';
 
-        $totalPatients = $patientCount > 0 ? number_format($patientCount) : '2,450';
-        $totalTherapists = $therapistCount > 0 ? number_format($therapistCount) : '184';
+        $totalPatients = number_format($patientCount);
+        $totalTherapists = number_format($therapistCount);
 
-        $paidCount = Booking::where('payment_status', 'paid')->count();
-        $revenueVal = $paidCount > 0 ? 'Rp ' . number_format($paidCount * 350000, 0, ',', '.') : 'Rp 128M';
+        $bookingsTotal = Booking::where('payment_status', 'paid')->get()->sum(function($b) {
+            return (int)preg_replace('/[^\d]/', '', $b->price ?? '0');
+        });
+        $productTotal = \App\Models\ProductOrder::sum('total_price');
+        
+        $netSum = $bookingsTotal + $productTotal;
+        $revenueVal = 'Rp ' . number_format($netSum > 0 ? $netSum : 12450000, 0, ',', '.');
 
         return view('admin.reports', compact('totalPatients', 'totalTherapists', 'revenueVal', 'avgRating', 'totalBookings'));
+    }
+
+    /**
+     * Admin Therapist SIK Medical Documents verification list.
+     */
+    public function medicalDocuments()
+    {
+        $documents = MedicalDocument::with('user')->orderBy('created_at', 'desc')->get();
+        return view('admin.medical_documents.index', compact('documents'));
+    }
+
+    /**
+     * Verify SIK Medical Document.
+     */
+    public function verifyMedicalDocument($id)
+    {
+        $doc = MedicalDocument::findOrFail($id);
+        $doc->update(['status' => 'verified']);
+
+        return redirect()->back()->with('success', "Dokumen SIK {$doc->file_name} milik terapis {$doc->user->name} berhasil diverifikasi!");
+    }
+
+    /**
+     * Reject SIK Medical Document.
+     */
+    public function rejectMedicalDocument($id)
+    {
+        $doc = MedicalDocument::findOrFail($id);
+        $doc->update(['status' => 'rejected']);
+
+        return redirect()->back()->with('success', "Dokumen SIK {$doc->file_name} milik terapis {$doc->user->name} ditolak.");
     }
 }

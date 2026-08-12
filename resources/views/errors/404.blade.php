@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '404 - Halaman Tidak Ditemukan - SerenePath')
+@section('title', '404 - Halaman Tidak Ditemukan - Terapis Online')
 
 @section('content')
 <div class="container py-5 text-center my-5">

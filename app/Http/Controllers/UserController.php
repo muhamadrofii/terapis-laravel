@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\User;
+use App\Models\Clinic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,44 +18,43 @@ class UserController extends Controller
         $user = Auth::user();
         $userName = $user ? $user->name : 'Sarah Jenkins';
 
-        $upcomingBookings = Booking::where('status', 'accepted')
-            ->orderBy('booking_date', 'asc')
-            ->get();
+        $upcomingQuery = Booking::where('status', 'accepted');
+        $pendingQuery = Booking::where('status', 'pending');
+        $pastQuery = Booking::where('status', 'completed');
 
-        $pendingBookings = Booking::where('status', 'pending')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        if ($user) {
+            $filter = function($q) use ($user) {
+                $q->where('user_id', $user->id)
+                  ->orWhere('patient_name', $user->name);
+            };
+            $upcomingQuery->where($filter);
+            $pendingQuery->where($filter);
+            $pastQuery->where($filter);
+        }
 
-        $pastBookings = Booking::where('status', 'completed')
-            ->orderBy('booking_date', 'desc')
-            ->get();
+        $upcomingBookings = $upcomingQuery->orderBy('booking_date', 'asc')->get();
+        $pendingBookings = $pendingQuery->orderBy('created_at', 'desc')->get();
+        $pastBookings = $pastQuery->orderBy('booking_date', 'desc')->get();
 
         $therapists = User::where('role', 'therapist')->limit(3)->get();
 
-        return view('user.dashboard', compact('userName', 'upcomingBookings', 'pendingBookings', 'pastBookings', 'therapists'));
+        $productOrders = [];
+        if ($user) {
+            $productOrders = \App\Models\ProductOrder::with('product')
+                ->where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+
+        return view('user.dashboard', compact('userName', 'upcomingBookings', 'pendingBookings', 'pastBookings', 'therapists', 'productOrders'));
     }
 
-    /**
-     * Therapist Search Page (pencarian_terapis_serenepath).
-     */
     public function search(Request $request)
     {
-        $query = User::where('role', 'therapist');
+        $therapists = User::where('role', 'therapist')->get();
+        $clinics = Clinic::all();
 
-        if ($request->filled('q')) {
-            $query->where(function($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->q . '%')
-                  ->orWhere('specialty', 'like', '%' . $request->q . '%');
-            });
-        }
-
-        if ($request->filled('specialty') && $request->specialty != 'Semua') {
-            $query->where('specialty', 'like', '%' . $request->specialty . '%');
-        }
-
-        $therapists = $query->get();
-
-        return view('user.search', compact('therapists'));
+        return view('user.search', compact('therapists', 'clinics'));
     }
 
     /**
@@ -74,9 +74,14 @@ class UserController extends Controller
 
         $upcomingSessions = $query->orderBy('created_at', 'desc')->get();
 
-        $awaitingPayment = Booking::where('payment_status', 'unpaid')
-            ->orderBy('created_at', 'desc')
-            ->first();
+        $awaitingPaymentQuery = Booking::where('payment_status', 'unpaid');
+        if ($user) {
+            $awaitingPaymentQuery->where(function($q) use ($user) {
+                $q->where('user_id', $user->id)
+                  ->orWhere('patient_name', $user->name);
+            });
+        }
+        $awaitingPayment = $awaitingPaymentQuery->orderBy('created_at', 'desc')->first();
 
         return view('user.sessions', compact('upcomingSessions', 'awaitingPayment'));
     }
@@ -86,9 +91,17 @@ class UserController extends Controller
      */
     public function payments()
     {
-        $pastSessions = Booking::where('status', 'completed')
-            ->orderBy('booking_date', 'desc')
-            ->get();
+        $user = Auth::user();
+
+        $query = Booking::where('status', 'completed');
+        if ($user) {
+            $query->where(function($q) use ($user) {
+                $q->where('user_id', $user->id)
+                  ->orWhere('patient_name', $user->name);
+            });
+        }
+
+        $pastSessions = $query->orderBy('booking_date', 'desc')->get();
 
         return view('user.payments', compact('pastSessions'));
     }

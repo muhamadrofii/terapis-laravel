@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class QrisSetting extends Model
+class MedicalDocument extends Model
 {
     use HasFactory;
 
@@ -15,14 +15,10 @@ class QrisSetting extends Model
 
     protected $fillable = [
         'id',
-        'merchant_name',
-        'merchant_city',
-        'provider_name',
-        'bank_name',
-        'bank_account_number',
-        'bank_account_holder',
-        'qris_image',
-        'static_payload',
+        'user_id',
+        'file_name',
+        'file_path',
+        'status', // pending, verified, rejected
     ];
 
     protected static function boot()
@@ -34,5 +30,10 @@ class QrisSetting extends Model
                 $model->id = (string) Str::uuid();
             }
         });
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

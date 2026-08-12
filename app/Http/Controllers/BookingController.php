@@ -135,4 +135,16 @@ class BookingController extends Controller
 
         return back()->with('success', 'Terima kasih! Ulasan dan rating Anda (' . $request->rating . '/5 Bintang) telah berhasil disimpan ke database.');
     }
+
+    /**
+     * Cancel a booking session.
+     */
+    public function cancel($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $booking->status = 'cancelled';
+        $booking->save();
+
+        return redirect()->back()->with('success', 'Sesi konsultasi telah berhasil dibatalkan.');
+    }
 }

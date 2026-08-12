@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'SerenePath - Temukan Kedamaian Anda')
+@section('title', 'Terapis Online - Temukan Kedamaian Anda')
 
 @section('content')
 <!-- Hero Section (Pixel-perfect matching user screenshot) -->

@@ -17,53 +17,67 @@
 <!-- Schedule Timeline Widget -->
 <div class="bg-white p-4 rounded-4 border shadow-sm mb-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h5 class="fw-bold text-dark mb-0"><i class="bi bi-calendar3 me-2 text-purple" style="color: #5E2CB5;"></i> Oktober 2024</h5>
-        <div class="btn-group border rounded-3 p-1 bg-light">
-            <button class="btn btn-sm btn-white active shadow-sm fw-semibold">Hari</button>
-            <button class="btn btn-sm text-secondary fw-semibold">Minggu</button>
-            <button class="btn btn-sm text-secondary fw-semibold">Bulan</button>
+        <h5 class="fw-bold text-dark mb-0"><i class="bi bi-calendar3 me-2 text-purple" style="color: #5E2CB5;"></i> Agenda Sesi Konsultasi</h5>
+        <div class="btn-group border rounded-3 p-1 bg-light" id="schedule-period-filter">
+            <button type="button" class="btn btn-sm btn-white active shadow-sm fw-semibold" onclick="filterSchedulePeriod('day', this)">Hari</button>
+            <button type="button" class="btn btn-sm text-secondary fw-semibold" onclick="filterSchedulePeriod('week', this)">Minggu</button>
+            <button type="button" class="btn btn-sm text-secondary fw-semibold" onclick="filterSchedulePeriod('month', this)">Bulan</button>
         </div>
     </div>
 
-    <div class="d-flex flex-column gap-3">
-        <!-- Time slot 1 -->
-        <div class="p-3 rounded-4 border d-flex justify-content-between align-items-center" style="background-color: #F8FAFC; border-left: 5px solid #0D9488 !important;">
-            <div class="d-flex align-items-center gap-3">
-                <span class="badge bg-teal-subtle text-teal px-3 py-2 fw-bold" style="background-color: #CCFBF1; color: #0D9488;">09:00 WIB</span>
-                <div>
-                    <h6 class="fw-bold text-dark mb-0">Sarah Jenkins</h6>
-                    <span class="text-muted small">Terapi Perilaku Kognitif (Sesi Video Call)</span>
+    <div class="d-flex flex-column gap-3" id="schedule-list-container">
+        @forelse($sessions as $session)
+            <div class="p-3 rounded-4 border d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 schedule-card-item" data-date="{{ $session->booking_date }}" style="background-color: #F8FAFC; border-left: 5px solid {{ $session->status === 'cancelled' ? '#EF4444' : ($session->status === 'accepted' ? '#0D9488' : '#3B82F6') }} !important;">
+                <div class="d-flex align-items-center gap-3">
+                    <span class="badge px-3 py-2 fw-bold text-nowrap" style="background-color: {{ $session->status === 'cancelled' ? '#FEE2E2' : '#F3E8FF' }}; color: {{ $session->status === 'cancelled' ? '#EF4444' : '#5E2CB5' }};">
+                        {{ $session->booking_time }}
+                    </span>
+                    <div>
+                        <h6 class="fw-bold text-dark mb-0">{{ $session->patient_name }}</h6>
+                        <span class="text-muted small d-block">
+                            {{ $session->booking_date }} &bull; {{ $session->session_type }} &bull; 
+                            @if($session->status === 'cancelled')
+                                <span class="text-danger fw-bold">Dibatalkan</span>
+                            @elseif($session->status === 'completed')
+                                <span class="text-success fw-bold"><i class="bi bi-check-circle-fill me-1"></i>Selesai</span>
+                            @elseif($session->payment_status === 'paid' || $session->status === 'accepted')
+                                <span class="text-success fw-semibold">Terkonfirmasi & Lunas</span>
+                            @else
+                                <span class="text-warning fw-semibold">Menunggu Pembayaran</span>
+                            @endif
+                        </span>
+                        @if($session->notes)
+                            <div class="text-secondary extra-small italic mt-1">Keluhan: "{{ $session->notes }}"</div>
+                        @endif
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    @if($session->status === 'cancelled')
+                        <button type="button" class="btn btn-light text-muted border btn-sm px-3 py-2 fw-bold rounded-3 d-inline-flex align-items-center justify-content-center text-nowrap" style="height: 36px; cursor: not-allowed;" disabled>
+                            Sesi Dibatalkan
+                        </button>
+                    @elseif($session->status === 'completed')
+                        <button type="button" class="btn btn-light text-success border btn-sm px-3 py-2 fw-bold rounded-3 d-inline-flex align-items-center justify-content-center text-nowrap" style="height: 36px; cursor: not-allowed;" disabled>
+                            <i class="bi bi-check-circle-fill me-1"></i> Sesi Selesai
+                        </button>
+                    @else
+                        <button type="button" class="btn text-white btn-sm px-3 py-2 fw-bold rounded-3 d-inline-flex align-items-center justify-content-center text-nowrap" style="background-color: #5E2CB5; height: 36px;" data-bs-toggle="modal" data-bs-target="#sessionDetailModal">
+                            Detail Sesi
+                        </button>
+                        <form action="{{ route('booking.cancel', $session->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan sesi ini?')" class="d-inline m-0">
+                            @csrf
+                            <button type="submit" class="btn btn-light text-danger border btn-sm px-3 py-2 fw-bold rounded-3 d-inline-flex align-items-center justify-content-center text-nowrap" style="height: 36px;">
+                                <i class="bi bi-x-circle me-1"></i> Batalkan
+                            </button>
+                        </form>
+                    @endif
                 </div>
             </div>
-            <div class="d-flex align-items-center gap-2">
-                <a href="https://wa.me/6281234567890?text=Halo%20Sarah,%20saya%20terapis%20Anda%20siap%20memulai%20sesi%20konsultasi%20online." target="_blank" class="btn btn-success btn-sm px-3 py-2 fw-bold rounded-3 shadow-sm d-flex align-items-center gap-1">
-                    <i class="bi bi-whatsapp"></i> Mulai Konsultasi
-                </a>
+        @empty
+            <div class="text-muted small py-4 text-center">
+                Belum ada jadwal sesi konsultasi yang terdaftar.
             </div>
-        </div>
-
-        <!-- Time slot 2 -->
-        <div class="p-3 rounded-4 border d-flex justify-content-between align-items-center" style="background-color: #F8FAFC; border-left: 5px solid #5E2CB5 !important;">
-            <div class="d-flex align-items-center gap-3">
-                <span class="badge bg-purple-subtle text-purple px-3 py-2 fw-bold" style="background-color: #F3E8FF; color: #5E2CB5;">11:00 WIB</span>
-                <div>
-                    <h6 class="fw-bold text-dark mb-0">David Chen</h6>
-                    <span class="text-muted small">Konsultasi Tatap Muka (Ruang B)</span>
-                </div>
-            </div>
-            <button type="button" data-bs-toggle="modal" data-bs-target="#sessionDetailModal" class="btn btn-light text-secondary border btn-sm px-3 py-2 fw-semibold rounded-3">Lihat Detail</button>
-        </div>
-
-        <!-- Time slot 3 -->
-        <div class="p-3 rounded-4 border d-flex justify-content-between align-items-center" style="background-color: #F8FAFC; border-left: 5px solid #64748B !important;">
-            <div class="d-flex align-items-center gap-3">
-                <span class="badge bg-secondary-subtle text-secondary px-3 py-2 fw-bold">14:30 WIB</span>
-                <div>
-                    <h6 class="fw-semibold text-muted mb-0">Istirahat Makan Siang & Administrasi</h6>
-                </div>
-            </div>
-            <span class="badge bg-light text-secondary border">Terjadwal</span>
-        </div>
+        @endforelse
     </div>
 </div>
 
@@ -144,9 +158,43 @@
                 </div>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" class="btn btn-purple-primary w-100" data-bs-dismiss="modal">Tutup Detail</button>
+                <button type="button" class="btn text-white fw-bold w-100 py-2 rounded-3" style="background-color: #5E2CB5;" data-bs-dismiss="modal">Tutup Detail</button>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function filterSchedulePeriod(period, btn) {
+        const buttons = document.querySelectorAll('#schedule-period-filter button');
+        buttons.forEach(b => {
+            b.classList.remove('btn-white', 'active', 'shadow-sm');
+            b.classList.add('text-secondary');
+        });
+        btn.classList.add('btn-white', 'active', 'shadow-sm');
+        btn.classList.remove('text-secondary');
+
+        const items = document.querySelectorAll('.schedule-card-item');
+        const todayStr = new Date().toISOString().split('T')[0];
+
+        items.forEach((item, index) => {
+            const itemDate = item.getAttribute('data-date');
+            if (period === 'day') {
+                if (itemDate === todayStr || index === 0) {
+                    item.style.setProperty('display', 'flex', 'important');
+                } else {
+                    item.style.setProperty('display', 'none', 'important');
+                }
+            } else if (period === 'week') {
+                if (index < 4) {
+                    item.style.setProperty('display', 'flex', 'important');
+                } else {
+                    item.style.setProperty('display', 'none', 'important');
+                }
+            } else {
+                item.style.setProperty('display', 'flex', 'important');
+            }
+        });
+    }
+</script>
 @endsection

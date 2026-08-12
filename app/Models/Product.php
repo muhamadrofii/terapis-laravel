@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class QrisSetting extends Model
+class Product extends Model
 {
     use HasFactory;
 
@@ -15,14 +15,20 @@ class QrisSetting extends Model
 
     protected $fillable = [
         'id',
-        'merchant_name',
-        'merchant_city',
-        'provider_name',
-        'bank_name',
-        'bank_account_number',
-        'bank_account_holder',
-        'qris_image',
-        'static_payload',
+        'name',
+        'slug',
+        'description',
+        'category',
+        'price',
+        'price_usd',
+        'image',
+        'is_bestseller',
+    ];
+
+    protected $casts = [
+        'is_bestseller' => 'boolean',
+        'price' => 'integer',
+        'price_usd' => 'decimal:2',
     ];
 
     protected static function boot()
@@ -33,6 +39,14 @@ class QrisSetting extends Model
             if (empty($model->id)) {
                 $model->id = (string) Str::uuid();
             }
+            if (empty($model->slug)) {
+                $model->slug = Str::slug($model->name);
+            }
         });
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(ProductOrder::class);
     }
 }

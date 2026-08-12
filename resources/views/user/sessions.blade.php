@@ -32,7 +32,11 @@
                                     <div>
                                         <div class="d-flex align-items-center gap-2">
                                             <h5 class="fw-bold text-dark mb-0">{{ $session->therapist_name }}</h5>
-                                            @if($session->payment_status === 'paid' || $session->status === 'accepted')
+                                            @if($session->status === 'cancelled')
+                                                <span class="badge bg-danger-subtle text-danger px-2.5 py-1 fw-bold"><i class="bi bi-x-circle-fill me-1"></i> Dibatalkan</span>
+                                            @elseif($session->status === 'completed')
+                                                <span class="badge bg-success-subtle text-success px-2.5 py-1 fw-bold"><i class="bi bi-check-circle-fill me-1"></i> Selesai Konsultasi</span>
+                                            @elseif($session->payment_status === 'paid' || $session->status === 'accepted')
                                                 <span class="badge bg-success-subtle text-success px-2.5 py-1 fw-bold"><i class="bi bi-check-circle-fill me-1"></i> Terkonfirmasi & Lunas</span>
                                             @elseif($session->status === 'pending' && $session->payment_status === 'unpaid')
                                                 <span class="badge bg-warning-subtle text-warning-emphasis px-2.5 py-1 fw-bold"><i class="bi bi-clock-history me-1"></i> Menunggu Pembayaran QRIS</span>
@@ -63,10 +67,23 @@
                                         }
                                     @endphp
 
-                                    @if($session->payment_status === 'unpaid')
+                                    @if($session->status === 'cancelled')
+                                        <button type="button" class="btn btn-light text-muted border fw-bold rounded-3 px-3 py-2 small d-inline-flex align-items-center justify-content-center text-nowrap" style="height: 38px; cursor: not-allowed;" disabled>Sesi Dibatalkan</button>
+                                    @elseif($session->status === 'completed')
+                                        <button type="button" onclick="openPatientMedicalRecordModal('{{ addslashes($session->therapist_name) }}', '{{ $session->booking_date }}', '{{ addslashes($session->session_type ?? 'Konsultasi Perilaku & Kesehatan Mental') }}')" class="btn text-purple fw-semibold rounded-3 px-3 py-2 small d-inline-flex align-items-center justify-content-center text-nowrap" style="background-color: #F3E8FF; color: #5E2CB5; height: 38px;">
+                                            <i class="bi bi-folder2-open me-1"></i> Rekam Medis Saya
+                                        </button>
+                                        <button type="button" onclick="openReviewModal('{{ $session->id }}', '{{ $session->therapist_id }}', '{{ $session->therapist_name }}')" class="btn text-white fw-bold rounded-3 px-3 py-2 small shadow-sm d-inline-flex align-items-center justify-content-center text-nowrap" style="background-color: #5E2CB5; height: 38px;">
+                                            <i class="bi bi-star-fill me-1"></i> Beri Ulasan
+                                        </button>
+                                    @elseif($session->payment_status === 'unpaid')
                                         <a href="{{ route('booking.pay', $session->id) }}" class="btn text-white fw-bold rounded-3 px-3 py-2 small shadow-sm d-inline-flex align-items-center justify-content-center text-nowrap" style="background-color: #5E2CB5; height: 38px;">
                                             <i class="bi bi-qr-code-scan me-1"></i> Bayar QRIS
                                         </a>
+                                        <form action="{{ route('booking.cancel', $session->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan booking ini?')" class="d-inline m-0">
+                                            @csrf
+                                            <button type="submit" class="btn btn-light text-secondary border fw-bold rounded-3 px-3 py-2 small d-inline-flex align-items-center justify-content-center text-nowrap" style="height: 38px;">Batalkan</button>
+                                        </form>
                                     @elseif($isTimeReady)
                                         <button type="button" onclick="openLiveChat('{{ $session->therapist_name }}', '{{ $session->therapist_avatar }}', '{{ $session->id }}')" class="btn text-white fw-bold rounded-3 px-3 py-2 small shadow-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" style="background-color: #5E2CB5; height: 38px;">
                                             <i class="bi bi-chat-dots-fill"></i> Chat
@@ -77,6 +94,10 @@
                                             <i class="bi bi-whatsapp"></i> Mulai Konsultasi
                                         </a>
                                         <a href="{{ route('user.search') }}" class="btn fw-bold rounded-3 px-3 py-2 small d-inline-flex align-items-center justify-content-center text-nowrap" style="background-color: #F3E8FF; color: #5E2CB5; height: 38px;">Jadwal Ulang</a>
+                                        <form action="{{ route('booking.cancel', $session->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan sesi konsultasi ini?')" class="d-inline m-0">
+                                            @csrf
+                                            <button type="submit" class="btn btn-light text-secondary border fw-bold rounded-3 px-3 py-2 small d-inline-flex align-items-center justify-content-center text-nowrap" style="height: 38px;">Batalkan</button>
+                                        </form>
                                     @else
                                         <button type="button" 
                                                 class="btn btn-light text-muted border fw-bold rounded-3 px-3 py-2 small d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" 
@@ -86,8 +107,11 @@
                                             <i class="bi bi-clock-history"></i> Mulai Konsultasi
                                         </button>
                                         <a href="{{ route('user.search') }}" class="btn fw-bold rounded-3 px-3 py-2 small d-inline-flex align-items-center justify-content-center text-nowrap" style="background-color: #F3E8FF; color: #5E2CB5; height: 38px;">Jadwal Ulang</a>
+                                        <form action="{{ route('booking.cancel', $session->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan booking ini?')" class="d-inline m-0">
+                                            @csrf
+                                            <button type="submit" class="btn btn-light text-secondary border fw-bold rounded-3 px-3 py-2 small d-inline-flex align-items-center justify-content-center text-nowrap" style="height: 38px;">Batalkan</button>
+                                        </form>
                                     @endif
-                                    <button type="button" onclick="alert('Permintaan pembatalan sesi telah dikirim ke terapis.')" class="btn btn-light text-secondary border fw-bold rounded-3 px-3 py-2 small d-inline-flex align-items-center justify-content-center text-nowrap" style="height: 38px;">Batalkan</button>
                                 </div>
                             </div>
                         </div>
@@ -170,12 +194,13 @@
                         </div>
 
                         <div class="bg-white p-3 rounded-3 border mb-3">
-                            <div class="d-flex justify-content-between align-items-start mb-1">
-                                <div>
-                                    <h6 class="fw-bold text-dark mb-0">{{ $awaitingPayment->session_type }}</h6>
-                                    <div class="text-muted small">{{ $awaitingPayment->therapist_name }} • {{ $awaitingPayment->booking_date }}</div>
-                                </div>
-                                <span class="fs-5 fw-extrabold text-dark">{{ $awaitingPayment->price }}</span>
+                            <div class="mb-2">
+                                <h6 class="fw-bold text-dark mb-1">{{ $awaitingPayment->session_type }}</h6>
+                                <div class="text-muted small">{{ $awaitingPayment->therapist_name }} • {{ $awaitingPayment->booking_date }}</div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center pt-2 border-top" style="border-top-style: dashed !important; border-color: #E2E8F0 !important;">
+                                <span class="text-secondary small">Total Tarif:</span>
+                                <span class="fs-5 fw-extrabold text-dark text-nowrap">{{ $awaitingPayment->price }}</span>
                             </div>
                         </div>
 
@@ -195,6 +220,45 @@
                     </ul>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ulasan & Rating Terapis -->
+<div class="modal fade" id="reviewSessionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
+            <div class="modal-header text-white p-3" style="background-color: #5E2CB5;">
+                <h6 class="fw-bold mb-0 text-white"><i class="bi bi-star-fill me-2 text-warning"></i> Beri Ulasan & Rating Terapis</h6>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('review.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="booking_id" id="reviewBookingId">
+                <input type="hidden" name="therapist_id" id="reviewTherapistId">
+                
+                <div class="modal-body p-4 text-center">
+                    <p class="text-secondary small mb-3">Bagaimana pengalaman konsultasi Anda bersama <strong class="text-dark" id="reviewTherapistName">Terapis</strong>?</p>
+                    
+                    <!-- Star Rating Selector -->
+                    <div class="d-flex justify-content-center gap-2 mb-4">
+                        @for($i = 1; $i <= 5; $i++)
+                            <i class="bi bi-star text-muted fs-2 star-selector cursor-pointer" data-value="{{ $i }}" onclick="setRatingValue({{ $i }})" style="cursor: pointer; transition: all 0.15s ease;"></i>
+                        @endfor
+                    </div>
+                    <input type="hidden" name="rating" id="reviewRatingInput" value="" required>
+
+                    <!-- Comment Textarea -->
+                    <div class="text-start mb-2">
+                        <label class="form-label small fw-bold text-dark">Tulis Komentar / Masukan</label>
+                        <textarea name="comment" class="form-control rounded-3" rows="4" placeholder="Ceritakan pengalaman Anda membantu tumbuh kembang mental bersama terapis..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light p-3 border-top">
+                    <button type="button" class="btn btn-light border fw-semibold rounded-3" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn text-white fw-bold rounded-3 shadow-sm px-4" style="background-color: #5E2CB5;">Kirim Ulasan</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -226,5 +290,128 @@ function toggleSessionView(viewType) {
         btnList.classList.add('text-secondary');
     }
 }
+
+function openReviewModal(bookingId, therapistId, therapistName) {
+    document.getElementById('reviewBookingId').value = bookingId;
+    document.getElementById('reviewTherapistId').value = therapistId;
+    document.getElementById('reviewTherapistName').textContent = therapistName;
+    
+    // Reset rating selection state
+    setRatingValue(0);
+    document.getElementById('reviewRatingInput').value = '';
+    
+    var m = document.getElementById('reviewSessionModal');
+    bootstrap.Modal.getOrCreateInstance(m).show();
+}
+
+function setRatingValue(val) {
+    document.getElementById('reviewRatingInput').value = val;
+    const stars = document.querySelectorAll('.star-selector');
+    stars.forEach((star, index) => {
+        if (index < val) {
+            star.classList.remove('bi-star', 'text-muted');
+            star.classList.add('bi-star-fill', 'text-warning');
+        } else {
+            star.classList.remove('bi-star-fill', 'text-warning');
+            star.classList.add('bi-star', 'text-muted');
+        }
+    });
+}
+function openPatientMedicalRecordModal(therapist, date, type) {
+    document.getElementById('userRecTherapistName').textContent = 'Terapis Penanggung Jawab: ' + therapist;
+    document.getElementById('userRecDate').textContent = 'Tanggal Sesi: ' + date;
+    document.getElementById('userRecType').textContent = 'Jenis Sesi: ' + type;
+
+    const modalEl = document.getElementById('patientUserMedicalRecordModal');
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+}
+
+function printPatientRecordPDF() {
+    const therapist = document.getElementById('userRecTherapistName').textContent;
+    const date = document.getElementById('userRecDate').textContent;
+    const type = document.getElementById('userRecType').textContent;
+    const patientName = "{{ Auth::user() ? Auth::user()->name : 'Pasien Terdaftar' }}";
+
+    const win = window.open('', '_blank', 'width=850,height=950');
+    const html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Rekam Medis Saya - Terapis Online</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+            <style>
+                body { font-family: system-ui, sans-serif; padding: 2.5rem; background: #fff; }
+                @media print { .no-print { display: none !important; } }
+            </style>
+        </head>
+        <body onload="window.print();">
+            <div class="no-print mb-4 d-flex justify-content-between bg-light p-3 rounded-4 border">
+                <div class="fw-bold"><i class="bi bi-file-earmark-pdf-fill me-2" style="color: #5E2CB5;"></i> Unduh Dokumen Rekam Medis Pasien PDF</div>
+                <button onclick="window.print()" class="btn btn-sm text-white fw-bold px-3 py-1.5 rounded-3" style="background-color: #5E2CB5;">Simpan PDF / Cetak</button>
+            </div>
+            <div class="border rounded-5 p-5 shadow-sm">
+                <h3 class="fw-bold mb-1" style="color: #5E2CB5;"><i class="bi bi-flower2 me-2"></i>Terapis Online Indonesia</h3>
+                <div class="text-secondary small mb-3">Dokumen Resmi Ringkasan Rekam Medis Pasien</div>
+                <div class="p-3 bg-light rounded-4 border mb-4">
+                    <div class="fw-bold text-dark">Nama Pasien: ${patientName}</div>
+                    <div class="small text-secondary">${therapist} • ${date}</div>
+                    <div class="small text-secondary">${type}</div>
+                </div>
+                <h5 class="fw-bold text-dark mb-2">Diagnosa & Hasil Evaluasi Terapis:</h5>
+                <p class="text-secondary mb-4">Kondisi kecemasan emosional membaik secara signifikan. Respon positif terhadap terapi perilaku kognitif (CBT) dan latihan pernapasan teratur.</p>
+                <h5 class="fw-bold text-dark mb-2">Rekomendasi Terapi & Suplemen Herbal:</h5>
+                <p class="text-secondary mb-4">Teh Herbal Chamomile Lavender & Latihan Pernapasan 4-7-8 Setiap Malam Sebelum Tidur.</p>
+                <div class="mt-5 pt-4 border-top text-muted small text-center">Dokumen resmi kesehatan mental pasien terverifikasi sistem Terapis Online.</div>
+            </div>
+        </body>
+        </html>
+    `;
+    win.document.write(html);
+    win.document.close();
+}
 </script>
+
+<!-- Modal Rekam Medis Pasien User -->
+<div class="modal fade" id="patientUserMedicalRecordModal" tabindex="-1" aria-labelledby="patientUserMedicalRecordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
+            <div class="modal-header border-0 text-white p-4" style="background: linear-gradient(135deg, #5E2CB5 0%, #4C1D95 100%);">
+                <div>
+                    <h5 class="modal-title fw-bold" id="patientUserMedicalRecordModalLabel"><i class="bi bi-folder2-open me-2"></i> Rekam Medis & Hasil Konsultasi Saya</h5>
+                    <div class="small opacity-75 mt-1">Diterbitkan oleh Terapis Terlisensi • Terapis Online</div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="bg-light p-3.5 rounded-4 border mb-4">
+                    <h6 class="fw-bold text-dark mb-1" id="userRecTherapistName">Terapis Penanggung Jawab: Dr. Sarah Jenkins</h6>
+                    <div class="text-secondary small mb-1" id="userRecDate">Tanggal Sesi: -</div>
+                    <div class="text-secondary small" id="userRecType">Jenis Sesi: Konsultasi Online</div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="fw-bold text-dark mb-2"><i class="bi bi-journal-check text-purple me-2" style="color: #5E2CB5;"></i> Diagnosa & Evaluasi Perkembangan Terapi</h6>
+                    <div class="p-3 bg-white border rounded-3 text-secondary small" style="line-height: 1.6;">
+                        Kondisi kecemasan emosional pasien menunjukkan grafik perbaikan positif yang signifikan. Pengelolaan kecemasan dengan metode *Cognitive Behavioral Therapy (CBT)* berjalan efektif. Pasien direkomendasikan untuk tetap menjaga pola tidur teratur dan melakukan latihan pernapasan mandiri.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="fw-bold text-dark mb-2"><i class="bi bi-prescription2 text-purple me-2" style="color: #5E2CB5;"></i> Rekomendasi Terapi & Herbal</h6>
+                    <div class="p-3 bg-light border rounded-3 text-dark small fw-semibold">
+                        <i class="bi bi-check-circle-fill text-success me-1.5"></i> Teh Herbal Chamomile Lavender (Konsumsi 1x Sebelum Tidur)<br>
+                        <i class="bi bi-check-circle-fill text-success me-1.5"></i> Latihan Pernapasan Relaksasi 4-7-8 Durasi 10 Menit Setiap Hari
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0 p-4 pt-0 justify-content-between">
+                <button type="button" onclick="printPatientRecordPDF()" class="btn border fw-bold rounded-3" style="color: #5E2CB5; border-color: #5E2CB5;">
+                    <i class="bi bi-printer me-1"></i> Cetak / Unduh Rekam Medis (PDF)
+                </button>
+                <button type="button" class="btn text-white fw-bold rounded-3 px-4" style="background-color: #5E2CB5;" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

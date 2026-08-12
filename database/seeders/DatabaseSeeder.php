@@ -8,6 +8,9 @@ use App\Models\BookingActivity;
 use App\Models\Booking;
 use App\Models\Review;
 use App\Models\QrisSetting;
+use App\Models\Product;
+use App\Models\Clinic;
+use App\Models\MedicalDocument;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,11 +21,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. QRIS Merchant Default Setting
+        // 1. QRIS Merchant & Bank Account Default Setting
         QrisSetting::create([
             'merchant_name' => 'Terapis Online Indonesia',
             'merchant_city' => 'Jakarta Selatan',
             'provider_name' => 'QRIS Dinamis Bank / E-Wallet',
+            'bank_name' => 'Bank Central Asia (BCA)',
+            'bank_account_number' => '8830991204',
+            'bank_account_holder' => 'PT Terapis Online Indonesia',
             'static_payload' => '00020101021226680016ID.CO.QRIS.WWW01189360091400000000000215ID10200210352520303UME51440014ID.CO.QRIS.WWW02150000000000000005204581253033605802ID5924Terapis Online Indonesia6015Jakarta Selatan6304',
         ]);
 
@@ -51,16 +57,16 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $therapist2 = User::create([
-            'name' => 'Mark Davis, M.Psi',
+            'name' => 'Dr. Julian Vance',
             'email' => 'therapist@terapis.com', // Primary login therapist
             'password' => Hash::make('password'),
             'role' => 'therapist',
             'phone' => '+62 812-3333-4444',
-            'specialty' => 'Keluarga, Trauma, Konseling Pasangan',
+            'specialty' => 'Clinical Psychologist',
             'avatar' => 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=500&auto=format&fit=crop&q=80',
             'rating' => '4.8',
-            'price' => 'Rp 280.000',
-            'bio' => 'Konselor keluarga lisensi utama dengan pengalaman 10+ tahun dalam membantu memulihkan komunikasi keluarga dan resolusi konflik pasangan.',
+            'price' => 'Rp 350.000',
+            'bio' => 'Terapis lisensi terverifikasi dengan pengalaman lebih dari 10 tahun yang mengkhususkan diri dalam terapi perilaku kognitif, pengelolaan kecemasan, dan teknik mindfulness.',
         ]);
 
         $therapist3 = User::create([
@@ -70,7 +76,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'therapist',
             'phone' => '+62 812-5555-6666',
             'specialty' => 'Kecemasan, Stres Berat, Depresi',
-            'avatar' => 'https://images.unsplash.com/photo-1594824813566-88855ce7890b?w=500&auto=format&fit=crop&q=80',
+            'avatar' => 'https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=500&auto=format&fit=crop&q=80',
             'rating' => '5.0',
             'price' => 'Rp 450.000',
             'bio' => 'Psikiater spesialis dalam penanganan gangguan emosi berat, manajemen stres profesional, serta pengobatan medis holistik.',
@@ -83,10 +89,10 @@ class DatabaseSeeder extends Seeder
             'role' => 'therapist',
             'phone' => '+62 812-7777-8888',
             'specialty' => 'Psikologi Anak & Remaja, ADHD',
-            'avatar' => 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&auto=format&fit=crop&q=80',
+            'avatar' => 'https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=500&auto=format&fit=crop&q=80',
             'rating' => '4.7',
             'price' => 'Rp 300.000',
-            'bio' => 'Spesialis kesehatan mental anak dan tumbuh kembang remaja dengan pendekatan permainan edukatif dan konseling orang tua.',
+            'bio' => 'Spesialis kesehatan mental child and adolescent dengan pendekatan play therapy dan konseling keluarga.',
         ]);
 
         $therapist5 = User::create([
@@ -122,7 +128,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'therapist',
             'phone' => '+62 812-1010-2020',
             'specialty' => 'Trauma, PTSD, Kecemasan Akut',
-            'avatar' => 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=500&auto=format&fit=crop&q=80',
+            'avatar' => 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&auto=format&fit=crop&q=80',
             'rating' => '4.9',
             'price' => 'Rp 400.000',
             'bio' => 'Psikiater trauma spesialis pemulihan luka batin, trauma masa kecil, dan PTSD.',
@@ -135,7 +141,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'therapist',
             'phone' => '+62 812-3030-4040',
             'specialty' => 'Depresi, Kecemasan, Emosi',
-            'avatar' => 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=500&auto=format&fit=crop&q=80',
+            'avatar' => 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=500&auto=format&fit=crop&q=80',
             'rating' => '5.0',
             'price' => 'Rp 360.000',
             'bio' => 'Dokter lulusan luar negeri dengan keahlian khusus pada penanganan depresi berkepanjangan.',
@@ -297,6 +303,121 @@ class DatabaseSeeder extends Seeder
             'therapist_id' => $therapist3->id,
             'rating' => 5,
             'comment' => 'Sangat profesional. Dr. Elena paham betul diagnosa stres dan memberikan arahan medis yang jelas.',
+        ]);
+
+        // 8. Herbal Products (Mockup Matching)
+        Product::create([
+            'name' => 'Ashwagandha Calm Drops',
+            'slug' => 'ashwagandha-calm-drops',
+            'description' => 'A potent adaptogenic tincture designed to lower cortisol levels and promote a sense of deep relaxation throughout your day.',
+            'category' => 'Stress Relief',
+            'price' => 510000,
+            'price_usd' => 34.00,
+            'image' => 'https://images.unsplash.com/photo-1617897903246-719242758050?w=500&auto=format&fit=crop&q=80',
+            'is_bestseller' => true,
+        ]);
+
+        Product::create([
+            'name' => 'Chamomile Dream Tea',
+            'slug' => 'chamomile-dream-tea',
+            'description' => 'Organic whole-flower chamomile blend to ease anxiety and prepare the mind for restorative sleep.',
+            'category' => 'Better Sleep',
+            'price' => 277500,
+            'price_usd' => 18.50,
+            'image' => 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=500&auto=format&fit=crop&q=80',
+            'is_bestseller' => false,
+        ]);
+
+        Product::create([
+            'name' => 'L-Theanine Focus',
+            'slug' => 'l-theanine-focus',
+            'description' => 'Amino acid supplement derived from green tea to support focused attention without the jitters.',
+            'category' => 'Mental Clarity',
+            'price' => 420000,
+            'price_usd' => 28.00,
+            'image' => 'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?w=500&auto=format&fit=crop&q=80',
+            'is_bestseller' => false,
+        ]);
+
+        Product::create([
+            'name' => 'Magnesium Sleep Rub',
+            'slug' => 'magnesium-sleep-rub',
+            'description' => 'Topical magnesium blended with essential oils to relax muscles and calm the nervous system before bed.',
+            'category' => 'Better Sleep',
+            'price' => 330000,
+            'price_usd' => 22.00,
+            'image' => 'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=500&auto=format&fit=crop&q=80',
+            'is_bestseller' => false,
+        ]);
+
+        Product::create([
+            'name' => 'Rhodiola Energy Gummies',
+            'slug' => 'rhodiola-energy-gummies',
+            'description' => 'A gentle, herbal boost to combat fatigue and improve mental resilience during stressful periods.',
+            'category' => 'Stress Relief',
+            'price' => 367500,
+            'price_usd' => 24.50,
+            'image' => 'https://images.unsplash.com/photo-1550572017-edd951b55104?w=500&auto=format&fit=crop&q=80',
+            'is_bestseller' => false,
+        ]);
+
+        // 9. Offline Clinics (Mockup Matching)
+        Clinic::create([
+            'name' => 'Downtown Serenity Center',
+            'address' => '124 Wellness Ave, Suite 300',
+            'distance' => '2.4 mi',
+            'hours' => 'Until 8:00 PM',
+            'is_open' => true,
+            'latitude' => 47.6205,
+            'longitude' => -122.3493,
+            'phone' => '+62 811-9988-7766',
+        ]);
+
+        Clinic::create([
+            'name' => 'Westside Behavioral Health',
+            'address' => '892 Calm Blvd',
+            'distance' => '4.1 mi',
+            'hours' => 'Opens Tomorrow 9 AM',
+            'is_open' => false,
+            'latitude' => 47.6062,
+            'longitude' => -122.3321,
+            'phone' => '+62 811-9988-7766',
+        ]);
+
+        Clinic::create([
+            'name' => 'North Hills Therapy',
+            'address' => '550 Pine Lane, Bldg B',
+            'distance' => '6.8 mi',
+            'hours' => 'Until 6:00 PM',
+            'is_open' => true,
+            'latitude' => 47.6553,
+            'longitude' => -122.3035,
+            'phone' => '+62 811-9988-7766',
+        ]);
+
+        // 10. Medical Documents for Dr. Julian Vance (Mockup Matching)
+        MedicalDocument::create([
+            'user_id' => $therapist2->id,
+            'file_name' => 'SIK_Vance_2023.pdf',
+            'file_path' => 'documents/SIK_Vance_2023.pdf',
+            'status' => 'verified',
+            'created_at' => now()->subDays(300),
+        ]);
+
+        MedicalDocument::create([
+            'user_id' => $therapist2->id,
+            'file_name' => 'SIK_Renewal_2024.pdf',
+            'file_path' => 'documents/SIK_Renewal_2024.pdf',
+            'status' => 'pending',
+            'created_at' => now(),
+        ]);
+
+        MedicalDocument::create([
+            'user_id' => $therapist2->id,
+            'file_name' => 'Draft_SIK_2022.jpg',
+            'file_path' => 'documents/Draft_SIK_2022.jpg',
+            'status' => 'rejected',
+            'created_at' => now()->subDays(800),
         ]);
     }
 }

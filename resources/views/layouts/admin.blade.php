@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin Portal - SerenePath')</title>
+    <title>@yield('title', 'Admin Portal - Terapis Online')</title>
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,6 +18,9 @@
 
     <!-- Chart.js Library for Analytics Charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- html2pdf.js for Client-Side PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         :root {
@@ -77,6 +80,144 @@
             color: #FFFFFF !important;
             box-shadow: 0 4px 14px rgba(94, 44, 181, 0.3);
         }
+
+        /* Card Container & Grid Divider System */
+        .sp-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .sp-card:hover {
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.75rem;
+        }
+
+        .page-title {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #0F172A;
+            margin-bottom: 0.25rem;
+        }
+
+        .page-subtitle {
+            font-size: 0.92rem;
+            color: #64748B;
+            margin-bottom: 0;
+        }
+
+        .sp-badge-green {
+            background-color: #DCFCE7;
+            color: #166534;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .sp-badge-grey {
+            background-color: #F1F5F9;
+            color: #475569;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+        }
+
+        .sp-badge-pink {
+            background-color: #FCE7F3;
+            color: #9D174D;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+        }
+
+        .btn-sp-purple {
+            background-color: #5E2CB5;
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 0.4rem 1.1rem;
+            border-radius: 10px;
+            border: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-sp-purple:hover {
+            background-color: #4C1D95;
+            color: #FFFFFF;
+        }
+
+        .table-custom {
+            margin-bottom: 0;
+        }
+
+        .table-custom th {
+            background-color: #F8FAFC;
+            color: #64748B;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .table-custom td {
+            padding: 1rem;
+            border-bottom: 1px solid #F1F5F9;
+            vertical-align: middle;
+        }
+
+        .timeline {
+            list-style: none;
+            padding-left: 1.25rem;
+            position: relative;
+            margin-bottom: 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            bottom: 5px;
+            left: 4px;
+            width: 2px;
+            background-color: #E2E8F0;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.25rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -1.25rem;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid #FFFFFF;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+        }
     </style>
 </head>
 <body>
@@ -125,6 +266,18 @@
             <div class="nav flex-column">
                 <a href="{{ route('admin.dashboard') }}" class="admin-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <i class="bi bi-grid-fill"></i> Dashboard
+                </a>
+                <a href="{{ route('admin.products.index') }}" class="admin-nav-item {{ request()->routeIs('admin.products.*') && !request()->routeIs('admin.products.orders') ? 'active' : '' }}">
+                    <i class="bi bi-box-seam"></i> Kelola Produk Herbal
+                </a>
+                <a href="{{ route('admin.products.orders') }}" class="admin-nav-item {{ request()->routeIs('admin.products.orders') ? 'active' : '' }}">
+                    <i class="bi bi-bag-check"></i> Pesanan Produk
+                </a>
+                <a href="{{ route('admin.clinics.index') }}" class="admin-nav-item {{ request()->routeIs('admin.clinics.*') ? 'active' : '' }}">
+                    <i class="bi bi-geo-alt"></i> Kelola Klinik Offline
+                </a>
+                <a href="{{ route('admin.medical_documents.index') }}" class="admin-nav-item {{ request()->routeIs('admin.medical_documents.*') ? 'active' : '' }}">
+                    <i class="bi bi-file-earmark-medical"></i> Verifikasi SIK Dokter
                 </a>
                 <a href="{{ route('admin.qris') }}" class="admin-nav-item {{ request()->routeIs('admin.qris') ? 'active' : '' }}">
                     <i class="bi bi-qr-code-scan"></i> Kelola QRIS Master
@@ -189,6 +342,58 @@
                 modal.show();
             }
         }
+
+        // Global Aesthetic Toast Notification system replacing ugly browser alert()
+        function showToast(message, type = 'success') {
+            let toastContainer = document.getElementById('toastContainer');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.id = 'toastContainer';
+                toastContainer.style.cssText = 'position: fixed; top: 24px; right: 24px; z-index: 99999; display: flex; flex-direction: column; gap: 10px; max-width: 440px; width: calc(100% - 48px); pointer-events: none;';
+                document.body.appendChild(toastContainer);
+            }
+
+            const toast = document.createElement('div');
+            toast.style.cssText = 'pointer-events: auto; background: #FFFFFF; border-left: 5px solid #5E2CB5; color: #0F172A; padding: 14px 18px; border-radius: 14px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14); display: flex; align-items: center; justify-content: space-between; gap: 12px; transform: translateY(-20px); opacity: 0; transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); font-family: Inter, system-ui, sans-serif; font-size: 0.9rem; font-weight: 600; border-top: 1px solid rgba(226, 232, 240, 0.9); border-right: 1px solid rgba(226, 232, 240, 0.9); border-bottom: 1px solid rgba(226, 232, 240, 0.9);';
+
+            let iconHtml = '<i class="bi bi-check-circle-fill fs-5" style="color: #5E2CB5;"></i>';
+            if (type === 'danger' || type === 'error') {
+                toast.style.borderLeftColor = '#EF4444';
+                iconHtml = '<i class="bi bi-x-circle-fill fs-5" style="color: #EF4444;"></i>';
+            } else if (type === 'warning') {
+                toast.style.borderLeftColor = '#F59E0B';
+                iconHtml = '<i class="bi bi-exclamation-triangle-fill fs-5" style="color: #F59E0B;"></i>';
+            } else if (type === 'info') {
+                toast.style.borderLeftColor = '#5E2CB5';
+                iconHtml = '<i class="bi bi-info-circle-fill fs-5" style="color: #5E2CB5;"></i>';
+            }
+
+            toast.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    ${iconHtml}
+                    <span>${message}</span>
+                </div>
+                <button onclick="this.parentElement.remove()" style="background: none; border: none; color: #94A3B8; cursor: pointer; padding: 0; display: flex; align-items: center;"><i class="bi bi-x-lg fs-6"></i></button>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.style.transform = 'translateY(0)';
+                toast.style.opacity = '1';
+            });
+
+            setTimeout(() => {
+                toast.style.transform = 'translateY(-20px)';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 350);
+            }, 4000);
+        }
+
+        // Globally override browser alert popup with modern toast notification
+        window.alert = function(message) {
+            showToast(message, 'info');
+        };
     </script>
 </body>
 </html>

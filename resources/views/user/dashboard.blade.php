@@ -149,6 +149,75 @@
             </div>
         </div>
 
+        <!-- Section: My Herbal Orders (Pesanan Obat & Herbal) -->
+        <div class="mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-dark mb-0" style="font-size: 1.25rem;">Pesanan Obat & Herbal Saya</h5>
+                <a href="{{ route('shop.index') }}" class="btn text-white btn-sm rounded-pill px-3 py-1.5 fw-bold shadow-xs" style="background-color: #5E2CB5; font-size: 0.8rem;">
+                    <i class="bi bi-bag-plus-fill me-1"></i> Beli Herbal Baru
+                </a>
+            </div>
+
+            @forelse($productOrders as $order)
+                <div class="bg-white p-4 rounded-4 border shadow-sm mb-3" style="border-color: #E2E8F0 !important; border-left: 5px solid #5E2CB5 !important;">
+                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="{{ $order->product->image }}" alt="{{ $order->product->name }}" class="rounded-3 border object-fit-cover" style="width: 60px; height: 60px;">
+                            <div>
+                                <h6 class="fw-bold text-dark mb-1">{{ $order->product->name }} <span class="text-secondary small fw-normal">({{ $order->quantity }} pcs)</span></h6>
+                                <div class="text-muted small mb-1">
+                                    <i class="bi bi-calendar3 me-1"></i> Dipesan: {{ $order->created_at->format('d M Y') }} | Total: <strong>Rp {{ number_format($order->total_price, 0, ',', '.') }}</strong>
+                                </div>
+                                <div class="text-muted small text-truncate" style="max-width: 320px;" title="{{ $order->shipping_address }}">
+                                    <i class="bi bi-geo-alt me-1"></i> Alamat: {{ $order->shipping_address }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-3">
+                            <!-- Status Badges -->
+                            <div>
+                                @if($order->status === 'completed')
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-3 small">Selesai / Dikirim</span>
+                                @elseif($order->status === 'accepted')
+                                    <span class="badge bg-info-subtle text-info border border-info-subtle px-3 py-2 rounded-3 small">Sedang Dikemas</span>
+                                @elseif($order->status === 'cancelled')
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-3 small">Dibatalkan</span>
+                                @else
+                                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-2 rounded-3 small">Menunggu Pembayaran</span>
+                                @endif
+                                
+                                <div class="text-md-end mt-1">
+                                    @if($order->payment_status === 'paid')
+                                        <span class="badge bg-success text-white small" style="font-size: 0.7rem;">LUNAS VIA QRIS</span>
+                                    @else
+                                        <span class="badge bg-secondary text-white small" style="font-size: 0.7rem;">BELUM DIBAYAR</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            @if($order->payment_status === 'unpaid' && $order->status !== 'cancelled')
+                                <a href="{{ route('shop.pay', $order->id) }}" class="btn text-white rounded-3 px-3 py-2 small fw-bold d-flex align-items-center gap-1 shadow-sm" style="background-color: #5E2CB5; font-size: 0.82rem;">
+                                    <i class="bi bi-wallet2"></i> Bayar Sekarang
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="bg-white p-4 rounded-4 border text-center py-5 shadow-xs" style="border-color: #E2E8F0 !important;">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-xs" style="width: 52px; height: 52px; background-color: #F3E8FF; color: #5E2CB5;">
+                        <i class="bi bi-box-seam fs-4"></i>
+                    </div>
+                    <h6 class="fw-bold text-dark">Belum Ada Pesanan Herbal</h6>
+                    <p class="text-secondary small mb-3">Butuh dukungan ekstra untuk rileks atau tidur nyenyak? Temukan kurasi produk obat & herbal di toko kami.</p>
+                    <a href="{{ route('shop.index') }}" class="btn text-white rounded-3 px-4 py-2 small fw-bold shadow-sm" style="background-color: #5E2CB5; font-size: 0.85rem;">
+                        Jelajahi Herbal Shop
+                    </a>
+                </div>
+            @endforelse
+        </div>
+
     </div>
 </div>
 @endsection

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'History & Ratings - SerenePath')
+@section('title', 'History & Ratings - Terapis Online')
 
 @section('content')
 <div class="py-4 bg-light min-vh-100">
@@ -292,7 +292,7 @@ function exportInvoicePDF(invNum, patientName, therapistName, amount, date, stat
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Invoice ${invNum} - SerenePath</title>
+            <title>Invoice ${invNum} - Terapis Online</title>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
             <style>
@@ -315,7 +315,7 @@ function exportInvoicePDF(invNum, patientName, therapistName, amount, date, stat
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center border-bottom pb-4 mb-4">
                     <div>
-                        <h2 class="fw-bold mb-1" style="color: #5E2CB5;"><i class="bi bi-flower2 me-2"></i>SerenePath</h2>
+                        <h2 class="fw-bold mb-1" style="color: #5E2CB5;"><i class="bi bi-flower2 me-2"></i>Terapis Online</h2>
                         <div class="text-secondary small">Platform Telekonsultasi & Kesehatan Mental Terverifikasi</div>
                     </div>
                     <div class="text-end">
@@ -376,7 +376,7 @@ function exportInvoicePDF(invNum, patientName, therapistName, amount, date, stat
                 </div>
 
                 <div class="mt-5 text-center text-muted small border-top pt-3">
-                    Invoice ini sah dan diterbitkan secara elektronik oleh SerenePath Mental Health Platform.<br>
+                    Invoice ini sah dan diterbitkan secara elektronik oleh Terapis Online Mental Health Platform.<br>
                     NMID QRIS: ID1020021035252 • Terverifikasi Bank Indonesia
                 </div>
             </div>
@@ -399,7 +399,7 @@ function exportInvoicePDF(invNum, patientName, therapistName, amount, date, stat
                     </div>
                     <div>
                         <h5 class="fw-bold mb-0">Bukti Pembayaran Kuitansi / Invoice</h5>
-                        <div class="small opacity-75">SerenePath Mental Health Platform</div>
+                        <div class="small opacity-75">Terapis Online Mental Health Platform</div>
                     </div>
                 </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>

@@ -13,7 +13,7 @@
         <button type="button" onclick="window.print()" class="btn btn-light text-dark border fw-semibold px-3 py-2.5 rounded-3 shadow-sm d-flex align-items-center gap-2">
             <i class="bi bi-printer"></i> Cetak Ringkasan
         </button>
-        <button type="button" onclick="alert('Laporan keuangan bulan ini berhasil diunduh (PDF).')" class="btn text-white fw-bold px-4 py-2.5 rounded-3 shadow-sm d-flex align-items-center gap-2" style="background-color: #5E2CB5;">
+        <button type="button" onclick="exportFinancialReportPDF()" class="btn text-white fw-bold px-4 py-2.5 rounded-3 shadow-sm d-flex align-items-center gap-2" style="background-color: #5E2CB5;">
             <i class="bi bi-download"></i> Export Laporan PDF
         </button>
     </div>
@@ -77,21 +77,21 @@
 <div class="bg-white p-4 rounded-4 border shadow-sm" style="border-color: #E2E8F0 !important;">
     <!-- Filter Pills & Search Bar -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-        <div class="btn-group border rounded-3 p-1 bg-light">
-            <button type="button" class="btn btn-sm text-white fw-bold px-3 shadow-sm" style="background-color: #5E2CB5;">Semua Invoice</button>
-            <button type="button" class="btn btn-sm text-secondary fw-semibold px-3">Lunas (Paid)</button>
-            <button type="button" class="btn btn-sm text-secondary fw-semibold px-3">Pending</button>
+        <div class="btn-group border rounded-3 p-1 bg-light" id="invoice-status-filter">
+            <button type="button" class="btn btn-sm text-white fw-bold px-3 shadow-sm active-invoice-btn" onclick="filterInvoiceStatus('all', this)" style="background-color: #5E2CB5; color: #FFFFFF;">Semua Invoice</button>
+            <button type="button" class="btn btn-sm text-secondary fw-semibold px-3" onclick="filterInvoiceStatus('lunas', this)">Lunas (Paid)</button>
+            <button type="button" class="btn btn-sm text-secondary fw-semibold px-3" onclick="filterInvoiceStatus('pending', this)">Pending</button>
         </div>
 
         <div class="input-group bg-light rounded-3" style="max-width: 320px;">
             <span class="input-group-text bg-transparent border-0"><i class="bi bi-search text-muted"></i></span>
-            <input type="text" class="form-control bg-transparent border-0 small" placeholder="Cari No. Invoice atau Pasien...">
+            <input type="text" id="invoiceSearchInput" onkeyup="searchInvoiceTable()" class="form-control bg-transparent border-0 small" placeholder="Cari No. Invoice atau Pasien...">
         </div>
     </div>
 
     <!-- Invoices Table -->
     <div class="table-responsive">
-        <table class="table align-middle table-hover">
+        <table class="table align-middle table-hover" id="invoices-main-table">
             <thead class="bg-light">
                 <tr class="text-secondary small fw-bold" style="font-size: 0.82rem;">
                     <th class="py-3 ps-3">NO. INVOICE</th>
@@ -104,71 +104,58 @@
                 </tr>
             </thead>
             <tbody style="font-size: 0.92rem;">
-                <!-- Row 1 -->
-                <tr>
+                @forelse($invoices as $index => $inv)
+                @php
+                    $isPaid = ($inv->payment_status === 'paid' || $inv->status === 'completed' || $inv->status === 'accepted');
+                    $invNum = '#INV-2026-' . strtoupper(substr($inv->id, 0, 8));
+                    $statusKey = $isPaid ? 'lunas' : 'pending';
+                @endphp
+                <tr class="invoice-row-item" data-status="{{ $statusKey }}">
                     <td class="ps-3">
-                        <span class="fw-bold text-dark font-monospace">#INV-2026-089</span>
+                        <span class="fw-bold text-dark font-monospace invoice-num">{{ $invNum }}</span>
                     </td>
                     <td>
                         <div class="d-flex align-items-center gap-2">
-                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80" class="rounded-circle object-fit-cover" style="width: 36px; height: 36px;" alt="Sarah Jenkins">
+                            <div class="rounded-circle text-purple fw-bold d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #F3E8FF; color: #5E2CB5; font-size: 0.85rem;">
+                                {{ strtoupper(substr($inv->patient_name ?? 'P', 0, 2)) }}
+                            </div>
                             <div>
-                                <div class="fw-bold text-dark">Sarah Jenkins</div>
-                                <div class="text-muted" style="font-size: 0.78rem;">Anxiety Management</div>
+                                <div class="fw-bold text-dark invoice-patient">{{ $inv->patient_name ?? 'Pasien Terdaftar' }}</div>
+                                <div class="text-muted" style="font-size: 0.78rem;">{{ $inv->session_type ?? 'Konsultasi Online' }}</div>
                             </div>
                         </div>
                     </td>
-                    <td class="text-secondary">05 Ags 2026, 10:00 WIB</td>
+                    <td class="text-secondary">{{ $inv->booking_date ?? now()->format('d M Y') }}, {{ $inv->booking_time ?? '10:00 WIB' }}</td>
                     <td>
                         <span class="badge bg-light text-dark border px-2.5 py-1.5 fw-semibold" style="border-radius: 6px;">
                             <i class="bi bi-qr-code me-1" style="color: #5E2CB5;"></i> Dynamic QRIS
                         </span>
                     </td>
-                    <td class="fw-extrabold text-dark">Rp 350.000</td>
+                    <td class="fw-extrabold text-dark">{{ $inv->price ?? 'Rp 350.000' }}</td>
                     <td>
-                        <span class="badge bg-success-subtle text-success px-3 py-1.5 rounded-pill fw-bold" style="font-size: 0.78rem;">
-                            <i class="bi bi-check-circle-fill me-1"></i> LUNAS
-                        </span>
+                        @if($isPaid)
+                            <span class="badge bg-success-subtle text-success px-3 py-1.5 rounded-pill fw-bold" style="font-size: 0.78rem;">
+                                <i class="bi bi-check-circle-fill me-1"></i> LUNAS
+                            </span>
+                        @else
+                            <span class="badge bg-warning-subtle text-warning-emphasis px-3 py-1.5 rounded-pill fw-bold" style="font-size: 0.78rem; background-color: #FEF3C7; color: #92400E;">
+                                <i class="bi bi-clock-history me-1"></i> PENDING
+                            </span>
+                        @endif
                     </td>
                     <td class="text-end pe-3">
-                        <button type="button" class="btn btn-sm text-purple fw-bold rounded-3 px-3 py-1.5" style="background-color: #F3E8FF; color: #5E2CB5;" data-bs-toggle="modal" data-bs-target="#invoiceModal1">
+                        <button type="button" onclick="exportInvoicePDF('{{ $invNum }}', '{{ $inv->patient_name }}', '{{ $inv->therapist_name }}', '{{ $inv->price }}', '{{ $inv->booking_date }}', '{{ $isPaid ? 'LUNAS' : 'PENDING' }}')" class="btn btn-sm text-purple fw-bold rounded-3 px-3 py-1.5" style="background-color: #F3E8FF; color: #5E2CB5;">
                             <i class="bi bi-receipt me-1"></i> Detail Invoice
                         </button>
                     </td>
                 </tr>
-
-                <!-- Row 2 -->
+                @empty
                 <tr>
-                    <td class="ps-3">
-                        <span class="fw-bold text-dark font-monospace">#INV-2026-090</span>
-                    </td>
-                    <td>
-                        <div class="d-flex align-items-center gap-2">
-                            <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=150&auto=format&fit=crop&q=80" class="rounded-circle object-fit-cover" style="width: 36px; height: 36px;" alt="Michael T.">
-                            <div>
-                                <div class="fw-bold text-dark">Michael T.</div>
-                                <div class="text-muted" style="font-size: 0.78rem;">Initial Consultation</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="text-secondary">06 Ags 2026, 11:30 WIB</td>
-                    <td>
-                        <span class="badge bg-light text-dark border px-2.5 py-1.5 fw-semibold" style="border-radius: 6px;">
-                            <i class="bi bi-qr-code me-1" style="color: #5E2CB5;"></i> Dynamic QRIS
-                        </span>
-                    </td>
-                    <td class="fw-extrabold text-dark">Rp 350.000</td>
-                    <td>
-                        <span class="badge bg-warning-subtle text-warning-emphasis px-3 py-1.5 rounded-pill fw-bold" style="font-size: 0.78rem; background-color: #FEF3C7; color: #92400E;">
-                            <i class="bi bi-clock-history me-1"></i> PENDING
-                        </span>
-                    </td>
-                    <td class="text-end pe-3">
-                        <button type="button" class="btn btn-sm text-purple fw-bold rounded-3 px-3 py-1.5" style="background-color: #F3E8FF; color: #5E2CB5;" data-bs-toggle="modal" data-bs-target="#invoiceModal2">
-                            <i class="bi bi-receipt me-1"></i> Detail Invoice
-                        </button>
+                    <td colspan="7" class="text-center py-4 text-muted small">
+                        Belum ada faktur transaksi pembayaran di database.
                     </td>
                 </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -186,7 +173,7 @@
                         <i class="bi bi-flower2 fs-3"></i>
                     </div>
                     <div>
-                        <h4 class="fw-bold mb-0">SerenePath Invoice</h4>
+                        <h4 class="fw-bold mb-0">Terapis Online Invoice</h4>
                         <div class="small opacity-75">Resmi • Terverifikasi Sistem QRIS</div>
                     </div>
                 </div>
@@ -221,7 +208,7 @@
                             <div class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">DITERBITKAN OLEH</div>
                             <div class="fw-bold text-dark fs-6">Dr. Julian Vance, Ph.D.</div>
                             <div class="text-secondary small">Spesialis Cognitive Behavioral Therapy (CBT)</div>
-                            <div class="text-muted small mt-2"><i class="bi bi-envelope me-1"></i> therapist@serenepath.com</div>
+                            <div class="text-muted small mt-2"><i class="bi bi-envelope me-1"></i> therapist@terapis.com</div>
                         </div>
                     </div>
 
@@ -302,7 +289,7 @@
                         <i class="bi bi-clock-history fs-3 text-warning"></i>
                     </div>
                     <div>
-                        <h4 class="fw-bold mb-0">SerenePath Invoice (Pending)</h4>
+                        <h4 class="fw-bold mb-0">Terapis Online Invoice (Pending)</h4>
                         <div class="small opacity-75">Menunggu Konfirmasi Bukti Pembayaran QRIS</div>
                     </div>
                 </div>
@@ -367,7 +354,7 @@ function exportInvoicePDF(invNum, patientName, therapistName, amount, date, stat
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Invoice ${invNum} - SerenePath</title>
+            <title>Invoice ${invNum} - Terapis Online</title>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
             <style>
@@ -390,7 +377,7 @@ function exportInvoicePDF(invNum, patientName, therapistName, amount, date, stat
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center border-bottom pb-4 mb-4">
                     <div>
-                        <h2 class="fw-bold mb-1" style="color: #5E2CB5;"><i class="bi bi-flower2 me-2"></i>SerenePath</h2>
+                        <h2 class="fw-bold mb-1" style="color: #5E2CB5;"><i class="bi bi-flower2 me-2"></i>Terapis Online</h2>
                         <div class="text-secondary small">Platform Telekonsultasi & Kesehatan Mental Terverifikasi</div>
                     </div>
                     <div class="text-end">
@@ -451,7 +438,7 @@ function exportInvoicePDF(invNum, patientName, therapistName, amount, date, stat
                 </div>
 
                 <div class="mt-5 text-center text-muted small border-top pt-3">
-                    Invoice ini sah dan diterbitkan secara elektronik oleh SerenePath Mental Health Platform.<br>
+                    Invoice ini sah dan diterbitkan secara elektronik oleh Terapis Online Mental Health Platform.<br>
                     NMID QRIS: ID1020021035252 • Terverifikasi Bank Indonesia
                 </div>
             </div>
@@ -460,6 +447,149 @@ function exportInvoicePDF(invNum, patientName, therapistName, amount, date, stat
     `;
     printWindow.document.write(htmlContent);
     printWindow.document.close();
+}
+
+function exportFinancialReportPDF() {
+    const reportWindow = window.open('', '_blank', 'width=900,height=1000');
+    const reportContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Laporan Keuangan Terapis - Terapis Online</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+            <style>
+                body { font-family: system-ui, -apple-system, sans-serif; background-color: #ffffff; padding: 2rem; }
+                @media print { .no-print { display: none !important; } }
+            </style>
+        </head>
+        <body onload="window.print();">
+            <div class="no-print mb-4 d-flex justify-content-between align-items-center bg-light p-3 rounded-4 border">
+                <div class="fw-bold text-dark"><i class="bi bi-file-earmark-pdf-fill me-2" style="color: #5E2CB5;"></i> Mode Export Laporan Keuangan Terapis PDF</div>
+                <button onclick="window.print()" class="btn text-white fw-bold btn-sm px-4 rounded-3" style="background-color: #5E2CB5;">
+                    <i class="bi bi-printer me-1"></i> Simpan PDF / Cetak Laporan
+                </button>
+            </div>
+
+            <div class="border rounded-5 p-5 shadow-sm">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-4 mb-4">
+                    <div>
+                        <h2 class="fw-bold mb-1" style="color: #5E2CB5;"><i class="bi bi-flower2 me-2"></i>Terapis Online Indonesia</h2>
+                        <div class="text-secondary small">Laporan Ringkasan Keuangan & Faktur Praktik Terapis</div>
+                    </div>
+                    <div class="text-end">
+                        <span class="badge bg-purple text-white px-3 py-1.5 fw-bold rounded-pill mb-2" style="background-color: #5E2CB5;">LAPORAN BULANAN</span>
+                        <div class="text-muted small">Dicetak pada: ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-4">
+                        <div class="p-3 bg-light rounded-4 border">
+                            <div class="text-secondary small">Total Pendapatan Lunas</div>
+                            <div class="fs-4 fw-bold text-dark mt-1">Rp 12.450.000</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-3 bg-light rounded-4 border">
+                            <div class="text-secondary small">Menunggu Pencairan</div>
+                            <div class="fs-4 fw-bold text-dark mt-1">Rp 1.200.000</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-3 bg-light rounded-4 border">
+                            <div class="text-secondary small">Total Transaksi Sesi</div>
+                            <div class="fs-4 fw-bold text-dark mt-1">36 Sesi</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold text-dark mb-3">Rincian Faktur & Pendapatan</h5>
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>No. Faktur</th>
+                            <th>Nama Pasien</th>
+                            <th>Tanggal Sesi</th>
+                            <th>Status Pembayaran</th>
+                            <th class="text-end">Nominal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-monospace fw-bold">#INV-2026-089</td>
+                            <td>Sarah Jenkins</td>
+                            <td>05 Agustus 2026</td>
+                            <td><span class="badge bg-success">Lunas</span></td>
+                            <td class="text-end fw-bold">Rp 350.000</td>
+                        </tr>
+                        <tr>
+                            <td class="font-monospace fw-bold">#INV-2026-042</td>
+                            <td>Michael T. Wicaksono</td>
+                            <td>06 Agustus 2026</td>
+                            <td><span class="badge bg-warning text-dark">Menunggu Pencairan</span></td>
+                            <td class="text-end fw-bold">Rp 280.000</td>
+                        </tr>
+                        <tr>
+                            <td class="font-monospace fw-bold">#INV-2026-015</td>
+                            <td>Emily Rahmawati</td>
+                            <td>07 Agustus 2026</td>
+                            <td><span class="badge bg-success">Lunas</span></td>
+                            <td class="text-end fw-bold">Rp 450.000</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="mt-5 text-center text-muted small border-top pt-3">
+                    Laporan keuangan resmi diterbitkan secara otomatis oleh Terapis Online System.
+                </div>
+            </div>
+        </body>
+        </html>
+    `;
+    reportWindow.document.write(reportContent);
+    reportWindow.document.close();
+}
+
+function filterInvoiceStatus(status, btn) {
+    const buttons = document.querySelectorAll('#invoice-status-filter button');
+    buttons.forEach(b => {
+        b.style.backgroundColor = '';
+        b.style.color = '';
+        b.classList.remove('text-white', 'fw-bold', 'shadow-sm');
+        b.classList.add('text-secondary', 'fw-semibold');
+    });
+
+    btn.style.backgroundColor = '#5E2CB5';
+    btn.style.color = '#FFFFFF';
+    btn.classList.add('text-white', 'fw-bold', 'shadow-sm');
+    btn.classList.remove('text-secondary', 'fw-semibold');
+
+    const rows = document.querySelectorAll('.invoice-row-item');
+    rows.forEach(row => {
+        const rowStatus = row.getAttribute('data-status');
+        if (status === 'all' || rowStatus === status) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+function searchInvoiceTable() {
+    const input = document.getElementById('invoiceSearchInput').value.toLowerCase();
+    const rows = document.querySelectorAll('.invoice-row-item');
+
+    rows.forEach(row => {
+        const num = row.querySelector('.invoice-num')?.textContent.toLowerCase() || '';
+        const patient = row.querySelector('.invoice-patient')?.textContent.toLowerCase() || '';
+
+        if (num.includes(input) || patient.includes(input)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
 }
 </script>
 @endsection

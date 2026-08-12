@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Verifikasi Terapis - SerenePath Admin')
+@section('title', 'Verifikasi Terapis - Terapis Online Admin')
 
 @section('content')
 <div class="mb-4">

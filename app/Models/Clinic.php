@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class QrisSetting extends Model
+class Clinic extends Model
 {
     use HasFactory;
 
@@ -15,14 +15,20 @@ class QrisSetting extends Model
 
     protected $fillable = [
         'id',
-        'merchant_name',
-        'merchant_city',
-        'provider_name',
-        'bank_name',
-        'bank_account_number',
-        'bank_account_holder',
-        'qris_image',
-        'static_payload',
+        'name',
+        'address',
+        'distance',
+        'hours',
+        'is_open',
+        'latitude',
+        'longitude',
+        'phone',
+    ];
+
+    protected $casts = [
+        'is_open' => 'boolean',
+        'latitude' => 'double',
+        'longitude' => 'double',
     ];
 
     protected static function boot()

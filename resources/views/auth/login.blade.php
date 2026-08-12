@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk Akun - SerenePath</title>
+    <title>Masuk Akun - Terapis Online</title>
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,6 +30,9 @@
             background: linear-gradient(180deg, rgba(88, 28, 160, 0.65) 0%, rgba(94, 44, 181, 0.75) 100%), 
                         url('https://lh3.googleusercontent.com/aida-public/AB6AXuBAmPbcwMWt1lHZfBe1NOyRfXkD8gX5JtRZ2dpIYjaYIXB5EeEyNNEhD1R99jYvLxml-uW9S_h0kn2qwXCrhQyWnwsr_VnGaCGUO0Mit69hHA6lI1ysfohmQyJ_MPUb5GU_nCYxtq4W3dgr7_kUy02fprWyzDB8B8xYvqdk_z8_-z-3VOZcGu3tvjNeBAwIfrKKRHvQ5cZO3B1xF9hI1j8AWDBpcya3QutqTNAYBHJzvldXt9v5uVHCgw') center/cover no-repeat;
             min-height: 100vh;
+            height: 100%;
+            position: sticky;
+            top: 0;
             display: flex;
             flex-direction: column;
             justify-content: space-between;

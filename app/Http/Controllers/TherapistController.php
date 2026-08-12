@@ -122,7 +122,19 @@ class TherapistController extends Controller
      */
     public function patients()
     {
-        $patients = User::where('role', 'user')->get();
+        $therapistUser = Auth::user();
+        $query = Booking::query();
+        if ($therapistUser) {
+            $firstName = explode(' ', $therapistUser->name)[0];
+            $query->where(function($q) use ($therapistUser, $firstName) {
+                $q->where('therapist_id', $therapistUser->id)
+                  ->orWhere('therapist_name', 'like', '%' . $firstName . '%');
+            });
+        }
+        
+        // Get unique patient names from bookings
+        $patientNames = $query->pluck('patient_name')->unique();
+        $patients = User::where('role', 'user')->whereIn('name', $patientNames)->get();
         $activeCount = $patients->count();
         $archivedCount = 0;
 
@@ -134,7 +146,17 @@ class TherapistController extends Controller
      */
     public function schedule()
     {
-        $sessions = Booking::orderBy('booking_date', 'asc')->get();
+        $therapistUser = Auth::user();
+        $query = Booking::query();
+        if ($therapistUser) {
+            $firstName = explode(' ', $therapistUser->name)[0];
+            $query->where(function($q) use ($therapistUser, $firstName) {
+                $q->where('therapist_id', $therapistUser->id)
+                  ->orWhere('therapist_name', 'like', '%' . $firstName . '%');
+            });
+        }
+
+        $sessions = $query->orderBy('booking_date', 'asc')->get();
         return view('therapist.schedule', compact('sessions'));
     }
 
@@ -143,10 +165,25 @@ class TherapistController extends Controller
      */
     public function invoices()
     {
-        $invoices = Booking::orderBy('created_at', 'desc')->get();
-        $totalEarnings = '$12,450.00';
-        $pendingPayouts = '$1,200.00';
-        $overdueAmount = '$450.00';
+        $therapistUser = Auth::user();
+        $query = Booking::query();
+        if ($therapistUser) {
+            $firstName = explode(' ', $therapistUser->name)[0];
+            $query->where(function($q) use ($therapistUser, $firstName) {
+                $q->where('therapist_id', $therapistUser->id)
+                  ->orWhere('therapist_name', 'like', '%' . $firstName . '%');
+            });
+        }
+
+        $invoices = $query->orderBy('created_at', 'desc')->get();
+        
+        $totalVal = $invoices->where('payment_status', 'paid')->sum(function($inv) {
+            return (int)preg_replace('/[^\d]/', '', $inv->price ?? '0');
+        });
+        
+        $totalEarnings = 'Rp ' . number_format($totalVal, 0, ',', '.');
+        $pendingPayouts = 'Rp 0';
+        $overdueAmount = 'Rp 0';
 
         return view('therapist.invoices', compact('invoices', 'totalEarnings', 'pendingPayouts', 'overdueAmount'));
     }
@@ -159,12 +196,19 @@ class TherapistController extends Controller
         $therapist = Auth::user() ?? (object) [
             'id' => 1,
             'name' => 'Dr. Julian Vance',
-            'email' => 'therapist@serenepath.com',
+            'email' => 'therapist@terapis.com',
             'specialty' => 'Cognitive Behavioral Therapy (CBT)',
             'bio' => 'Licensed therapist specializing in CBT and anxiety management.',
         ];
 
-        return view('therapist.settings', compact('therapist'));
+        $medicalDocuments = [];
+        if (Auth::check()) {
+            $medicalDocuments = \App\Models\MedicalDocument::where('user_id', Auth::id())
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+
+        return view('therapist.settings', compact('therapist', 'medicalDocuments'));
     }
 
     /**
@@ -177,6 +221,7 @@ class TherapistController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . ($user ? $user->id : 0),
+            'price' => 'nullable|string|max:255',
             'specialty' => 'nullable|string|max:255',
             'password' => 'nullable|string|min:6',
         ]);
@@ -184,6 +229,9 @@ class TherapistController extends Controller
         if ($user) {
             $user->name = $request->name;
             $user->email = $request->email;
+            if ($request->filled('price')) {
+                $user->price = $request->price;
+            }
             if ($request->filled('specialty')) {
                 $user->specialty = $request->specialty;
             }
@@ -193,6 +241,32 @@ class TherapistController extends Controller
             $user->save();
         }
 
-        return redirect()->back()->with('success', 'Pengaturan profil & praktik terapis berhasil disimpan!');
+        return redirect()->back()->with('success', 'Pengaturan profil & tarif terapis berhasil disimpan!');
+    }
+
+    /**
+     * Upload Therapist Medical Document (Surat Izin Kesehatan).
+     */
+    public function uploadMedicalDocument(Request $request)
+    {
+        $request->validate([
+            'document' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+        ]);
+
+        if ($request->hasFile('document')) {
+            $file = $request->file('document');
+            $path = $file->store('documents/medical', 'public');
+
+            \App\Models\MedicalDocument::create([
+                'user_id' => Auth::id(),
+                'file_name' => $file->getClientOriginalName(),
+                'file_path' => 'storage/' . $path,
+                'status' => 'pending',
+            ]);
+
+            return redirect()->back()->with('success', 'Dokumen Surat Izin Kesehatan (SIK) berhasil diunggah! Peninjauan dokumen akan diproses dalam 48 jam.');
+        }
+
+        return redirect()->back()->with('error', 'Gagal mengunggah dokumen.');
     }
 }

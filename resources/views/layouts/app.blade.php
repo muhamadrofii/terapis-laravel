@@ -17,6 +17,9 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+    <!-- html2pdf.js for Client-Side PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <style>
         :root {
             --sp-purple: #5E2CB5;
@@ -133,6 +136,7 @@
                 <div class="navbar-nav mx-auto gap-lg-3 py-2 py-lg-0">
                     <a class="nav-link nav-link-sp {{ request()->routeIs('user.search') ? 'fw-bold text-purple' : '' }}" href="{{ route('user.search') }}">Find Help</a>
                     <a class="nav-link nav-link-sp {{ request()->routeIs('user.sessions') ? 'fw-bold text-purple' : '' }}" href="{{ route('user.sessions') }}">My Sessions</a>
+                    <a class="nav-link nav-link-sp {{ request()->routeIs('shop.*') ? 'fw-bold text-purple border-bottom border-2 border-purple' : '' }}" href="{{ route('shop.index') }}" style="{{ request()->routeIs('shop.*') ? 'border-color: #5E2CB5 !important; color: #5E2CB5 !important;' : '' }}">Resources</a>
                     <a class="nav-link nav-link-sp {{ request()->routeIs('user.payments') ? 'fw-bold text-purple' : '' }}" href="{{ route('user.payments') }}">Payment History</a>
                     <a class="nav-link nav-link-sp {{ request()->routeIs('user.settings') ? 'fw-bold text-purple' : '' }}" href="{{ route('user.settings') }}">Settings</a>
                 </div>
@@ -368,6 +372,58 @@
         function escapeHtml(t) {
             var d = document.createElement('div'); d.textContent = t; return d.innerHTML;
         }
+
+        // Global Aesthetic Toast Notification system replacing ugly browser alert()
+        function showToast(message, type = 'success') {
+            let toastContainer = document.getElementById('toastContainer');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.id = 'toastContainer';
+                toastContainer.style.cssText = 'position: fixed; top: 24px; right: 24px; z-index: 99999; display: flex; flex-direction: column; gap: 10px; max-width: 440px; width: calc(100% - 48px); pointer-events: none;';
+                document.body.appendChild(toastContainer);
+            }
+
+            const toast = document.createElement('div');
+            toast.style.cssText = 'pointer-events: auto; background: #FFFFFF; border-left: 5px solid #5E2CB5; color: #0F172A; padding: 14px 18px; border-radius: 14px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14); display: flex; align-items: center; justify-content: space-between; gap: 12px; transform: translateY(-20px); opacity: 0; transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); font-family: Inter, system-ui, sans-serif; font-size: 0.9rem; font-weight: 600; border-top: 1px solid rgba(226, 232, 240, 0.9); border-right: 1px solid rgba(226, 232, 240, 0.9); border-bottom: 1px solid rgba(226, 232, 240, 0.9);';
+
+            let iconHtml = '<i class="bi bi-check-circle-fill fs-5" style="color: #5E2CB5;"></i>';
+            if (type === 'danger' || type === 'error') {
+                toast.style.borderLeftColor = '#EF4444';
+                iconHtml = '<i class="bi bi-x-circle-fill fs-5" style="color: #EF4444;"></i>';
+            } else if (type === 'warning') {
+                toast.style.borderLeftColor = '#F59E0B';
+                iconHtml = '<i class="bi bi-exclamation-triangle-fill fs-5" style="color: #F59E0B;"></i>';
+            } else if (type === 'info') {
+                toast.style.borderLeftColor = '#5E2CB5';
+                iconHtml = '<i class="bi bi-info-circle-fill fs-5" style="color: #5E2CB5;"></i>';
+            }
+
+            toast.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    ${iconHtml}
+                    <span>${message}</span>
+                </div>
+                <button onclick="this.parentElement.remove()" style="background: none; border: none; color: #94A3B8; cursor: pointer; padding: 0; display: flex; align-items: center;"><i class="bi bi-x-lg fs-6"></i></button>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.style.transform = 'translateY(0)';
+                toast.style.opacity = '1';
+            });
+
+            setTimeout(() => {
+                toast.style.transform = 'translateY(-20px)';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 350);
+            }, 4000);
+        }
+
+        // Globally override browser alert popup with modern toast notification
+        window.alert = function(message) {
+            showToast(message, 'info');
+        };
     </script>
 </body>
 </html>

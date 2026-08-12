@@ -44,7 +44,7 @@ class QrisService
         $setting = QrisSetting::first();
         $rawPayload = $setting && !empty($setting->static_payload)
             ? trim($setting->static_payload)
-            : '00020101021126580014ID.LINKAJA.WWW0118936009110021035252021520091100210352520303UMI51440014ID.CO.QRIS.WWW0215ID10200210352520303UMI5204581253033605802ID5910SerenePath6007Jakarta6304';
+            : '00020101021126580014ID.LINKAJA.WWW0118936009110021035252021520091100210352520303UMI51440014ID.CO.QRIS.WWW0215ID10200210352520303UMI5204581253033605802ID5914Terapis Online6007Jakarta6304';
 
         // 1. Strip trailing CRC (Tag 63 header 6304 and any CRC hex) if present
         $cleanPayload = preg_replace('/6304[A-Fa-f0-9]{0,4}$/', '', $rawPayload);

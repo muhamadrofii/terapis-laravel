@@ -39,6 +39,15 @@
                     <a href="https://wa.me/{{ preg_replace('/[^\d]/', '', $nextSession->whatsapp_number ?? '6281234567890') }}?text=Halo%20{{ urlencode($nextSession->patient_name) }},%20saya%20terapis%20Anda%20siap%20memulai%20sesi%20konsultasi%20online." target="_blank" class="btn btn-success px-4 py-2 rounded-3 fw-bold shadow-sm d-flex align-items-center gap-2" style="font-size: 0.9rem;">
                         <i class="bi bi-whatsapp"></i> Mulai Konsultasi
                     </a>
+                    <button type="button" onclick="confirmCompleteSession('{{ route('therapist.booking.status', $nextSession->id) }}')" class="btn text-white px-4 py-2 rounded-3 fw-bold shadow-sm d-flex align-items-center gap-2" style="background-color: #0D9488; font-size: 0.9rem;">
+                        <i class="bi bi-check-circle-fill"></i> Selesai Konsultasi
+                    </button>
+                    <form action="{{ route('booking.cancel', $nextSession->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan sesi konsultasi mendatang ini?')" class="d-inline m-0">
+                        @csrf
+                        <button type="submit" class="btn btn-light text-danger border px-4 py-2 rounded-3 fw-bold shadow-sm d-flex align-items-center gap-2" style="font-size: 0.9rem;">
+                            <i class="bi bi-x-circle"></i> Batalkan Sesi
+                        </button>
+                    </form>
                 </div>
             </div>
         @else

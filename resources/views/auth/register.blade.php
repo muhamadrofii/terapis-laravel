@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buat Akun Baru - SerenePath</title>
+    <title>Buat Akun Baru - Terapis Online</title>
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +30,10 @@
         .auth-left-banner {
             background: linear-gradient(180deg, rgba(88, 28, 160, 0.65) 0%, rgba(94, 44, 181, 0.75) 100%), 
                         url('https://lh3.googleusercontent.com/aida-public/AB6AXuBAmPbcwMWt1lHZfBe1NOyRfXkD8gX5JtRZ2dpIYjaYIXB5EeEyNNEhD1R99jYvLxml-uW9S_h0kn2qwXCrhQyWnwsr_VnGaCGUO0Mit69hHA6lI1ysfohmQyJ_MPUb5GU_nCYxtq4W3dgr7_kUy02fprWyzDB8B8xYvqdk_z8_-z-3VOZcGu3tvjNeBAwIfrKKRHvQ5cZO3B1xF9hI1j8AWDBpcya3QutqTNAYBHJzvldXt9v5uVHCgw') center/cover no-repeat;
-            height: 100vh;
+            min-height: 100vh;
+            height: 100%;
+            position: sticky;
+            top: 0;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -70,20 +73,19 @@
         /* Right Side Form Box matching login layout */
         .auth-right-container {
             min-height: 100vh;
-            max-height: 100vh;
-            overflow-y: auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem 2rem;
+            padding: 3.5rem 2rem;
             background-color: #FAFAFC;
         }
 
         .auth-form-wrapper {
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
+            margin: auto 0;
             padding-top: 1rem;
-            padding-bottom: 1rem;
+            padding-bottom: 2rem;
         }
 
         .auth-form-title {
@@ -91,13 +93,14 @@
             font-weight: 800;
             color: #0F172A;
             letter-spacing: -0.5px;
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.5rem;
         }
 
         .auth-form-subtitle {
             font-size: 0.95rem;
             color: #64748B;
-            margin-bottom: 2rem;
+            margin-bottom: 1.75rem;
+            line-height: 1.5;
         }
 
         .form-label-custom {
@@ -178,6 +181,51 @@
             color: #4C1D95;
             text-decoration: underline;
         }
+
+        /* Custom Role Selector Styling */
+        .role-select-card {
+            border: 2px solid #E2E8F0;
+            background-color: #FFFFFF;
+            color: #475569;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            text-align: center;
+        }
+
+        .role-select-card:hover {
+            border-color: #5E2CB5;
+            background-color: #F8FAFC;
+        }
+
+        .role-select-card .role-icon {
+            font-size: 1.35rem;
+            color: #64748B;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .role-select-card .role-title {
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: #334155;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-check:checked + .role-select-card {
+            border-color: #5E2CB5 !important;
+            background-color: #F3E8FF !important;
+            box-shadow: 0 0 0 3px rgba(94, 44, 181, 0.15);
+        }
+
+        .btn-check:checked + .role-select-card .role-icon {
+            color: #5E2CB5 !important;
+            transform: scale(1.1);
+        }
+
+        .btn-check:checked + .role-select-card .role-title {
+            color: #5E2CB5 !important;
+        }
     </style>
 </head>
 <body>
@@ -229,16 +277,16 @@
                         <div class="row g-2">
                             <div class="col-6">
                                 <input type="radio" class="btn-check" name="role" id="role_user" value="user" {{ old('role', 'user') === 'user' ? 'checked' : '' }} onchange="toggleTherapistFields()">
-                                <label class="btn btn-outline-secondary w-100 py-2.5 rounded-3 d-flex flex-column align-items-center gap-1 text-dark border shadow-xs" for="role_user" style="cursor: pointer;">
-                                    <i class="bi bi-person-heart fs-5 text-purple" style="color: #5E2CB5;"></i>
-                                    <span class="fw-bold small">Pasien / Klien</span>
+                                <label class="role-select-card w-100 d-flex flex-column align-items-center gap-1" for="role_user">
+                                    <i class="bi bi-person-heart role-icon"></i>
+                                    <span class="role-title">Pasien / Klien</span>
                                 </label>
                             </div>
                             <div class="col-6">
                                 <input type="radio" class="btn-check" name="role" id="role_therapist" value="therapist" {{ old('role') === 'therapist' ? 'checked' : '' }} onchange="toggleTherapistFields()">
-                                <label class="btn btn-outline-secondary w-100 py-2.5 rounded-3 d-flex flex-column align-items-center gap-1 text-dark border shadow-xs" for="role_therapist" style="cursor: pointer;">
-                                    <i class="bi bi-heart-pulse-fill fs-5 text-purple" style="color: #5E2CB5;"></i>
-                                    <span class="fw-bold small">Terapis / Dokter</span>
+                                <label class="role-select-card w-100 d-flex flex-column align-items-center gap-1" for="role_therapist">
+                                    <i class="bi bi-heart-pulse-fill role-icon"></i>
+                                    <span class="role-title">Terapis / Dokter</span>
                                 </label>
                             </div>
                         </div>
@@ -299,7 +347,7 @@
                     <div class="mb-4 form-check">
                         <input type="checkbox" name="terms" class="form-check-input" id="terms" required>
                         <label class="form-check-label small text-muted" for="terms">
-                            Saya setuju dengan <a href="javascript:void(0)" onclick="alert('Syarat & Ketentuan: Layanan SerenePath digunakan untuk konsultasi kesehatan mental secara aman dan rahasia.')" class="link-purple">Syarat & Ketentuan</a> dan <a href="javascript:void(0)" onclick="alert('Kebijakan Privasi: Data pribadi dan sesi konsultasi Anda dijaga kerahasiaannya dengan enkripsi penuh.')" class="link-purple">Kebijakan Privasi</a>.
+                            Saya setuju dengan <a href="javascript:void(0)" onclick="alert('Syarat & Ketentuan: Layanan Terapis Online digunakan untuk konsultasi kesehatan mental secara aman dan rahasia.')" class="link-purple">Syarat & Ketentuan</a> dan <a href="javascript:void(0)" onclick="alert('Kebijakan Privasi: Data pribadi dan sesi konsultasi Anda dijaga kerahasiaannya dengan enkripsi penuh.')" class="link-purple">Kebijakan Privasi</a>.
                         </label>
                     </div>
 

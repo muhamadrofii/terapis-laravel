@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Therapist Dashboard - SerenePath')</title>
+    <title>@yield('title', 'Therapist Dashboard - Terapis Online')</title>
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,6 +16,9 @@
     
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- html2pdf.js for Client-Side PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         :root {
@@ -197,6 +200,7 @@
                 <a class="nav-link nav-link-sp {{ request()->routeIs('therapist.invoices') ? 'fw-bold text-purple' : '' }}" href="{{ route('therapist.invoices') }}">Faktur & Pendapatan</a>
             </div>
 
+            <div class="d-flex align-items-center gap-3">
                 <div class="dropdown">
                     <button class="btn p-0 text-dark border-0 position-relative" type="button" data-bs-toggle="dropdown">
                         <i class="bi bi-bell fs-5"></i>
@@ -329,6 +333,29 @@
             </div>
         </div>
     </footer>
+
+    <!-- Modal Konfirmasi Selesai Sesi (Bootstrap Modal) -->
+    <div class="modal fade" id="confirmCompleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content rounded-4 border-0 shadow-lg text-center p-3">
+                <div class="modal-body py-3">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 60px; height: 60px; background-color: #CCFBF1; color: #0D9488;">
+                        <i class="bi bi-check-circle-fill fs-3"></i>
+                    </div>
+                    <h5 class="fw-bold text-dark mb-1">Selesaikan Sesi?</h5>
+                    <p class="text-secondary small mb-4">Apakah Anda yakin ingin menyelesaikan sesi konsultasi ini? Pasien akan dapat memberikan ulasan.</p>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-light text-secondary border w-50 rounded-3 py-2 small fw-semibold" data-bs-dismiss="modal">Batal</button>
+                        <form id="completeSessionForm" action="" method="POST" class="w-50 m-0">
+                            @csrf
+                            <input type="hidden" name="status" value="completed">
+                            <button type="submit" class="btn text-white w-100 rounded-3 py-2 small fw-bold" style="background-color: #0D9488;">Selesaikan</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal Konfirmasi Logout (Bootstrap Modal) -->
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
@@ -478,6 +505,64 @@
         function escapeHtml(t) {
             var d = document.createElement('div'); d.textContent = t; return d.innerHTML;
         }
+
+        function confirmCompleteSession(actionUrl) {
+            document.getElementById('completeSessionForm').action = actionUrl;
+            var m = document.getElementById('confirmCompleteModal');
+            bootstrap.Modal.getOrCreateInstance(m).show();
+        }
+
+        // Global Aesthetic Toast Notification system replacing ugly browser alert()
+        function showToast(message, type = 'success') {
+            let toastContainer = document.getElementById('toastContainer');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.id = 'toastContainer';
+                toastContainer.style.cssText = 'position: fixed; top: 24px; right: 24px; z-index: 99999; display: flex; flex-direction: column; gap: 10px; max-width: 440px; width: calc(100% - 48px); pointer-events: none;';
+                document.body.appendChild(toastContainer);
+            }
+
+            const toast = document.createElement('div');
+            toast.style.cssText = 'pointer-events: auto; background: #FFFFFF; border-left: 5px solid #5E2CB5; color: #0F172A; padding: 14px 18px; border-radius: 14px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14); display: flex; align-items: center; justify-content: space-between; gap: 12px; transform: translateY(-20px); opacity: 0; transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); font-family: Inter, system-ui, sans-serif; font-size: 0.9rem; font-weight: 600; border-top: 1px solid rgba(226, 232, 240, 0.9); border-right: 1px solid rgba(226, 232, 240, 0.9); border-bottom: 1px solid rgba(226, 232, 240, 0.9);';
+
+            let iconHtml = '<i class="bi bi-check-circle-fill fs-5" style="color: #5E2CB5;"></i>';
+            if (type === 'danger' || type === 'error') {
+                toast.style.borderLeftColor = '#EF4444';
+                iconHtml = '<i class="bi bi-x-circle-fill fs-5" style="color: #EF4444;"></i>';
+            } else if (type === 'warning') {
+                toast.style.borderLeftColor = '#F59E0B';
+                iconHtml = '<i class="bi bi-exclamation-triangle-fill fs-5" style="color: #F59E0B;"></i>';
+            } else if (type === 'info') {
+                toast.style.borderLeftColor = '#5E2CB5';
+                iconHtml = '<i class="bi bi-info-circle-fill fs-5" style="color: #5E2CB5;"></i>';
+            }
+
+            toast.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    ${iconHtml}
+                    <span>${message}</span>
+                </div>
+                <button onclick="this.parentElement.remove()" style="background: none; border: none; color: #94A3B8; cursor: pointer; padding: 0; display: flex; align-items: center;"><i class="bi bi-x-lg fs-6"></i></button>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.style.transform = 'translateY(0)';
+                toast.style.opacity = '1';
+            });
+
+            setTimeout(() => {
+                toast.style.transform = 'translateY(-20px)';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 350);
+            }, 4000);
+        }
+
+        // Globally override browser alert popup with modern toast notification
+        window.alert = function(message) {
+            showToast(message, 'info');
+        };
     </script>
 </body>
 </html>
