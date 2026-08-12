@@ -42,7 +42,10 @@ Thumbs.db
 Homestead.json
 Homestead.yaml
 
-# Compressed Archives
+# Compressed Archives & Reference Mockup Assets
 *.zip
 *.tar.gz
 *.rar
+*.sql
+/terapis slide 1
+/terapis slide 2
