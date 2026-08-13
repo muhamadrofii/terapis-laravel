@@ -9,6 +9,8 @@ use App\Models\Booking;
 use App\Models\Review;
 use App\Models\QrisSetting;
 use App\Models\Product;
+use App\Models\ProductOrder;
+use App\Models\Message;
 use App\Models\Clinic;
 use App\Models\MedicalDocument;
 use Illuminate\Database\Seeder;
@@ -22,20 +24,24 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // 1. QRIS Merchant & Bank Account Default Setting
+        $qrisPayloadSample = '00020101021226680016ID.CO.QRIS.WWW01189360091400000000000215ID10200210352520303UME51440014ID.CO.QRIS.WWW02150000000000000005204581253033605802ID5924Terapis Online Indonesia6015Jakarta Selatan6304';
+
         QrisSetting::create([
             'merchant_name' => 'Terapis Online Indonesia',
             'merchant_city' => 'Jakarta Selatan',
             'provider_name' => 'QRIS Dinamis Bank / E-Wallet',
+            'qris_image' => 'qris/sample_qris.png',
             'bank_name' => 'Bank Central Asia (BCA)',
             'bank_account_number' => '8830991204',
             'bank_account_holder' => 'PT Terapis Online Indonesia',
-            'static_payload' => '00020101021226680016ID.CO.QRIS.WWW01189360091400000000000215ID10200210352520303UME51440014ID.CO.QRIS.WWW02150000000000000005204581253033605802ID5924Terapis Online Indonesia6015Jakarta Selatan6304',
+            'static_payload' => $qrisPayloadSample,
         ]);
 
         // 2. Admin User
         $admin = User::create([
             'name' => 'Admin Utama Terapis Online',
             'email' => 'admin@terapis.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'role' => 'admin',
             'phone' => '+62 811-9988-7766',
@@ -46,6 +52,7 @@ class DatabaseSeeder extends Seeder
         $therapist1 = User::create([
             'name' => 'Dr. Sarah Jenkins, Ph.D.',
             'email' => 'sarah.jenkins@terapis.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'role' => 'therapist',
             'phone' => '+62 812-1111-2222',
@@ -59,6 +66,7 @@ class DatabaseSeeder extends Seeder
         $therapist2 = User::create([
             'name' => 'Dr. Julian Vance',
             'email' => 'therapist@terapis.com', // Primary login therapist
+            'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'role' => 'therapist',
             'phone' => '+62 812-3333-4444',
@@ -72,6 +80,7 @@ class DatabaseSeeder extends Seeder
         $therapist3 = User::create([
             'name' => 'Dr. Elena Rostova, Sp.KJ',
             'email' => 'elena.rostova@terapis.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'role' => 'therapist',
             'phone' => '+62 812-5555-6666',
@@ -85,6 +94,7 @@ class DatabaseSeeder extends Seeder
         $therapist4 = User::create([
             'name' => 'Dr. Emily Stanton, Sp.A',
             'email' => 'emily.stanton@terapis.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'role' => 'therapist',
             'phone' => '+62 812-7777-8888',
@@ -98,6 +108,7 @@ class DatabaseSeeder extends Seeder
         $therapist5 = User::create([
             'name' => 'Dr. Aris Kusuma, M.Psi',
             'email' => 'aris.kusuma@terapis.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'role' => 'therapist',
             'phone' => '+62 812-8888-9999',
@@ -111,6 +122,7 @@ class DatabaseSeeder extends Seeder
         $therapist6 = User::create([
             'name' => 'Dr. Maya Putri, M.Psi',
             'email' => 'maya.putri@terapis.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'role' => 'therapist',
             'phone' => '+62 812-9999-0000',
@@ -124,6 +136,7 @@ class DatabaseSeeder extends Seeder
         $therapist7 = User::create([
             'name' => 'Dr. Budi Hermawan, Sp.KJ',
             'email' => 'budi.hermawan@terapis.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'role' => 'therapist',
             'phone' => '+62 812-1010-2020',
@@ -137,6 +150,7 @@ class DatabaseSeeder extends Seeder
         $therapist8 = User::create([
             'name' => 'Dr. Jessica Tan, Ph.D.',
             'email' => 'jessica.tan@terapis.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'role' => 'therapist',
             'phone' => '+62 812-3030-4040',
@@ -166,6 +180,7 @@ class DatabaseSeeder extends Seeder
             $patientModels[] = User::create([
                 'name' => $p['name'],
                 'email' => $p['email'],
+                'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'role' => 'user',
                 'phone' => $p['phone'],
@@ -205,88 +220,149 @@ class DatabaseSeeder extends Seeder
             'status' => 'pending',
         ]);
 
+        TherapistVerification::create([
+            'user_id' => $therapist5->id,
+            'therapist_name' => $therapist5->name,
+            'specialty' => $therapist5->specialty,
+            'license_number' => 'SIP-PSI-2024-5055',
+            'status' => 'verified',
+        ]);
+
+        TherapistVerification::create([
+            'user_id' => $therapist6->id,
+            'therapist_name' => $therapist6->name,
+            'specialty' => $therapist6->specialty,
+            'license_number' => 'SIP-PSI-2024-6012',
+            'status' => 'verified',
+        ]);
+
         // 6. Bookings (Transaksi Pembayaran QRIS)
-        $bookingsData = [
-            [
-                'user_id' => $patientModels[0]->id,
-                'therapist_id' => $therapist1->id,
-                'therapist_name' => $therapist1->name,
-                'patient_name' => $patientModels[0]->name,
-                'session_type' => 'Terapi Perilaku Kognitif (CBT)',
-                'booking_date' => now()->toDateString(),
-                'booking_time' => '10:00 WIB',
-                'status' => 'accepted',
-                'payment_status' => 'paid',
-                'notes' => 'Mengalami rasa cemas berlebih saat menghadapi presentasi kantor.',
-                'price' => 'Rp 350.000',
-                'whatsapp_number' => '6281234567890',
-            ],
-            [
-                'user_id' => $patientModels[1]->id,
-                'therapist_id' => $therapist2->id,
-                'therapist_name' => $therapist2->name,
-                'patient_name' => $patientModels[1]->name,
-                'session_type' => 'Konsultasi Pasangan & Keluarga',
-                'booking_date' => now()->addDays(1)->toDateString(),
-                'booking_time' => '14:00 WIB',
-                'status' => 'pending',
-                'payment_status' => 'unpaid',
-                'notes' => 'Diskusi perbaikan pola komunikasi suami istri.',
-                'price' => 'Rp 280.000',
-                'whatsapp_number' => '6281311112222',
-            ],
-            [
-                'user_id' => $patientModels[2]->id,
-                'therapist_id' => $therapist3->id,
-                'therapist_name' => $therapist3->name,
-                'patient_name' => $patientModels[2]->name,
-                'session_type' => 'Konsultasi Psikiatri & Stres',
-                'booking_date' => now()->addDays(2)->toDateString(),
-                'booking_time' => '11:00 WIB',
-                'status' => 'accepted',
-                'payment_status' => 'paid',
-                'notes' => 'Insomnia dan kelelahan mental berkelanjutan.',
-                'price' => 'Rp 450.000',
-                'whatsapp_number' => '6281322223333',
-            ],
-            [
-                'user_id' => $patientModels[3]->id,
-                'therapist_id' => $therapist2->id,
-                'therapist_name' => $therapist2->name,
-                'patient_name' => $patientModels[3]->name,
-                'session_type' => 'Terapi Pemulihan Trauma',
-                'booking_date' => now()->subDays(2)->toDateString(),
-                'booking_time' => '16:00 WIB',
-                'status' => 'completed',
-                'payment_status' => 'paid',
-                'notes' => 'Evaluasi hasil latihan manajemen emosi bulanan.',
-                'price' => 'Rp 280.000',
-                'whatsapp_number' => '6281333334444',
-            ],
-            [
-                'user_id' => $patientModels[4]->id,
-                'therapist_id' => $therapist5->id,
-                'therapist_name' => $therapist5->name,
-                'patient_name' => $patientModels[4]->name,
-                'session_type' => 'Konsultasi Burnout Karir',
-                'booking_date' => now()->subDays(5)->toDateString(),
-                'booking_time' => '13:00 WIB',
-                'status' => 'completed',
-                'payment_status' => 'paid',
-                'notes' => 'Konsultasi transisi karir dan pencegahan kecemasan.',
-                'price' => 'Rp 320.000',
-                'whatsapp_number' => '6281344445555',
-            ]
-        ];
+        $booking1 = Booking::create([
+            'user_id' => $patientModels[0]->id,
+            'therapist_id' => $therapist1->id,
+            'therapist_name' => $therapist1->name,
+            'patient_name' => $patientModels[0]->name,
+            'session_type' => 'Terapi Perilaku Kognitif (CBT)',
+            'booking_date' => now()->toDateString(),
+            'booking_time' => '10:00 WIB',
+            'status' => 'accepted',
+            'payment_status' => 'paid',
+            'payment_proof' => 'payment_proofs/proof_b1.jpg',
+            'qris_payload' => $qrisPayloadSample,
+            'notes' => 'Mengalami rasa cemas berlebih saat menghadapi presentasi kantor.',
+            'price' => 'Rp 350.000',
+            'whatsapp_number' => '6281234567890',
+        ]);
 
-        foreach ($bookingsData as $b) {
-            Booking::create($b);
-        }
+        $booking2 = Booking::create([
+            'user_id' => $patientModels[1]->id,
+            'therapist_id' => $therapist2->id,
+            'therapist_name' => $therapist2->name,
+            'patient_name' => $patientModels[1]->name,
+            'session_type' => 'Konsultasi Pasangan & Keluarga',
+            'booking_date' => now()->addDays(1)->toDateString(),
+            'booking_time' => '14:00 WIB',
+            'status' => 'pending',
+            'payment_status' => 'unpaid',
+            'payment_proof' => null,
+            'qris_payload' => $qrisPayloadSample,
+            'notes' => 'Diskusi perbaikan pola komunikasi suami istri.',
+            'price' => 'Rp 280.000',
+            'whatsapp_number' => '6281311112222',
+        ]);
 
-        // 7. Reviews
+        $booking3 = Booking::create([
+            'user_id' => $patientModels[2]->id,
+            'therapist_id' => $therapist3->id,
+            'therapist_name' => $therapist3->name,
+            'patient_name' => $patientModels[2]->name,
+            'session_type' => 'Konsultasi Psikiatri & Stres',
+            'booking_date' => now()->addDays(2)->toDateString(),
+            'booking_time' => '11:00 WIB',
+            'status' => 'accepted',
+            'payment_status' => 'paid',
+            'payment_proof' => 'payment_proofs/proof_b3.jpg',
+            'qris_payload' => $qrisPayloadSample,
+            'notes' => 'Insomnia dan kelelahan mental berkelanjutan.',
+            'price' => 'Rp 450.000',
+            'whatsapp_number' => '6281322223333',
+        ]);
+
+        $booking4 = Booking::create([
+            'user_id' => $patientModels[3]->id,
+            'therapist_id' => $therapist2->id,
+            'therapist_name' => $therapist2->name,
+            'patient_name' => $patientModels[3]->name,
+            'session_type' => 'Terapi Pemulihan Trauma',
+            'booking_date' => now()->subDays(2)->toDateString(),
+            'booking_time' => '16:00 WIB',
+            'status' => 'completed',
+            'payment_status' => 'paid',
+            'payment_proof' => 'payment_proofs/proof_b4.jpg',
+            'qris_payload' => $qrisPayloadSample,
+            'notes' => 'Evaluasi hasil latihan manajemen emosi bulanan.',
+            'price' => 'Rp 280.000',
+            'whatsapp_number' => '6281333334444',
+        ]);
+
+        $booking5 = Booking::create([
+            'user_id' => $patientModels[4]->id,
+            'therapist_id' => $therapist5->id,
+            'therapist_name' => $therapist5->name,
+            'patient_name' => $patientModels[4]->name,
+            'session_type' => 'Konsultasi Burnout Karir',
+            'booking_date' => now()->subDays(5)->toDateString(),
+            'booking_time' => '13:00 WIB',
+            'status' => 'completed',
+            'payment_status' => 'paid',
+            'payment_proof' => 'payment_proofs/proof_b5.jpg',
+            'qris_payload' => $qrisPayloadSample,
+            'notes' => 'Konsultasi transisi karir dan pencegahan kecemasan.',
+            'price' => 'Rp 320.000',
+            'whatsapp_number' => '6281344445555',
+        ]);
+
+        // 7. Booking Activities Log
+        BookingActivity::create([
+            'patient_name' => $patientModels[0]->name,
+            'action' => 'Melakukan janji sesi Terapi Perilaku Kognitif (CBT)',
+            'status' => 'accepted',
+            'activity_time' => '10 menit yang lalu',
+        ]);
+
+        BookingActivity::create([
+            'patient_name' => $patientModels[1]->name,
+            'action' => 'Mengunggah konfirmasi reservasi konseling',
+            'status' => 'pending',
+            'activity_time' => '35 menit yang lalu',
+        ]);
+
+        BookingActivity::create([
+            'patient_name' => $patientModels[2]->name,
+            'action' => 'Pembayaran via QRIS berhasil diverifikasi',
+            'status' => 'accepted',
+            'activity_time' => '1 jam yang lalu',
+        ]);
+
+        BookingActivity::create([
+            'patient_name' => $patientModels[3]->name,
+            'action' => 'Menyelesaikan sesi Terapi Pemulihan Trauma',
+            'status' => 'completed',
+            'activity_time' => '2 hari yang lalu',
+        ]);
+
+        BookingActivity::create([
+            'patient_name' => $patientModels[4]->name,
+            'action' => 'Sesi Konsultasi Burnout Karir selesai',
+            'status' => 'completed',
+            'activity_time' => '5 hari yang lalu',
+        ]);
+
+        // 8. Reviews
         Review::create([
             'user_id' => $patientModels[0]->id,
             'therapist_id' => $therapist1->id,
+            'booking_id' => $booking1->id,
             'rating' => 5,
             'comment' => 'Dr. Sarah sangat perhatian dan teknik breathing exercise-nya sangat membantu saya mengatasi serangan cemas.',
         ]);
@@ -294,19 +370,70 @@ class DatabaseSeeder extends Seeder
         Review::create([
             'user_id' => $patientModels[1]->id,
             'therapist_id' => $therapist2->id,
+            'booking_id' => $booking2->id,
             'rating' => 5,
-            'comment' => 'Penjelasan Pak Mark Davis dalam sesi konseling pasangan sangat menyejukkan dan praktis.',
+            'comment' => 'Penjelasan Dr. Julian Vance dalam sesi konseling sangat menyejukkan dan praktis.',
         ]);
 
         Review::create([
             'user_id' => $patientModels[2]->id,
             'therapist_id' => $therapist3->id,
+            'booking_id' => $booking3->id,
             'rating' => 5,
             'comment' => 'Sangat profesional. Dr. Elena paham betul diagnosa stres dan memberikan arahan medis yang jelas.',
         ]);
 
-        // 8. Herbal Products (Mockup Matching)
-        Product::create([
+        Review::create([
+            'user_id' => $patientModels[3]->id,
+            'therapist_id' => $therapist2->id,
+            'booking_id' => $booking4->id,
+            'rating' => 5,
+            'comment' => 'Sesi pemulihan trauma bersama Dr. Julian sangat membuka wawasan dan menenangkan.',
+        ]);
+
+        // 9. Messages / Chat System
+        Message::create([
+            'booking_id' => $booking1->id,
+            'sender_id' => $patientModels[0]->id,
+            'sender_name' => $patientModels[0]->name,
+            'receiver_id' => $therapist1->id,
+            'message' => 'Halo Dok, saya sudah mentransfer pembayaran booking untuk sesi CBT.',
+        ]);
+
+        Message::create([
+            'booking_id' => $booking1->id,
+            'sender_id' => $therapist1->id,
+            'sender_name' => $therapist1->name,
+            'receiver_id' => $patientModels[0]->id,
+            'message' => 'Halo Sarah, konfirmasi pembayaran sudah diterima. Terima kasih, sampai bertemu di sesi jam 10:00 WIB.',
+        ]);
+
+        Message::create([
+            'booking_id' => $booking1->id,
+            'sender_id' => $patientModels[0]->id,
+            'sender_name' => $patientModels[0]->name,
+            'receiver_id' => $therapist1->id,
+            'message' => 'Baik Dok, terima kasih banyak!',
+        ]);
+
+        Message::create([
+            'booking_id' => $booking3->id,
+            'sender_id' => $patientModels[2]->id,
+            'sender_name' => $patientModels[2]->name,
+            'receiver_id' => $therapist3->id,
+            'message' => 'Selamat siang Dr. Elena, apakah ada dokumen awal yang perlu saya isi sebelum konsuiltasi lusa?',
+        ]);
+
+        Message::create([
+            'booking_id' => $booking3->id,
+            'sender_id' => $therapist3->id,
+            'sender_name' => $therapist3->name,
+            'receiver_id' => $patientModels[2]->id,
+            'message' => 'Selamat siang, cukup persiapkan riwayat keluhan tidur dan catatan kecemasan singkat jika ada.',
+        ]);
+
+        // 10. Herbal Products (Mockup Matching)
+        $product1 = Product::create([
             'name' => 'Ashwagandha Calm Drops',
             'slug' => 'ashwagandha-calm-drops',
             'description' => 'A potent adaptogenic tincture designed to lower cortisol levels and promote a sense of deep relaxation throughout your day.',
@@ -317,7 +444,7 @@ class DatabaseSeeder extends Seeder
             'is_bestseller' => true,
         ]);
 
-        Product::create([
+        $product2 = Product::create([
             'name' => 'Chamomile Dream Tea',
             'slug' => 'chamomile-dream-tea',
             'description' => 'Organic whole-flower chamomile blend to ease anxiety and prepare the mind for restorative sleep.',
@@ -328,7 +455,7 @@ class DatabaseSeeder extends Seeder
             'is_bestseller' => false,
         ]);
 
-        Product::create([
+        $product3 = Product::create([
             'name' => 'L-Theanine Focus',
             'slug' => 'l-theanine-focus',
             'description' => 'Amino acid supplement derived from green tea to support focused attention without the jitters.',
@@ -339,7 +466,7 @@ class DatabaseSeeder extends Seeder
             'is_bestseller' => false,
         ]);
 
-        Product::create([
+        $product4 = Product::create([
             'name' => 'Magnesium Sleep Rub',
             'slug' => 'magnesium-sleep-rub',
             'description' => 'Topical magnesium blended with essential oils to relax muscles and calm the nervous system before bed.',
@@ -350,7 +477,7 @@ class DatabaseSeeder extends Seeder
             'is_bestseller' => false,
         ]);
 
-        Product::create([
+        $product5 = Product::create([
             'name' => 'Rhodiola Energy Gummies',
             'slug' => 'rhodiola-energy-gummies',
             'description' => 'A gentle, herbal boost to combat fatigue and improve mental resilience during stressful periods.',
@@ -361,7 +488,47 @@ class DatabaseSeeder extends Seeder
             'is_bestseller' => false,
         ]);
 
-        // 9. Offline Clinics (Mockup Matching)
+        // 11. Product Orders
+        ProductOrder::create([
+            'user_id' => $patientModels[0]->id,
+            'product_id' => $product1->id,
+            'quantity' => 2,
+            'total_price' => 1020000,
+            'status' => 'completed',
+            'payment_status' => 'paid',
+            'payment_proof' => 'product_payments/proof_p1.jpg',
+            'shipping_address' => 'Jl. Jendral Sudirman No. 45, Kav 10-11, Jakarta Selatan, 12190',
+            'whatsapp_number' => '6281234567890',
+            'notes' => 'Harap dikemas dengan bubble wrap tebal.',
+        ]);
+
+        ProductOrder::create([
+            'user_id' => $patientModels[1]->id,
+            'product_id' => $product2->id,
+            'quantity' => 1,
+            'total_price' => 277500,
+            'status' => 'accepted',
+            'payment_status' => 'paid',
+            'payment_proof' => 'product_payments/proof_p2.jpg',
+            'shipping_address' => 'Jl. Dago No. 102, Bandung, Jawa Barat',
+            'whatsapp_number' => '6281311112222',
+            'notes' => 'Pengiriman via kurir kilat.',
+        ]);
+
+        ProductOrder::create([
+            'user_id' => $patientModels[2]->id,
+            'product_id' => $product3->id,
+            'quantity' => 1,
+            'total_price' => 420000,
+            'status' => 'pending',
+            'payment_status' => 'unpaid',
+            'payment_proof' => null,
+            'shipping_address' => 'Jl. Pemuda No. 88, Surabaya, Jawa Timur',
+            'whatsapp_number' => '6281322223333',
+            'notes' => 'Tolong infokan resi jika sudah dikirim.',
+        ]);
+
+        // 12. Offline Clinics (Mockup Matching)
         Clinic::create([
             'name' => 'Downtown Serenity Center',
             'address' => '124 Wellness Ave, Suite 300',
@@ -395,7 +562,7 @@ class DatabaseSeeder extends Seeder
             'phone' => '+62 811-9988-7766',
         ]);
 
-        // 10. Medical Documents for Dr. Julian Vance (Mockup Matching)
+        // 13. Medical Documents for Therapists
         MedicalDocument::create([
             'user_id' => $therapist2->id,
             'file_name' => 'SIK_Vance_2023.pdf',
@@ -419,5 +586,14 @@ class DatabaseSeeder extends Seeder
             'status' => 'rejected',
             'created_at' => now()->subDays(800),
         ]);
+
+        MedicalDocument::create([
+            'user_id' => $therapist1->id,
+            'file_name' => 'STR_Jenkins_2024.pdf',
+            'file_path' => 'documents/STR_Jenkins_2024.pdf',
+            'status' => 'verified',
+            'created_at' => now()->subDays(150),
+        ]);
     }
 }
+
